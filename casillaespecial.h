@@ -1,10 +1,17 @@
 #ifndef CASILLAESPECIAL_H
 #define CASILLAESPECIAL_H
 
-class casillaespecial
+#include "casilla.h"
+#include <QString>
+class casillaespecial: public casilla
 {
+
+private:
+    QString tipo;
 public:
-    casillaespecial();
+    casillaespecial(int numero, const QString& tipo);
+
+    void accion(jugador& j ) override;
 };
 
 #endif // CASILLAESPECIAL_H
