@@ -4,6 +4,7 @@
 class dado
 {
 public:
+    dado();
     int tirar();
 };
 
