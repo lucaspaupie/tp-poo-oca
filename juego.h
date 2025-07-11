@@ -8,11 +8,11 @@
 class Juego
 {
 private:
-    Qvector<jugador> jugadores;
+    QVector<jugador> jugadores;
     dado dado;
     int turnoActual;
 public:
-    juego();
+    Juego();
     void agregarJugador(const QString& nombre);
     void iniciar();
 };

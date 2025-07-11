@@ -1,11 +1,11 @@
 #include "tablero.h"
-
+#include "jugador.h"
 
 tablero::tablero()
 {
     for(int i=0;i<=63;i++) {
         if(i==6){
-            casillas.append(new casillaespecial(i, "punte"));
+            casillas.append(new casillaespecial(i, "puente"));
         }
         else if(i == 19){
             casillas.append(new casillaespecial(i, "posada"));
@@ -14,7 +14,7 @@ tablero::tablero()
             casillas.append(new casillaespecial(i,"laberinto"));
         }
         else{
-            casillas.append(new casillas(i));
+            casillas.append(new casilla(i));
         }
     }
 }

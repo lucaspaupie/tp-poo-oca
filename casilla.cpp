@@ -9,6 +9,6 @@ void casilla::accion(jugador& j){
 
 }
 
-int casilla::getNumero() const{
-    int numero;
+int casilla::getNumero() const {
+    return numero;
 }
