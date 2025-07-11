@@ -4,16 +4,18 @@
 casillaespecial::casillaespecial(int numero, const QString& tipo)
     : casilla(numero), tipo(tipo) {}
 
-
-
 void casillaespecial::accion(jugador& j) {
     if (tipo == "puente") {
-        j.mover(6); // Avanza 6 casillas mas
+        j.mover(6);
     } else if (tipo == "posada") {
-        // Penalización: no implementada todavía en clase jugador
-        // j.penalizar(1);
+        j.penalizar(1);
+    } else if (tipo == "pozo") {
+        j.atrapar();
     } else if (tipo == "laberinto") {
-        // Penalización: no implementada todavía
-        // j.penalizar(2);
+        j.retrocederACasilla(30);
+    } else if (tipo == "carcel") {
+        j.penalizar(2);
+    } else if (tipo == "calavera") {
+        j.reiniciar();
     }
 }
