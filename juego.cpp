@@ -1,12 +1,12 @@
-#include "juego.h"
+#include "Juego.h"
 
-juego::juego() : turnoActual(0) {}
+Juego::Juego() : turnoActual(0) {}
 
-void    juego::agregarJugador(const QString& nombre){
+void    Juego::agregarJugador(const QString& nombre){
     jugadores.append(jugador(nombre));
 }
 
-void juego::iniciar(){
+void Juego::iniciar(){
     while (!jugadores[turnoActual].ganador()) {
         jugador& actual = jugadores[turnoActual];
         int tiro = dado.tirar();

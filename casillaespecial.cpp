@@ -1,7 +1,9 @@
 #include "casillaespecial.h"
+#include "jugador.h"
 
-casillaespecial::casillaespecial(int numero, const Qstring& tipo)
-    _: casilla(numero), tipo(tipo){}
+casillaespecial::casillaespecial(int numero, const QString& tipo)
+    : casilla(numero), tipo(tipo) {}
+
 
 
 void casillaespecial::accion(jugador& j) {
