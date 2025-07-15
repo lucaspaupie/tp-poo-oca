@@ -1,0 +1,10 @@
+debug/casilla.o
+debug/casillaespecial.o
+debug/dado.o
+debug/juego.o
+debug/jugador.o
+debug/main.o
+debug/mainwindow.o
+debug/tablero.o
+debug/qrc_imagen.o
+debug/moc_mainwindow.o

@@ -15,6 +15,15 @@ public:
     Juego();
     void agregarJugador(const QString& nombre);
     void iniciar();
+
+    int tirarDadoYAvanzar();
+    void aplicarCasilla();
+    bool esFinDelJuego() const;
+    QString ganador() const;
+    void pasarTurno();
+
+    jugador& getJugadorActual(); // importante para reemplazar turnoActual()
+
 };
 
 #endif // JUEGO_H

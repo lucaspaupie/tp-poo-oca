@@ -7,11 +7,27 @@ void    Juego::agregarJugador(const QString& nombre){
 }
 
 void Juego::iniciar(){
-    while (!jugadores[turnoActual].ganador()) {
-        jugador& actual = jugadores[turnoActual];
-        int tiro = dado.tirar();
-        actual.mover(tiro);
+    turnoActual = 0;
+}
 
-        turnoActual = (turnoActual + 1) % jugadores.size();
-    }
+int Juego::tirarDadoYAvanzar() {
+    int valor = dado.tirar();
+    jugadores[turnoActual].mover(valor);
+    return valor;
+}
+
+bool Juego::esFinDelJuego() const {
+    return jugadores[turnoActual].getPosicion() >= 63;
+}
+
+QString Juego::ganador() const {
+    return jugadores[turnoActual].getNombre();
+}
+
+void Juego::pasarTurno() {
+    turnoActual = (turnoActual + 1) % jugadores.size();
+}
+
+jugador& Juego::getJugadorActual() {
+    return jugadores[turnoActual];
 }
