@@ -1,7 +1,7 @@
 #include "tablero.h"
 #include "jugador.h"
 
-tablero::tablero()
+/*tablero::tablero()
 {
     for(int i=0;i<=63;i++) {
         if(i==6){
@@ -17,7 +17,7 @@ tablero::tablero()
             casillas.append(new casilla(i));
         }
     }
-}
+}*/
 tablero::~tablero() {
     qDeleteAll(casillas);
     casillas.clear();

@@ -3,7 +3,6 @@
 
 #include <QVector>
 #include "casilla.h"
-#include "casillaespecial.h"
 
 class jugador;
 

@@ -2,7 +2,7 @@ TEMPLATE = app
 CONFIG += console c++17
 CONFIG -= app_bundle
 
-QT += core gui
+QT += core gui widgets
 
 SOURCES += \
     casilla.cpp \
@@ -11,6 +11,7 @@ SOURCES += \
     juego.cpp \
     jugador.cpp \
     main.cpp \
+    mainwindow.cpp \
     tablero.cpp
 
 HEADERS += \
@@ -19,4 +20,11 @@ HEADERS += \
     dado.h \
     juego.h \
     jugador.h \
+    mainwindow.h \
     tablero.h
+
+FORMS += \
+    mainwindow.ui
+
+RESOURCES +=
+
