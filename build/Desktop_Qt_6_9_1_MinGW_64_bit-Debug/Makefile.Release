@@ -128,7 +128,9 @@ compiler_rcc_clean:
 	-$(DEL_FILE) release\qrc_imagen.cpp
 release/qrc_imagen.cpp: ../../imagen.qrc \
 		C:/Qt/6.9.1/mingw_64/bin/rcc.exe \
-		../../imagenes/iniciar_juego.png
+		../../imagenes/Salir.png \
+		../../imagenes/iniciar_juego.png \
+		../../imagenes/cantJugadores.png
 	C:\Qt\6.9.1\mingw_64\bin\rcc.exe -name imagen --no-zstd ..\..\imagen.qrc -o release\qrc_imagen.cpp
 
 compiler_moc_predefs_make_all: release/moc_predefs.h
@@ -1151,6 +1153,19 @@ release/mainwindow.o: ../../mainwindow.cpp ../../mainwindow.h \
 		C:/Qt/6.9.1/mingw_64/include/QtCore/QVariant \
 		C:/Qt/6.9.1/mingw_64/include/QtWidgets/QApplication \
 		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qapplication.h \
+		C:/Qt/6.9.1/mingw_64/include/QtWidgets/QComboBox \
+		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qcombobox.h \
+		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qabstractitemdelegate.h \
+		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qstyleoption.h \
+		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qabstractspinbox.h \
+		C:/Qt/6.9.1/mingw_64/include/QtGui/qvalidator.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qregularexpression.h \
+		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qslider.h \
+		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qabstractslider.h \
+		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qstyle.h \
+		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qtabbar.h \
+		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qrubberband.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qabstractitemmodel.h \
 		C:/Qt/6.9.1/mingw_64/include/QtWidgets/QMenuBar \
 		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qmenubar.h \
 		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qmenu.h \

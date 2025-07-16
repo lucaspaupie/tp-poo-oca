@@ -21,6 +21,7 @@ public:
 private slots:
     void tirarDado(); // conectado al botón
     void iniciarJuego();
+    void confirmarCantidadJugadores();
 
 private:
     Ui::MainWindow *ui;

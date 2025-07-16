@@ -17,8 +17,14 @@ MainWindow::MainWindow(QWidget *parent)
     juegoActual.agregarJugador("Axel");
     juegoActual.agregarJugador("Luciano");
 
+    ui->widgetSelector->hide();
+    ui->btnIniciar->show();
+
     // Conexión
-    connect(ui->btnTirar, &QPushButton::clicked, this, &MainWindow::tirarDado);
+   // connect(ui->btnTirar, &QPushButton::clicked, this, &MainWindow::tirarDado);
+    connect(ui->btnIniciar, &QPushButton::clicked, this, &MainWindow::iniciarJuego);
+    connect(ui->btnCerrar, &QPushButton::clicked, this, &MainWindow::close);
+    connect(ui->confJugadores, &QPushButton::clicked, this, &MainWindow::confirmarCantidadJugadores);
 
     actualizarUI();
 }
@@ -53,10 +59,27 @@ void Juego::aplicarCasilla(){
 }
 
 void MainWindow::iniciarJuego() {
+    ui->btnIniciar->hide();
+    ui->btnCerrar->hide();
+
+
+
     // Aquí iniciás tu lógica del juego
-    actualizarUI();  // Por ejemplo
+
+    ui->widgetSelector->show();
+
+  //  actualizarUI();  // Por ejemplo
 }
+void MainWindow::confirmarCantidadJugadores(){
+    int cantidad = ui->canJugadores->currentText().toInt();
 
+    //arreglar   juegoActual.reiniciar();
+    if (cantidad >= 2) juegoActual.agregarJugador("Jugador 1");
+    if (cantidad >= 3) juegoActual.agregarJugador("Jugador 2");
+    if (cantidad >= 4) juegoActual.agregarJugador("Jugador 3");
+    if (cantidad == 4) juegoActual.agregarJugador("Jugador 4");
 
+    ui->widgetSelector->hide();
+}
 
 

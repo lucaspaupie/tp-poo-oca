@@ -11,12 +11,12 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QComboBox>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
-#include <QtWidgets/QTextEdit>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -25,9 +25,13 @@ class Ui_MainWindow
 {
 public:
     QWidget *centralwidget;
-    QTextEdit *labelResultado;
-    QLabel *label;
     QPushButton *btnIniciar;
+    QPushButton *btnCerrar;
+    QWidget *widgetSelector;
+    QLabel *ImgFondoSelec;
+    QComboBox *canJugadores;
+    QPushButton *confJugadores;
+    QLabel *label_2;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -35,6 +39,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName("MainWindow");
+        MainWindow->setEnabled(true);
         MainWindow->resize(800, 600);
         MainWindow->setStyleSheet(QString::fromUtf8("QMainWindow {\n"
 "    background-image: url(:/images/iniciar_juego.png);\n"
@@ -43,23 +48,55 @@ public:
 "}"));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName("centralwidget");
-        labelResultado = new QTextEdit(centralwidget);
-        labelResultado->setObjectName("labelResultado");
-        labelResultado->setGeometry(QRect(340, 120, 104, 70));
-        label = new QLabel(centralwidget);
-        label->setObjectName("label");
-        label->setGeometry(QRect(-40, -110, 891, 771));
-        label->setStyleSheet(QString::fromUtf8("image: url(:/new/prefix1/imagenes/iniciar_juego.png);"));
         btnIniciar = new QPushButton(centralwidget);
         btnIniciar->setObjectName("btnIniciar");
-        btnIniciar->setGeometry(QRect(310, 400, 181, 61));
+        btnIniciar->setGeometry(QRect(310, 420, 211, 71));
         btnIniciar->setStyleSheet(QString::fromUtf8("QPushButton {\n"
 "    background-color: peachpuff;\n"
 "    font: bold 16px;\n"
 "    border-radius: 15px;\n"
 "    padding: 10px 20px;\n"
 "}"));
+        btnCerrar = new QPushButton(centralwidget);
+        btnCerrar->setObjectName("btnCerrar");
+        btnCerrar->setGeometry(QRect(10, 430, 111, 51));
+        btnCerrar->setStyleSheet(QString::fromUtf8("QPushButton {\n"
+"	image: url(:/new/prefix1/imagenes/Salir.png);\n"
+"    border: none;\n"
+"    background-color: transparent;\n"
+"    font-size: 24px;\n"
+"}\n"
+""));
+        widgetSelector = new QWidget(centralwidget);
+        widgetSelector->setObjectName("widgetSelector");
+        widgetSelector->setEnabled(true);
+        widgetSelector->setGeometry(QRect(0, 20, 801, 571));
+        widgetSelector->setMinimumSize(QSize(801, 571));
+        widgetSelector->setStyleSheet(QString::fromUtf8(""));
+        ImgFondoSelec = new QLabel(widgetSelector);
+        ImgFondoSelec->setObjectName("ImgFondoSelec");
+        ImgFondoSelec->setGeometry(QRect(-40, -10, 891, 591));
+        ImgFondoSelec->setStyleSheet(QString::fromUtf8("image: url(:/new/prefix1/imagenes/cantJugadores.png);"));
+        ImgFondoSelec->setScaledContents(true);
+        ImgFondoSelec->setAlignment(Qt::AlignmentFlag::AlignCenter);
+        canJugadores = new QComboBox(widgetSelector);
+        canJugadores->addItem(QString());
+        canJugadores->addItem(QString());
+        canJugadores->addItem(QString());
+        canJugadores->setObjectName("canJugadores");
+        canJugadores->setGeometry(QRect(380, 230, 41, 31));
+        confJugadores = new QPushButton(widgetSelector);
+        confJugadores->setObjectName("confJugadores");
+        confJugadores->setGeometry(QRect(360, 310, 80, 24));
+        label_2 = new QLabel(centralwidget);
+        label_2->setObjectName("label_2");
+        label_2->setGeometry(QRect(-2, 0, 811, 581));
+        label_2->setStyleSheet(QString::fromUtf8("image: url(:/new/prefix1/imagenes/iniciar_juego.png);"));
         MainWindow->setCentralWidget(centralwidget);
+        label_2->raise();
+        widgetSelector->raise();
+        btnIniciar->raise();
+        btnCerrar->raise();
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
         menubar->setGeometry(QRect(0, 0, 800, 21));
@@ -76,8 +113,15 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
-        label->setText(QString());
         btnIniciar->setText(QCoreApplication::translate("MainWindow", "Iniciar Juego", nullptr));
+        btnCerrar->setText(QString());
+        ImgFondoSelec->setText(QString());
+        canJugadores->setItemText(0, QCoreApplication::translate("MainWindow", "2", nullptr));
+        canJugadores->setItemText(1, QCoreApplication::translate("MainWindow", "3", nullptr));
+        canJugadores->setItemText(2, QCoreApplication::translate("MainWindow", "4", nullptr));
+
+        confJugadores->setText(QCoreApplication::translate("MainWindow", "Confirmar", nullptr));
+        label_2->setText(QString());
     } // retranslateUi
 
 };
