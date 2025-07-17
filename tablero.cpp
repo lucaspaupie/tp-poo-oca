@@ -1,23 +1,27 @@
 #include "tablero.h"
+#include "jugador.h"
+#include "casillaespecial.h"
+#include <QMap>
 
+tablero::tablero() {
+    QMap<int, QString> especiales = {
+        {6, "puente"},
+        {19, "posada"},
+        {31, "pozo"},
+        {42, "laberinto"},
+        {56, "carcel"},
+        {58, "calavera"}
+    };
 
-tablero::tablero()
-{
-    for(int i=0;i<=63;i++) {
-        if(i==6){
-            casillas.append(new casillaespecial(i, "punte"));
-        }
-        else if(i == 19){
-            casillas.append(new casillaespecial(i, "posada"));
-        }
-        else if(i==31){
-            casillas.append(new casillaespecial(i,"laberinto"));
-        }
-        else{
-            casillas.append(new casillas(i));
+    for (int i = 0; i <= 63; ++i) {
+        if (especiales.contains(i)) {
+            casillas.append(new casillaespecial(i, especiales[i]));
+        } else {
+            casillas.append(new casilla(i));
         }
     }
 }
+
 tablero::~tablero() {
     qDeleteAll(casillas);
     casillas.clear();

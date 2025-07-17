@@ -299,6 +299,7 @@ Makefile: ../../tp_juegooca.pro C:/Qt/6.9.1/mingw_64/mkspecs/win32-g++/qmake.con
 		C:/Qt/6.9.1/mingw_64/mkspecs/features/resources.prf \
 		C:/Qt/6.9.1/mingw_64/mkspecs/features/moc.prf \
 		C:/Qt/6.9.1/mingw_64/mkspecs/features/win32/opengl.prf \
+		C:/Qt/6.9.1/mingw_64/mkspecs/features/uic.prf \
 		C:/Qt/6.9.1/mingw_64/mkspecs/features/qmake_use.prf \
 		C:/Qt/6.9.1/mingw_64/mkspecs/features/file_copies.prf \
 		C:/Qt/6.9.1/mingw_64/mkspecs/features/testcase_targets.prf \
@@ -306,9 +307,11 @@ Makefile: ../../tp_juegooca.pro C:/Qt/6.9.1/mingw_64/mkspecs/win32-g++/qmake.con
 		C:/Qt/6.9.1/mingw_64/mkspecs/features/yacc.prf \
 		C:/Qt/6.9.1/mingw_64/mkspecs/features/lex.prf \
 		../../tp_juegooca.pro \
+		C:/Qt/6.9.1/mingw_64/lib/Qt6Widgets.prl \
 		C:/Qt/6.9.1/mingw_64/lib/Qt6Gui.prl \
 		C:/Qt/6.9.1/mingw_64/lib/Qt6Core.prl \
-		C:/Qt/6.9.1/mingw_64/mkspecs/features/build_pass.prf
+		C:/Qt/6.9.1/mingw_64/mkspecs/features/build_pass.prf \
+		../../imagen.qrc
 	$(QMAKE) -o Makefile ..\..\tp_juegooca.pro -spec win32-g++ "CONFIG+=debug" "CONFIG+=qml_debug"
 C:/Qt/6.9.1/mingw_64/mkspecs/features/spec_pre.prf:
 C:/Qt/6.9.1/mingw_64/mkspecs/features/device_config.prf:
@@ -539,6 +542,7 @@ C:/Qt/6.9.1/mingw_64/mkspecs/features/resources_functions.prf:
 C:/Qt/6.9.1/mingw_64/mkspecs/features/resources.prf:
 C:/Qt/6.9.1/mingw_64/mkspecs/features/moc.prf:
 C:/Qt/6.9.1/mingw_64/mkspecs/features/win32/opengl.prf:
+C:/Qt/6.9.1/mingw_64/mkspecs/features/uic.prf:
 C:/Qt/6.9.1/mingw_64/mkspecs/features/qmake_use.prf:
 C:/Qt/6.9.1/mingw_64/mkspecs/features/file_copies.prf:
 C:/Qt/6.9.1/mingw_64/mkspecs/features/testcase_targets.prf:
@@ -546,9 +550,11 @@ C:/Qt/6.9.1/mingw_64/mkspecs/features/exceptions.prf:
 C:/Qt/6.9.1/mingw_64/mkspecs/features/yacc.prf:
 C:/Qt/6.9.1/mingw_64/mkspecs/features/lex.prf:
 ../../tp_juegooca.pro:
+C:/Qt/6.9.1/mingw_64/lib/Qt6Widgets.prl:
 C:/Qt/6.9.1/mingw_64/lib/Qt6Gui.prl:
 C:/Qt/6.9.1/mingw_64/lib/Qt6Core.prl:
 C:/Qt/6.9.1/mingw_64/mkspecs/features/build_pass.prf:
+../../imagen.qrc:
 qmake: FORCE
 	@$(QMAKE) -o Makefile ..\..\tp_juegooca.pro -spec win32-g++ "CONFIG+=debug" "CONFIG+=qml_debug"
 

@@ -3,8 +3,8 @@
 
 #include <QVector>
 #include "casilla.h"
-#include "casillaespecial.h"
-
+// #include "casillaespecial.h"
+// ver esto de arriba por que lo agregue y no ocupo ninguna funcion, me tira warning
 class jugador;
 
 class tablero
