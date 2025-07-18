@@ -23,7 +23,7 @@
    <widget class="QStackedWidget" name="stackedWidget">
     <property name="geometry">
      <rect>
-      <x>-150</x>
+      <x>-80</x>
       <y>0</y>
       <width>1441</width>
       <height>721</height>
@@ -44,10 +44,10 @@ background-position: center;
 
 </string>
      </property>
-     <widget class="QPushButton" name="pushButton">
+     <widget class="QPushButton" name="botoncomenzar">
       <property name="geometry">
        <rect>
-        <x>660</x>
+        <x>1030</x>
         <y>570</y>
         <width>271</width>
         <height>81</height>
@@ -58,14 +58,14 @@ background-position: center;
 border: none;</string>
       </property>
       <property name="text">
-       <string>PushButton</string>
+       <string/>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_2">
+     <widget class="QPushButton" name="botoncerrar">
       <property name="geometry">
        <rect>
-        <x>210</x>
-        <y>550</y>
+        <x>160</x>
+        <y>610</y>
         <width>131</width>
         <height>111</height>
        </rect>
@@ -77,11 +77,18 @@ background-position: center;
 background-size: 5px;</string>
       </property>
       <property name="text">
-       <string>PushButton</string>
+       <string/>
       </property>
      </widget>
     </widget>
-    <widget class="QWidget" name="page_2"/>
+    <widget class="QWidget" name="seleccionpjs">
+     <property name="styleSheet">
+      <string notr="true">background-image: url(:/new/prefix1/imagenes/cantJugadores.png);
+background-repeat: no-repeat;
+background-position: center;
+</string>
+     </property>
+    </widget>
    </widget>
   </widget>
  </widget>

@@ -20,13 +20,18 @@ public:
 
 private slots:
     void tirarDado(); // conectado al botón
-    void iniciarJuego();
+    void iniciarjuego();
     void confirmarCantidadJugadores();
+
+
+    void on_botoncomenzar_clicked();
 
 private:
     Ui::MainWindow *ui;
     Juego juegoActual;
+    void cerrarJuego();
     void actualizarUI();
+    void mostrarSeleccionPersonajes();
 };
 
 
