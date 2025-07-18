@@ -26,12 +26,18 @@ private slots:
 
     void on_botoncomenzar_clicked();
 
+    void on_comboBox_activated(int index);
+
+    void on_siguiente_clicked();
+
 private:
     Ui::MainWindow *ui;
     Juego juegoActual;
     void cerrarJuego();
     void actualizarUI();
     void mostrarSeleccionPersonajes();
+    void cantjug();
+    void pj();
 };
 
 
