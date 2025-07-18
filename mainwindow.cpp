@@ -12,6 +12,11 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    //aca vamos a poner todos los conec de botones
+    connect(ui->botoncomenzar, &QPushButton::clicked, this, &MainWindow::mostrarSeleccionPersonajes);
+    connect(ui->siguiente, &QPushButton::clicked, this, &MainWindow::pj);
+
+
     // Crear jugadores
     juegoActual.agregarJugador("Lucas");
     juegoActual.agregarJugador("Axel");
@@ -64,10 +69,6 @@ void MainWindow::cerrarJuego() {
     QApplication::quit();
 }
 
-void MainWindow::on_botoncomenzar_clicked()
-{
-    connect(ui->botoncomenzar, &QPushButton::clicked, this, &MainWindow::mostrarSeleccionPersonajes);
-}
 
 void MainWindow::mostrarSeleccionPersonajes() {
     qDebug() << "Cambiando a seleccionpjs";
@@ -86,11 +87,6 @@ void MainWindow::cantjug()
 {
     qDebug() << "Función cantjug llamada correctamente";
     actualizarUI();  // Para mostrar el nuevo jugador actual
-}
-
-void MainWindow::on_siguiente_clicked()
-{
-    connect(ui->siguiente, &QPushButton::clicked, this, &MainWindow::pj);
 }
 
 void MainWindow::pj()
