@@ -3,5 +3,10 @@
         <file>imagenes/iniciar_juego.png</file>
         <file>imagenes/Salir.png</file>
         <file>imagenes/cantJugadores.png</file>
+        <file>imagenes/ct1.png</file>
+        <file>imagenes/ct2.png</file>
+        <file>imagenes/tablero.png</file>
+        <file>imagenes/tt1.png</file>
+        <file>imagenes/tt2.png</file>
     </qresource>
 </RCC>
