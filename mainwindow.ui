@@ -80,6 +80,8 @@ background-size: 5px;</string>
        <string/>
       </property>
      </widget>
+     <zorder>botoncerrar</zorder>
+     <zorder>botoncomenzar</zorder>
     </widget>
     <widget class="QWidget" name="seleccionpjs">
      <property name="styleSheet">
