@@ -29,6 +29,9 @@
       <height>721</height>
      </rect>
     </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
     <widget class="QWidget" name="comienzo">
      <property name="minimumSize">
       <size>
@@ -90,7 +93,49 @@ background-repeat: no-repeat;
 background-position: center;
 </string>
      </property>
+     <widget class="QComboBox" name="numpj">
+      <property name="geometry">
+       <rect>
+        <x>690</x>
+        <y>310</y>
+        <width>72</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-image: white;</string>
+      </property>
+      <item>
+       <property name="text">
+        <string>2</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>3</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>4</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QPushButton" name="siguiente">
+      <property name="geometry">
+       <rect>
+        <x>620</x>
+        <y>530</y>
+        <width>211</width>
+        <height>81</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>siguiente</string>
+      </property>
+     </widget>
     </widget>
+    <widget class="QWidget" name="elegirpj"/>
    </widget>
   </widget>
  </widget>

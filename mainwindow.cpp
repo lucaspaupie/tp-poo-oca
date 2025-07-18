@@ -73,3 +73,27 @@ void MainWindow::mostrarSeleccionPersonajes() {
     qDebug() << "Cambiando a seleccionpjs";
     ui->stackedWidget->setCurrentWidget(ui->seleccionpjs);
 }
+
+
+
+void MainWindow::on_comboBox_activated(int index)
+{
+    connect(ui->numpj, QOverload<int>::of(&QComboBox::activated),
+            this, &MainWindow::cantjug);
+}
+
+void MainWindow::cantjug()
+{
+    qDebug() << "Función cantjug llamada correctamente";
+    actualizarUI();  // Para mostrar el nuevo jugador actual
+}
+
+void MainWindow::on_siguiente_clicked()
+{
+    connect(ui->siguiente, &QPushButton::clicked, this, &MainWindow::pj);
+}
+
+void MainWindow::pj()
+{
+    ui->stackedWidget->setCurrentWidget(ui->elegirpj);
+}
