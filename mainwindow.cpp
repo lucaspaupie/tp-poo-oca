@@ -4,7 +4,7 @@
 #include <QVBoxLayout>
 #include "ui_mainwindow.h"
 #include <QMessageBox>
-
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -17,15 +17,9 @@ MainWindow::MainWindow(QWidget *parent)
     juegoActual.agregarJugador("Axel");
     juegoActual.agregarJugador("Luciano");
 
-    ui->widgetSelector->hide();
-    ui->btnIniciar->show();
-
+    iniciarjuego();
     // Conexión
    // connect(ui->btnTirar, &QPushButton::clicked, this, &MainWindow::tirarDado);
-    connect(ui->btnIniciar, &QPushButton::clicked, this, &MainWindow::iniciarJuego);
-    connect(ui->btnCerrar, &QPushButton::clicked, this, &MainWindow::close);
-    connect(ui->confJugadores, &QPushButton::clicked, this, &MainWindow::confirmarCantidadJugadores);
-
     actualizarUI();
 }
 
@@ -58,28 +52,24 @@ void Juego::aplicarCasilla(){
 
 }
 
-void MainWindow::iniciarJuego() {
-    ui->btnIniciar->hide();
-    ui->btnCerrar->hide();
 
 
 
-    // Aquí iniciás tu lógica del juego
+void MainWindow::iniciarjuego()
+{
+    connect(ui->botoncerrar, &QPushButton::clicked, this, &MainWindow::cerrarJuego);
 
-    ui->widgetSelector->show();
-
-  //  actualizarUI();  // Por ejemplo
 }
-void MainWindow::confirmarCantidadJugadores(){
-    int cantidad = ui->canJugadores->currentText().toInt();
-
-    //arreglar   juegoActual.reiniciar();
-    if (cantidad >= 2) juegoActual.agregarJugador("Jugador 1");
-    if (cantidad >= 3) juegoActual.agregarJugador("Jugador 2");
-    if (cantidad >= 4) juegoActual.agregarJugador("Jugador 3");
-    if (cantidad == 4) juegoActual.agregarJugador("Jugador 4");
-
-    ui->widgetSelector->hide();
+void MainWindow::cerrarJuego() {
+    QApplication::quit();
 }
 
+void MainWindow::on_botoncomenzar_clicked()
+{
+    connect(ui->botoncomenzar, &QPushButton::clicked, this, &MainWindow::mostrarSeleccionPersonajes);
+}
 
+void MainWindow::mostrarSeleccionPersonajes() {
+    qDebug() << "Cambiando a seleccionpjs";
+    ui->stackedWidget->setCurrentWidget(ui->seleccionpjs);
+}
