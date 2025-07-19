@@ -96,14 +96,14 @@ background-image: url(:/new/prefix1/imagenes/cantJugadores.png);
      <widget class="QComboBox" name="numpj">
       <property name="geometry">
        <rect>
-        <x>640</x>
-        <y>310</y>
-        <width>72</width>
-        <height>24</height>
+        <x>600</x>
+        <y>300</y>
+        <width>101</width>
+        <height>41</height>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-image: white;</string>
+       <string notr="true">background-image: transparent;</string>
       </property>
       <item>
        <property name="text">
@@ -124,18 +124,51 @@ background-image: url(:/new/prefix1/imagenes/cantJugadores.png);
      <widget class="QPushButton" name="siguiente">
       <property name="geometry">
        <rect>
-        <x>560</x>
-        <y>530</y>
-        <width>211</width>
-        <height>81</height>
+        <x>590</x>
+        <y>460</y>
+        <width>120</width>
+        <height>160</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-image: url(:/new/prefix1/imagenes/c4.png);
+background-color: transparent;
+background-repeat: no-repeat;
+ background-position: center;
+</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label">
+      <property name="geometry">
+       <rect>
+        <x>490</x>
+        <y>390</y>
+        <width>321</width>
+        <height>51</height>
        </rect>
       </property>
       <property name="text">
-       <string>siguiente</string>
+       <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+hr { height: 1px; border-width: 0; }
+li.unchecked::marker { content: &quot;\2610&quot;; }
+li.checked::marker { content: &quot;\2612&quot;; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt; font-weight:700; color:#000000;&quot;&gt;Clickea el C4 para comenzar!&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
     </widget>
-    <widget class="QWidget" name="elegirpj"/>
+    <widget class="QWidget" name="tablero">
+     <property name="styleSheet">
+      <string notr="true">#tablero{
+background-image: url(:/new/prefix1/imagenes/tablero.png);
+}</string>
+     </property>
+    </widget>
    </widget>
   </widget>
  </widget>

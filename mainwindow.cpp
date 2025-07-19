@@ -91,5 +91,5 @@ void MainWindow::cantjug()
 
 void MainWindow::pj()
 {
-    ui->stackedWidget->setCurrentWidget(ui->elegirpj);
+    ui->stackedWidget->setCurrentWidget(ui->tablero);
 }
