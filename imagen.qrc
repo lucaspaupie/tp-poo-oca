@@ -9,5 +9,11 @@
         <file>imagenes/tt1.png</file>
         <file>imagenes/tt2.png</file>
         <file>imagenes/c4.png</file>
+        <file>imagenes/dado1.png</file>
+        <file>imagenes/dado2.png</file>
+        <file>imagenes/dado3.png</file>
+        <file>imagenes/dado4.png</file>
+        <file>imagenes/dado5.png</file>
+        <file>imagenes/dado6.png</file>
     </qresource>
 </RCC>

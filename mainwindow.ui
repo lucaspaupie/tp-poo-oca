@@ -55,6 +55,9 @@ background-repeat: no-repeat;
         <height>81</height>
        </rect>
       </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
       <property name="styleSheet">
        <string notr="true">background-color: transparent;
 border: none;</string>
@@ -71,6 +74,9 @@ border: none;</string>
         <width>41</width>
         <height>41</height>
        </rect>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
       </property>
       <property name="styleSheet">
        <string notr="true">#botoncerrar{
@@ -102,6 +108,9 @@ background-image: url(:/new/prefix1/imagenes/cantJugadores.png);
         <height>41</height>
        </rect>
       </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
       <property name="styleSheet">
        <string notr="true">background-image: transparent;</string>
       </property>
@@ -129,6 +138,9 @@ background-image: url(:/new/prefix1/imagenes/cantJugadores.png);
         <width>120</width>
         <height>160</height>
        </rect>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
       </property>
       <property name="styleSheet">
        <string notr="true">background-image: url(:/new/prefix1/imagenes/c4.png);
@@ -168,6 +180,52 @@ li.checked::marker { content: &quot;\2612&quot;; }
 background-image: url(:/new/prefix1/imagenes/tablero.png);
 }</string>
      </property>
+     <widget class="QLabel" name="labelDado">
+      <property name="geometry">
+       <rect>
+        <x>1100</x>
+        <y>300</y>
+        <width>121</width>
+        <height>121</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>100</width>
+        <height>100</height>
+       </size>
+      </property>
+      <property name="cursor">
+       <cursorShape>ArrowCursor</cursorShape>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="BTdado">
+      <property name="geometry">
+       <rect>
+        <x>1100</x>
+        <y>490</y>
+        <width>121</width>
+        <height>161</height>
+       </rect>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#BTdado{
+background-color: transparent;
+}</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
     </widget>
    </widget>
   </widget>
