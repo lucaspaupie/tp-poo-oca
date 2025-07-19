@@ -310,7 +310,8 @@ Makefile: ../../tp_juegooca.pro G:/qt/6.9.1/mingw_64/mkspecs/win32-g++/qmake.con
 		G:/qt/6.9.1/mingw_64/lib/Qt6Widgets.prl \
 		G:/qt/6.9.1/mingw_64/lib/Qt6Gui.prl \
 		G:/qt/6.9.1/mingw_64/lib/Qt6Core.prl \
-		G:/qt/6.9.1/mingw_64/mkspecs/features/build_pass.prf
+		G:/qt/6.9.1/mingw_64/mkspecs/features/build_pass.prf \
+		../../start.qrc
 	$(QMAKE) -o Makefile ..\..\tp_juegooca.pro -spec win32-g++ "CONFIG+=debug" "CONFIG+=qml_debug"
 G:/qt/6.9.1/mingw_64/mkspecs/features/spec_pre.prf:
 G:/qt/6.9.1/mingw_64/mkspecs/features/device_config.prf:
@@ -553,6 +554,7 @@ G:/qt/6.9.1/mingw_64/lib/Qt6Widgets.prl:
 G:/qt/6.9.1/mingw_64/lib/Qt6Gui.prl:
 G:/qt/6.9.1/mingw_64/lib/Qt6Core.prl:
 G:/qt/6.9.1/mingw_64/mkspecs/features/build_pass.prf:
+../../start.qrc:
 qmake: FORCE
 	@$(QMAKE) -o Makefile ..\..\tp_juegooca.pro -spec win32-g++ "CONFIG+=debug" "CONFIG+=qml_debug"
 

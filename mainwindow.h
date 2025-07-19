@@ -17,11 +17,13 @@ public:
     ~MainWindow();
 
 private slots:
-void on_btntirarDado_clicked();
+void BTdado();
 
 private:
     Ui::MainWindow *ui;
     Juego *juego;
+    dado *miDado;
+    dado *miDado2;
 };
 
 #endif // MAINWINDOW_H

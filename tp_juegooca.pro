@@ -26,5 +26,6 @@ HEADERS += \
 FORMS += \
     mainwindow.ui
 
-RESOURCES +=
+RESOURCES += \
+    start.qrc
 

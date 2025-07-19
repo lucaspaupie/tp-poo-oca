@@ -1,1 +1,11 @@
-<RCC/>
+<RCC>
+    <qresource prefix="/imagenes">
+        <file>imagenes/dado1.png</file>
+        <file>imagenes/dado5.png</file>
+        <file>imagenes/dado6.png</file>
+        <file>imagenes/dado4.png</file>
+        <file>imagenes/dado3.png</file>
+        <file>imagenes/dado2.png</file>
+    </qresource>
+    <qresource prefix="/fondos"/>
+</RCC>

@@ -4,7 +4,7 @@
 class dado
 {
 public:
-    dado();
+    dado(                    );
     int tirar();
 };
 

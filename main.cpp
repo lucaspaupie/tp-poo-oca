@@ -1,9 +1,12 @@
-#include <iostream>
+#include <QApplication>
+#include "mainwindow.h"
 
-using namespace std;
-
-int main()
+int main(int argc, char *argv[])
 {
-    cout << "Hello World!" << endl;
-    return 0;
+    QApplication app(argc, argv);
+
+    MainWindow w;
+    w.show();  // 👈 Esto muestra tu ventana principal
+
+    return app.exec();  // Qt entra en el loop principal
 }
