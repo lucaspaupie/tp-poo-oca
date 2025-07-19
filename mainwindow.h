@@ -19,9 +19,10 @@ public:
     ~MainWindow();
 
 private slots:
-    void tirarDado(); // conectado al botón
+   // void tirarDado(); // conectado al botón
     void iniciarjuego();
     void confirmarCantidadJugadores();
+    void BTdado(bool);
 
 
     void on_botoncomenzar_clicked();
@@ -38,6 +39,8 @@ private:
     void mostrarSeleccionPersonajes();
     void cantjug();
     void pj();
+    Juego juego;
+    dado* miDado;
 };
 
 
