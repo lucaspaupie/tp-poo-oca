@@ -1,11 +1,9 @@
 #include "dado.h"
-#include <cstdlib>
-#include <ctime>
+#include <QRandomGenerator>
+
+dado::dado() {}
+
 
 int dado::tirar() {
-    return rand() % 6+1;
-}
-
-dado::dado() {
-    std::srand(std::time(nullptr));
+    return QRandomGenerator::global()->bounded(1, 7); // 1 a 6
 }
