@@ -33,3 +33,12 @@ void tablero::aplicarAccion(jugador& j) {
         casillas[pos]->accion(j);
     }
 }
+
+void tablero::moverJugador(jugador& j,int pasos){
+    int nuevaPos = j.getPosicion() + pasos;
+    if(nuevaPos>= casillas.size()){
+        nuevaPos = casillas.size()-1;
+    }
+    j.retrocederACasilla(nuevaPos);            // actualiza posicion del jugador
+    aplicarAccion(j);
+}

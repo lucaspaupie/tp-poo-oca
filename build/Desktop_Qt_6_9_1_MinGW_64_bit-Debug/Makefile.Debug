@@ -129,8 +129,20 @@ compiler_rcc_clean:
 debug/qrc_imagen.cpp: ../../imagen.qrc \
 		C:/Qt/6.9.1/mingw_64/bin/rcc.exe \
 		../../imagenes/Salir.png \
+		../../imagenes/ct2.png \
 		../../imagenes/iniciar_juego.png \
-		../../imagenes/cantJugadores.png
+		../../imagenes/dado5.png \
+		../../imagenes/tablero.png \
+		../../imagenes/dado4.png \
+		../../imagenes/c4.png \
+		../../imagenes/ct1.png \
+		../../imagenes/tt1.png \
+		../../imagenes/tt2.png \
+		../../imagenes/dado3.png \
+		../../imagenes/cantJugadores.png \
+		../../imagenes/dado1.png \
+		../../imagenes/dado2.png \
+		../../imagenes/dado6.png
 	C:\Qt\6.9.1\mingw_64\bin\rcc.exe -name imagen --no-zstd ..\..\imagen.qrc -o debug\qrc_imagen.cpp
 
 compiler_moc_predefs_make_all: debug/moc_predefs.h
@@ -542,7 +554,56 @@ debug/casillaespecial.o: ../../casillaespecial.cpp ../../casillaespecial.h \
 		../../jugador.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\casillaespecial.o ..\..\casillaespecial.cpp
 
-debug/dado.o: ../../dado.cpp ../../dado.h
+debug/dado.o: ../../dado.cpp ../../dado.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/QRandomGenerator \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qrandom.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qalgorithms.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qglobal.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qtcoreglobal.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qtversionchecks.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qtconfiginclude.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qconfig.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qtcore-config.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qtconfigmacros.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qtdeprecationdefinitions.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qcompilerdetection.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qprocessordetection.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qsystemdetection.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qtcoreexports.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qtdeprecationmarkers.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qtclasshelpermacros.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qtpreprocessorsupport.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qassert.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qtnoop.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qtypes.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qtversion.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qtypeinfo.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qcontainerfwd.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qsysinfo.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qlogging.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qflags.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qcompare_impl.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qatomic.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qbasicatomic.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qatomic_cxx11.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qgenericatomic.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qyieldcpu.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qconstructormacros.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qdarwinhelpers.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qexceptionhandling.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qforeach.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qttypetraits.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qfunctionpointer.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qglobalstatic.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qmalloc.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qminmax.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qnumeric.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qoverload.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qswap.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qtenvironmentvariables.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qtresource.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qttranslation.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qversiontagging.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\dado.o ..\..\dado.cpp
 
 debug/juego.o: ../../juego.cpp ../../Juego.h \
@@ -1153,36 +1214,15 @@ debug/mainwindow.o: ../../mainwindow.cpp ../../mainwindow.h \
 		C:/Qt/6.9.1/mingw_64/include/QtCore/QVariant \
 		C:/Qt/6.9.1/mingw_64/include/QtWidgets/QApplication \
 		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qapplication.h \
-		C:/Qt/6.9.1/mingw_64/include/QtWidgets/QComboBox \
-		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qcombobox.h \
-		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qabstractitemdelegate.h \
-		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qstyleoption.h \
-		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qabstractspinbox.h \
-		C:/Qt/6.9.1/mingw_64/include/QtGui/qvalidator.h \
-		C:/Qt/6.9.1/mingw_64/include/QtCore/qregularexpression.h \
-		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qslider.h \
-		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qabstractslider.h \
-		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qstyle.h \
-		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qtabbar.h \
-		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qrubberband.h \
-		C:/Qt/6.9.1/mingw_64/include/QtCore/qabstractitemmodel.h \
-		C:/Qt/6.9.1/mingw_64/include/QtWidgets/QMenuBar \
-		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qmenubar.h \
-		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qmenu.h \
-		C:/Qt/6.9.1/mingw_64/include/QtWidgets/QStatusBar \
-		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qstatusbar.h \
-		C:/Qt/6.9.1/mingw_64/include/QtWidgets/QTextEdit \
-		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qtextedit.h \
-		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qabstractscrollarea.h \
-		C:/Qt/6.9.1/mingw_64/include/QtGui/qtextoption.h \
-		C:/Qt/6.9.1/mingw_64/include/QtGui/qtextcursor.h \
-		C:/Qt/6.9.1/mingw_64/include/QtGui/qtextformat.h \
-		C:/Qt/6.9.1/mingw_64/include/QtGui/qpen.h \
+		C:/Qt/6.9.1/mingw_64/include/QtWidgets/QStackedWidget \
+		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qstackedwidget.h \
 		C:/Qt/6.9.1/mingw_64/include/QtWidgets/QWidget \
 		C:/Qt/6.9.1/mingw_64/include/QtWidgets/QMessageBox \
 		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qmessagebox.h \
 		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qdialog.h \
-		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qdialogbuttonbox.h
+		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qdialogbuttonbox.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/QDebug \
+		C:/Qt/6.9.1/mingw_64/include/QtGui/QPixmap
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\mainwindow.o ..\..\mainwindow.cpp
 
 debug/tablero.o: ../../tablero.cpp ../../tablero.h \

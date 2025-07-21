@@ -5,12 +5,15 @@
 #include <QString>
 #include "jugador.h"
 #include "dado.h"
+#include "tablero.h"
+
 class Juego
 {
 private:
     QVector<jugador> jugadores;
     dado dado;
     int turnoActual;
+    tablero miTablero;
 public:
     Juego();
     void agregarJugador(const QString& nombre);

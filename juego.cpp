@@ -12,9 +12,11 @@ void Juego::iniciar(){
 
 int Juego::tirarDadoYAvanzar() {
     int valor = dado.tirar();
-    jugadores[turnoActual].mover(valor);
+  //  jugadores[turnoActual].mover(valor);   esto lo saco para probar
+    miTablero.moverJugador(jugadores[turnoActual], valor);
     return valor;
 }
+
 
 bool Juego::esFinDelJuego() const {
     return jugadores[turnoActual].getPosicion() >= 63;

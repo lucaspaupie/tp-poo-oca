@@ -14,9 +14,8 @@
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
-#include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
-#include <QtWidgets/QStatusBar>
+#include <QtWidgets/QStackedWidget>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -25,87 +24,108 @@ class Ui_MainWindow
 {
 public:
     QWidget *centralwidget;
-    QPushButton *btnIniciar;
-    QPushButton *btnCerrar;
-    QWidget *widgetSelector;
-    QLabel *ImgFondoSelec;
-    QComboBox *canJugadores;
-    QPushButton *confJugadores;
-    QLabel *label_2;
-    QMenuBar *menubar;
-    QStatusBar *statusbar;
+    QStackedWidget *stackedWidget;
+    QWidget *comienzo;
+    QPushButton *botoncomenzar;
+    QPushButton *botoncerrar;
+    QWidget *seleccionpjs;
+    QComboBox *numpj;
+    QPushButton *siguiente;
+    QLabel *label;
+    QWidget *tablero;
+    QLabel *labelDado;
+    QPushButton *BTdado;
 
     void setupUi(QMainWindow *MainWindow)
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName("MainWindow");
         MainWindow->setEnabled(true);
-        MainWindow->resize(800, 600);
-        MainWindow->setStyleSheet(QString::fromUtf8("QMainWindow {\n"
-"    background-image: url(:/images/iniciar_juego.png);\n"
-"    background-repeat: no-repeat;\n"
-"    background-position: center;\n"
-"}"));
+        MainWindow->resize(1280, 720);
+        MainWindow->setStyleSheet(QString::fromUtf8(""));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName("centralwidget");
-        btnIniciar = new QPushButton(centralwidget);
-        btnIniciar->setObjectName("btnIniciar");
-        btnIniciar->setGeometry(QRect(310, 420, 211, 71));
-        btnIniciar->setStyleSheet(QString::fromUtf8("QPushButton {\n"
-"    background-color: peachpuff;\n"
-"    font: bold 16px;\n"
-"    border-radius: 15px;\n"
-"    padding: 10px 20px;\n"
-"}"));
-        btnCerrar = new QPushButton(centralwidget);
-        btnCerrar->setObjectName("btnCerrar");
-        btnCerrar->setGeometry(QRect(10, 430, 111, 51));
-        btnCerrar->setStyleSheet(QString::fromUtf8("QPushButton {\n"
-"	image: url(:/new/prefix1/imagenes/Salir.png);\n"
-"    border: none;\n"
-"    background-color: transparent;\n"
-"    font-size: 24px;\n"
+        stackedWidget = new QStackedWidget(centralwidget);
+        stackedWidget->setObjectName("stackedWidget");
+        stackedWidget->setGeometry(QRect(0, 0, 1441, 721));
+        comienzo = new QWidget();
+        comienzo->setObjectName("comienzo");
+        comienzo->setMinimumSize(QSize(1591, 0));
+        comienzo->setStyleSheet(QString::fromUtf8("#comienzo{\n"
+"background-image: url(:/new/prefix1/imagenes/iniciar_juego.png);\n"
+"background-repeat: no-repeat;\n"
 "}\n"
 ""));
-        widgetSelector = new QWidget(centralwidget);
-        widgetSelector->setObjectName("widgetSelector");
-        widgetSelector->setEnabled(true);
-        widgetSelector->setGeometry(QRect(0, 20, 801, 571));
-        widgetSelector->setMinimumSize(QSize(801, 571));
-        widgetSelector->setStyleSheet(QString::fromUtf8(""));
-        ImgFondoSelec = new QLabel(widgetSelector);
-        ImgFondoSelec->setObjectName("ImgFondoSelec");
-        ImgFondoSelec->setGeometry(QRect(-40, -10, 891, 591));
-        ImgFondoSelec->setStyleSheet(QString::fromUtf8("image: url(:/new/prefix1/imagenes/cantJugadores.png);"));
-        ImgFondoSelec->setScaledContents(true);
-        ImgFondoSelec->setAlignment(Qt::AlignmentFlag::AlignCenter);
-        canJugadores = new QComboBox(widgetSelector);
-        canJugadores->addItem(QString());
-        canJugadores->addItem(QString());
-        canJugadores->addItem(QString());
-        canJugadores->setObjectName("canJugadores");
-        canJugadores->setGeometry(QRect(380, 230, 41, 31));
-        confJugadores = new QPushButton(widgetSelector);
-        confJugadores->setObjectName("confJugadores");
-        confJugadores->setGeometry(QRect(360, 310, 80, 24));
-        label_2 = new QLabel(centralwidget);
-        label_2->setObjectName("label_2");
-        label_2->setGeometry(QRect(-2, 0, 811, 581));
-        label_2->setStyleSheet(QString::fromUtf8("image: url(:/new/prefix1/imagenes/iniciar_juego.png);"));
+        botoncomenzar = new QPushButton(comienzo);
+        botoncomenzar->setObjectName("botoncomenzar");
+        botoncomenzar->setGeometry(QRect(500, 570, 271, 81));
+        botoncomenzar->setCursor(QCursor(Qt::CursorShape::PointingHandCursor));
+        botoncomenzar->setStyleSheet(QString::fromUtf8("background-color: transparent;\n"
+"border: none;"));
+        botoncerrar = new QPushButton(comienzo);
+        botoncerrar->setObjectName("botoncerrar");
+        botoncerrar->setGeometry(QRect(30, 640, 41, 41));
+        botoncerrar->setCursor(QCursor(Qt::CursorShape::PointingHandCursor));
+        botoncerrar->setStyleSheet(QString::fromUtf8("#botoncerrar{\n"
+"background-image: url(:/new/prefix1/imagenes/Salir.png);\n"
+"background-color: transparent;\n"
+"background-repeat: no-repeat;\n"
+"}"));
+        stackedWidget->addWidget(comienzo);
+        botoncerrar->raise();
+        botoncomenzar->raise();
+        seleccionpjs = new QWidget();
+        seleccionpjs->setObjectName("seleccionpjs");
+        seleccionpjs->setStyleSheet(QString::fromUtf8("#seleccionpjs{\n"
+"background-image: url(:/new/prefix1/imagenes/cantJugadores.png);\n"
+"\n"
+"}"));
+        numpj = new QComboBox(seleccionpjs);
+        numpj->addItem(QString());
+        numpj->addItem(QString());
+        numpj->addItem(QString());
+        numpj->setObjectName("numpj");
+        numpj->setGeometry(QRect(600, 300, 101, 41));
+        numpj->setCursor(QCursor(Qt::CursorShape::PointingHandCursor));
+        numpj->setStyleSheet(QString::fromUtf8("background-image: transparent;"));
+        siguiente = new QPushButton(seleccionpjs);
+        siguiente->setObjectName("siguiente");
+        siguiente->setGeometry(QRect(590, 460, 120, 160));
+        siguiente->setCursor(QCursor(Qt::CursorShape::PointingHandCursor));
+        siguiente->setStyleSheet(QString::fromUtf8("background-image: url(:/new/prefix1/imagenes/c4.png);\n"
+"background-color: transparent;\n"
+"background-repeat: no-repeat;\n"
+" background-position: center;\n"
+""));
+        label = new QLabel(seleccionpjs);
+        label->setObjectName("label");
+        label->setGeometry(QRect(490, 390, 321, 51));
+        stackedWidget->addWidget(seleccionpjs);
+        tablero = new QWidget();
+        tablero->setObjectName("tablero");
+        tablero->setStyleSheet(QString::fromUtf8("#tablero{\n"
+"background-image: url(:/new/prefix1/imagenes/tablero.png);\n"
+"}"));
+        labelDado = new QLabel(tablero);
+        labelDado->setObjectName("labelDado");
+        labelDado->setGeometry(QRect(1100, 300, 121, 121));
+        labelDado->setMinimumSize(QSize(100, 100));
+        labelDado->setCursor(QCursor(Qt::CursorShape::ArrowCursor));
+        labelDado->setScaledContents(true);
+        BTdado = new QPushButton(tablero);
+        BTdado->setObjectName("BTdado");
+        BTdado->setGeometry(QRect(1100, 490, 121, 161));
+        BTdado->setCursor(QCursor(Qt::CursorShape::PointingHandCursor));
+        BTdado->setStyleSheet(QString::fromUtf8("#BTdado{\n"
+"background-color: transparent;\n"
+"}"));
+        stackedWidget->addWidget(tablero);
         MainWindow->setCentralWidget(centralwidget);
-        label_2->raise();
-        widgetSelector->raise();
-        btnIniciar->raise();
-        btnCerrar->raise();
-        menubar = new QMenuBar(MainWindow);
-        menubar->setObjectName("menubar");
-        menubar->setGeometry(QRect(0, 0, 800, 21));
-        MainWindow->setMenuBar(menubar);
-        statusbar = new QStatusBar(MainWindow);
-        statusbar->setObjectName("statusbar");
-        MainWindow->setStatusBar(statusbar);
 
         retranslateUi(MainWindow);
+
+        stackedWidget->setCurrentIndex(0);
+
 
         QMetaObject::connectSlotsByName(MainWindow);
     } // setupUi
@@ -113,15 +133,23 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
-        btnIniciar->setText(QCoreApplication::translate("MainWindow", "Iniciar Juego", nullptr));
-        btnCerrar->setText(QString());
-        ImgFondoSelec->setText(QString());
-        canJugadores->setItemText(0, QCoreApplication::translate("MainWindow", "2", nullptr));
-        canJugadores->setItemText(1, QCoreApplication::translate("MainWindow", "3", nullptr));
-        canJugadores->setItemText(2, QCoreApplication::translate("MainWindow", "4", nullptr));
+        botoncomenzar->setText(QString());
+        botoncerrar->setText(QString());
+        numpj->setItemText(0, QCoreApplication::translate("MainWindow", "2", nullptr));
+        numpj->setItemText(1, QCoreApplication::translate("MainWindow", "3", nullptr));
+        numpj->setItemText(2, QCoreApplication::translate("MainWindow", "4", nullptr));
 
-        confJugadores->setText(QCoreApplication::translate("MainWindow", "Confirmar", nullptr));
-        label_2->setText(QString());
+        siguiente->setText(QString());
+        label->setText(QCoreApplication::translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"hr { height: 1px; border-width: 0; }\n"
+"li.unchecked::marker { content: \"\\2610\"; }\n"
+"li.checked::marker { content: \"\\2612\"; }\n"
+"</style></head><body style=\" font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:11pt; font-weight:700; color:#000000;\">Clickea el C4 para comenzar!</span></p></body></html>", nullptr));
+        labelDado->setText(QString());
+        BTdado->setText(QString());
     } // retranslateUi
 
 };

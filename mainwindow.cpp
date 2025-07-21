@@ -107,3 +107,13 @@ void MainWindow::pj()
 {
     ui->stackedWidget->setCurrentWidget(ui->tablero);
 }
+
+void MainWindow::on_botoncomenzar_clicked() {
+    // Código para iniciar el juego
+}
+void MainWindow::on_siguiente_clicked() {
+    // Código para pasar al siguiente turno
+}
+void MainWindow::confirmarCantidadJugadores() {
+    // Código para pasar al siguiente turno
+}

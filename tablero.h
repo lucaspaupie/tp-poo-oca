@@ -16,6 +16,7 @@ public:
     ~tablero();
 
     void aplicarAccion(jugador& j);
+    void moverJugador(jugador& j, int pasos);
 };
 
 #endif // TABLERO_H
