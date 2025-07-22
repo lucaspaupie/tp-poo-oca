@@ -6,6 +6,8 @@
 #include <QMessageBox>
 #include <QDebug>
 #include <QPixmap>
+#include "tablero.h"
+#include <QPoint>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -25,6 +27,36 @@ MainWindow::MainWindow(QWidget *parent)
     juegoActual.agregarJugador("Lucas");
     juegoActual.agregarJugador("Axel");
     juegoActual.agregarJugador("Luciano");
+
+
+
+    //jugadores coordenadas
+    posicionesJugadores.resize(4); //4 jugadores
+
+    posicionesJugadores[0] = {
+        QPoint(120, 620), QPoint(250, 620), QPoint(320, 620),
+        QPoint(390, 620), QPoint(450, 620), QPoint(520, 620),
+        QPoint(600, 620), QPoint(670, 620), QPoint(720, 620),
+        QPoint(800, 600), QPoint(850, 550), QPoint(880, 500),
+        QPoint(910, 450), QPoint(920, 400), QPoint(950, 600),
+        QPoint(940, 240), QPoint(930, 170), QPoint(890, 120),
+        QPoint(800, 50),  QPoint(720, 20),  QPoint(640, 10),
+        QPoint(580, 10),  QPoint(510, 10),  QPoint(450, 10),
+        QPoint(380, 10),  QPoint(320, 10),  QPoint(250, 10),
+        QPoint(180, 30),  QPoint(120, 70),  QPoint(130, 49),
+        QPoint(40, 180),  QPoint(30, 250),  QPoint(40, 320),
+        QPoint(40, 400),  QPoint(70, 470),  QPoint(160, 480),
+        QPoint(210, 510), QPoint(270, 520), QPoint(320, 10),
+        QPoint(390, 10),  QPoint(450, 10),  QPoint(520, 10),
+        QPoint(600, 10),  QPoint(660, 10),  QPoint(720, 510),
+        QPoint(780, 460), QPoint(810, 410), QPoint(820, 360),
+        QPoint(820, 310), QPoint(850, 230), QPoint(780, 150),
+        QPoint(720, 120), QPoint(620, 110), QPoint(530, 110),
+        QPoint(450, 110), QPoint(380, 110), QPoint(310, 110),
+        QPoint(240, 110), QPoint(190, 170), QPoint(140, 280),
+        QPoint(200, 350), QPoint(230, 400), QPoint(270, 420),
+        QPoint(490, 310)
+    };
 
     iniciarjuego();
     actualizarUI();
@@ -107,6 +139,26 @@ void MainWindow::pj()
 {
     ui->stackedWidget->setCurrentWidget(ui->tablero);
 }
+
+void MainWindow::actualizarTablero() {
+
+        jugador jugadorActual = juegoActual.getJugadorActual();
+        int posicion = jugadorActual.getPosicion();
+        int id = juegoActual.getTurno(); // este método debería devolverte 0, 1, 2...
+
+        QPoint coordenada = juegoActual.getTablero()->getCoordenadaCasilla(posicion, id);
+
+        // Suponiendo que tenés un array de QLabel fichas:
+        ui->Jugador_1->move(coordenada); // si es el jugador 0
+
+    /*jugador jugadorActual = juego.getJugadorActual();
+    int posicion = jugadorActual.getPosicion();
+
+    QPoint coordenada =tablero->getCoordenadaCasilla(posicion);
+
+    ui->fichaJugador->move(coordenada); //Qlabel hacerlo despues*/
+}
+
 
 void MainWindow::on_botoncomenzar_clicked() {
     // Código para iniciar el juego

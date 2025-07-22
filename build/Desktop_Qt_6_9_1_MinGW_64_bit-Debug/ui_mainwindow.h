@@ -35,6 +35,10 @@ public:
     QWidget *tablero;
     QLabel *labelDado;
     QPushButton *BTdado;
+    QLabel *Jugador_1;
+    QLabel *Jugador_2;
+    QLabel *Jugador_3;
+    QLabel *Jugador_4;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -119,12 +123,28 @@ public:
         BTdado->setStyleSheet(QString::fromUtf8("#BTdado{\n"
 "background-color: transparent;\n"
 "}"));
+        Jugador_1 = new QLabel(tablero);
+        Jugador_1->setObjectName("Jugador_1");
+        Jugador_1->setGeometry(QRect(140, 620, 49, 16));
+        Jugador_1->setStyleSheet(QString::fromUtf8("background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(255, 0, 0, 255), stop:0.339795 rgba(255, 0, 0, 255), stop:0.339799 rgba(255, 255, 255, 255), stop:0.662444 rgba(255, 255, 255, 255), stop:0.662469 rgba(0, 0, 255, 255), stop:1 rgba(0, 0, 255, 255));"));
+        Jugador_2 = new QLabel(tablero);
+        Jugador_2->setObjectName("Jugador_2");
+        Jugador_2->setGeometry(QRect(140, 640, 49, 16));
+        Jugador_2->setStyleSheet(QString::fromUtf8("background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(255, 255, 255, 255), stop:0.495 rgba(255, 255, 255, 255), stop:0.505 rgba(255, 0, 0, 255), stop:1 rgba(255, 0, 0, 255));"));
+        Jugador_3 = new QLabel(tablero);
+        Jugador_3->setObjectName("Jugador_3");
+        Jugador_3->setGeometry(QRect(140, 680, 49, 20));
+        Jugador_3->setStyleSheet(QString::fromUtf8("background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(0, 0, 0, 255), stop:0.33 rgba(0, 0, 0, 255), stop:0.34 rgba(255, 30, 30, 255), stop:0.66 rgba(255, 0, 0, 255), stop:0.67 rgba(255, 255, 0, 255), stop:1 rgba(255, 255, 0, 255));"));
+        Jugador_4 = new QLabel(tablero);
+        Jugador_4->setObjectName("Jugador_4");
+        Jugador_4->setGeometry(QRect(140, 660, 49, 16));
+        Jugador_4->setStyleSheet(QString::fromUtf8("background-color: qconicalgradient(cx:0.5, cy:0.5, angle:0, stop:0 rgba(255, 255, 255, 255), stop:0.373979 rgba(255, 255, 255, 255), stop:0.373991 rgba(33, 30, 255, 255), stop:0.624018 rgba(33, 30, 255, 255), stop:0.624043 rgba(255, 0, 0, 255), stop:1 rgba(255, 0, 0, 255));"));
         stackedWidget->addWidget(tablero);
         MainWindow->setCentralWidget(centralwidget);
 
         retranslateUi(MainWindow);
 
-        stackedWidget->setCurrentIndex(0);
+        stackedWidget->setCurrentIndex(2);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -150,6 +170,10 @@ public:
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:11pt; font-weight:700; color:#000000;\">Clickea el C4 para comenzar!</span></p></body></html>", nullptr));
         labelDado->setText(QString());
         BTdado->setText(QString());
+        Jugador_1->setText(QCoreApplication::translate("MainWindow", "J1", nullptr));
+        Jugador_2->setText(QCoreApplication::translate("MainWindow", "J2", nullptr));
+        Jugador_3->setText(QCoreApplication::translate("MainWindow", "j3", nullptr));
+        Jugador_4->setText(QCoreApplication::translate("MainWindow", "J4", nullptr));
     } // retranslateUi
 
 };

@@ -130,18 +130,25 @@ debug/qrc_imagen.cpp: ../../imagen.qrc \
 		C:/Qt/6.9.1/mingw_64/bin/rcc.exe \
 		../../imagenes/Salir.png \
 		../../imagenes/ct2.png \
+		../../imagenes/tt_wins.png \
+		../../imagenes/ctwins.png \
 		../../imagenes/iniciar_juego.png \
 		../../imagenes/dado5.png \
 		../../imagenes/tablero.png \
 		../../imagenes/dado4.png \
 		../../imagenes/c4.png \
 		../../imagenes/ct1.png \
+		../../imagenes/CS2_M4A1-S_Inventory.png \
 		../../imagenes/tt1.png \
 		../../imagenes/tt2.png \
 		../../imagenes/dado3.png \
+		../../imagenes/CS2_Glock-18_Inventory.png \
+		../../imagenes/CS2_USP-S_Inventory.png \
 		../../imagenes/cantJugadores.png \
 		../../imagenes/dado1.png \
 		../../imagenes/dado2.png \
+		../../imagenes/1_1.png \
+		../../imagenes/CS2_AK-47_Inventory_3.png \
 		../../imagenes/dado6.png
 	C:\Qt\6.9.1\mingw_64\bin\rcc.exe -name imagen --no-zstd ..\..\imagen.qrc -o debug\qrc_imagen.cpp
 
@@ -360,6 +367,9 @@ debug/moc_mainwindow.cpp: ../../mainwindow.h \
 		C:/Qt/6.9.1/mingw_64/include/QtCore/QString \
 		../../jugador.h \
 		../../dado.h \
+		../../tablero.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/QPoint \
+		../../casilla.h \
 		debug/moc_predefs.h \
 		C:/Qt/6.9.1/mingw_64/bin/moc.exe
 	C:\Qt\6.9.1\mingw_64\bin\moc.exe $(DEFINES) --include C:/Users/lg470/Documents/GitHub/tp-poo-oca/build/Desktop_Qt_6_9_1_MinGW_64_bit-Debug/debug/moc_predefs.h -IC:/Qt/6.9.1/mingw_64/mkspecs/win32-g++ -IC:/Users/lg470/Documents/GitHub/tp-poo-oca -IC:/Qt/6.9.1/mingw_64/include -IC:/Qt/6.9.1/mingw_64/include/QtWidgets -IC:/Qt/6.9.1/mingw_64/include/QtGui -IC:/Qt/6.9.1/mingw_64/include/QtCore -I. -IC:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++ -IC:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/backward -IC:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include -IC:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include-fixed -IC:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include ..\..\mainwindow.h -o debug\moc_mainwindow.cpp
@@ -696,7 +706,13 @@ debug/juego.o: ../../juego.cpp ../../Juego.h \
 		C:/Qt/6.9.1/mingw_64/include/QtCore/qstringmatcher.h \
 		C:/Qt/6.9.1/mingw_64/include/QtCore/QString \
 		../../jugador.h \
-		../../dado.h
+		../../dado.h \
+		../../tablero.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/QPoint \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qpoint.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/q23utility.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/q20utility.h \
+		../../casilla.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\juego.o ..\..\juego.cpp
 
 debug/jugador.o: ../../jugador.cpp ../../jugador.h \
@@ -988,7 +1004,10 @@ debug/main.o: ../../main.cpp C:/Qt/6.9.1/mingw_64/include/QtWidgets/QApplication
 		C:/Qt/6.9.1/mingw_64/include/QtCore/qvector.h \
 		C:/Qt/6.9.1/mingw_64/include/QtCore/QString \
 		../../jugador.h \
-		../../dado.h
+		../../dado.h \
+		../../tablero.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/QPoint \
+		../../casilla.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\main.o ..\..\main.cpp
 
 debug/mainwindow.o: ../../mainwindow.cpp ../../mainwindow.h \
@@ -1197,6 +1216,9 @@ debug/mainwindow.o: ../../mainwindow.cpp ../../mainwindow.h \
 		C:/Qt/6.9.1/mingw_64/include/QtCore/QString \
 		../../jugador.h \
 		../../dado.h \
+		../../tablero.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/QPoint \
+		../../casilla.h \
 		C:/Qt/6.9.1/mingw_64/include/QtWidgets/QLabel \
 		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qlabel.h \
 		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qframe.h \
@@ -1214,6 +1236,19 @@ debug/mainwindow.o: ../../mainwindow.cpp ../../mainwindow.h \
 		C:/Qt/6.9.1/mingw_64/include/QtCore/QVariant \
 		C:/Qt/6.9.1/mingw_64/include/QtWidgets/QApplication \
 		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qapplication.h \
+		C:/Qt/6.9.1/mingw_64/include/QtWidgets/QComboBox \
+		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qcombobox.h \
+		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qabstractitemdelegate.h \
+		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qstyleoption.h \
+		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qabstractspinbox.h \
+		C:/Qt/6.9.1/mingw_64/include/QtGui/qvalidator.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qregularexpression.h \
+		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qslider.h \
+		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qabstractslider.h \
+		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qstyle.h \
+		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qtabbar.h \
+		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qrubberband.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qabstractitemmodel.h \
 		C:/Qt/6.9.1/mingw_64/include/QtWidgets/QStackedWidget \
 		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qstackedwidget.h \
 		C:/Qt/6.9.1/mingw_64/include/QtWidgets/QWidget \
@@ -1313,6 +1348,10 @@ debug/tablero.o: ../../tablero.cpp ../../tablero.h \
 		C:/Qt/6.9.1/mingw_64/include/QtCore/qstringlist.h \
 		C:/Qt/6.9.1/mingw_64/include/QtCore/qalgorithms.h \
 		C:/Qt/6.9.1/mingw_64/include/QtCore/qstringmatcher.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/QPoint \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qpoint.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/q23utility.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/q20utility.h \
 		../../casilla.h \
 		../../jugador.h \
 		C:/Qt/6.9.1/mingw_64/include/QtCore/QString \
@@ -1320,7 +1359,118 @@ debug/tablero.o: ../../tablero.cpp ../../tablero.h \
 		C:/Qt/6.9.1/mingw_64/include/QtCore/QMap \
 		C:/Qt/6.9.1/mingw_64/include/QtCore/qmap.h \
 		C:/Qt/6.9.1/mingw_64/include/QtCore/qshareddata.h \
-		C:/Qt/6.9.1/mingw_64/include/QtCore/qshareddata_impl.h
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qshareddata_impl.h \
+		../../mainwindow.h \
+		C:/Qt/6.9.1/mingw_64/include/QtWidgets/QMainWindow \
+		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qmainwindow.h \
+		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qtwidgetsglobal.h \
+		C:/Qt/6.9.1/mingw_64/include/QtGui/qtguiglobal.h \
+		C:/Qt/6.9.1/mingw_64/include/QtGui/qtgui-config.h \
+		C:/Qt/6.9.1/mingw_64/include/QtGui/qtguiexports.h \
+		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qtwidgets-config.h \
+		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qtwidgetsexports.h \
+		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qwidget.h \
+		C:/Qt/6.9.1/mingw_64/include/QtGui/qwindowdefs.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qobjectdefs.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qobjectdefs_impl.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qfunctionaltools_impl.h \
+		C:/Qt/6.9.1/mingw_64/include/QtGui/qwindowdefs_win.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qobject.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qcoreevent.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qbasictimer.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qabstracteventdispatcher.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qeventloop.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qdeadlinetimer.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qelapsedtimer.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qmetatype.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qdatastream.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qscopedpointer.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qiodevicebase.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qfloat16.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qmath.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qtformat_impl.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qiterable.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qmetacontainer.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qcontainerinfo.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qtaggedpointer.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qscopeguard.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qobject_impl.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qbindingstorage.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qmargins.h \
+		C:/Qt/6.9.1/mingw_64/include/QtGui/qaction.h \
+		C:/Qt/6.9.1/mingw_64/include/QtGui/qkeysequence.h \
+		C:/Qt/6.9.1/mingw_64/include/QtGui/qicon.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qsize.h \
+		C:/Qt/6.9.1/mingw_64/include/QtGui/qpixmap.h \
+		C:/Qt/6.9.1/mingw_64/include/QtGui/qpaintdevice.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qrect.h \
+		C:/Qt/6.9.1/mingw_64/include/QtGui/qcolor.h \
+		C:/Qt/6.9.1/mingw_64/include/QtGui/qrgb.h \
+		C:/Qt/6.9.1/mingw_64/include/QtGui/qrgba64.h \
+		C:/Qt/6.9.1/mingw_64/include/QtGui/qimage.h \
+		C:/Qt/6.9.1/mingw_64/include/QtGui/qpixelformat.h \
+		C:/Qt/6.9.1/mingw_64/include/QtGui/qtransform.h \
+		C:/Qt/6.9.1/mingw_64/include/QtGui/qpolygon.h \
+		C:/Qt/6.9.1/mingw_64/include/QtGui/qregion.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qspan.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/q20iterator.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qline.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qvariant.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qdebug.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qtextstream.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qcontiguouscache.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qsharedpointer.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qsharedpointer_impl.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qset.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qhash.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qvarlengtharray.h \
+		C:/Qt/6.9.1/mingw_64/include/QtGui/qpalette.h \
+		C:/Qt/6.9.1/mingw_64/include/QtGui/qbrush.h \
+		C:/Qt/6.9.1/mingw_64/include/QtGui/qfont.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qendian.h \
+		C:/Qt/6.9.1/mingw_64/include/QtGui/qfontmetrics.h \
+		C:/Qt/6.9.1/mingw_64/include/QtGui/qfontinfo.h \
+		C:/Qt/6.9.1/mingw_64/include/QtGui/qfontvariableaxis.h \
+		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qsizepolicy.h \
+		C:/Qt/6.9.1/mingw_64/include/QtGui/qcursor.h \
+		C:/Qt/6.9.1/mingw_64/include/QtGui/qbitmap.h \
+		C:/Qt/6.9.1/mingw_64/include/QtGui/qevent.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qiodevice.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qurl.h \
+		C:/Qt/6.9.1/mingw_64/include/QtGui/qeventpoint.h \
+		C:/Qt/6.9.1/mingw_64/include/QtGui/qvector2d.h \
+		C:/Qt/6.9.1/mingw_64/include/QtGui/qvectornd.h \
+		C:/Qt/6.9.1/mingw_64/include/QtGui/qpointingdevice.h \
+		C:/Qt/6.9.1/mingw_64/include/QtGui/qinputdevice.h \
+		C:/Qt/6.9.1/mingw_64/include/QtGui/qscreen.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/QList \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/QObject \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/QRect \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/QSize \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/QSizeF \
+		C:/Qt/6.9.1/mingw_64/include/QtGui/QTransform \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qnativeinterface.h \
+		C:/Qt/6.9.1/mingw_64/include/QtGui/qscreen_platform.h \
+		C:/Qt/6.9.1/mingw_64/include/QtGui/qguiapplication.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qcoreapplication.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qcoreapplication_platform.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qfuture.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qfutureinterface.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qmutex.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qtsan_impl.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qresultstore.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qfuture_impl.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qthreadpool.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qthread.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qrunnable.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qexception.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qpromise.h \
+		C:/Qt/6.9.1/mingw_64/include/QtGui/qinputmethod.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/qlocale.h \
+		C:/Qt/6.9.1/mingw_64/include/QtGui/qguiapplication_platform.h \
+		C:/Qt/6.9.1/mingw_64/include/QtWidgets/qtabwidget.h \
+		../../juego.h \
+		../../dado.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\tablero.o ..\..\tablero.cpp
 
 debug/qrc_imagen.o: debug/qrc_imagen.cpp 

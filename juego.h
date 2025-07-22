@@ -26,6 +26,8 @@ public:
     void pasarTurno();
 
     jugador& getJugadorActual(); // importante para reemplazar turnoActual()
+    int getTurno() const { return turnoActual; }
+    tablero* getTablero() { return &miTablero; }
 
 };
 
