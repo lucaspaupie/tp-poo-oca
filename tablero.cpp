@@ -45,7 +45,8 @@ void tablero::moverJugador(jugador& j,int pasos){
 }
 
 QPoint tablero::getCoordenadaCasilla(int casilla, int jugadorID) {
-    //extern QVector<QVector<QPoint>> posicionesJugadores;  // Nombre correcto del vector
+    if (jugadorID >= posicionesJugadores.size() || casilla >= posicionesJugadores[jugadorID].size())
+        return QPoint(0, 0);  // fallback
     return posicionesJugadores[jugadorID][casilla];
 }
 void tablero::cargarCoordenadas() {

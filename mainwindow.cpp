@@ -29,6 +29,7 @@ MainWindow::MainWindow(QWidget *parent)
     juegoActual.agregarJugador("Luciano");
 
 
+    juegoActual.getTablero()->cargarCoordenadas();
 
     //jugadores coordenadas
     posicionesJugadores.resize(4); //4 jugadores
@@ -84,14 +85,20 @@ void MainWindow::BTdado(bool)
     QString rutaImagen1 = QString(":/new/prefix1/imagenes/dado%1.png").arg(resultado1);
     QPixmap skin1(rutaImagen1);
 
-    if (skin1.isNull()) qDebug() << "❌ ERROR: No se pudo cargar imagen dado 1.";
-
-    if (!ui->labelDado ) {
-        qDebug() << "❌ QLabel no encontrado.";
-        return;
+    if (!skin1.isNull()) {
+        ui->labelDado->setPixmap(skin1.scaled(ui->labelDado->size(), Qt::KeepAspectRatio));
     }
 
-    ui->labelDado->setPixmap(skin1.scaled(ui->labelDado->size(), Qt::KeepAspectRatio));
+    // Mover jugador actual
+    jugador& actual = juegoActual.getJugadorActual();
+    actual.mover(resultado1);
+
+    // Actualizar posición visual
+    actualizarTablero();
+
+    // Pasar turno
+    juegoActual.pasarTurno();
+    actualizarUI();
 }
 
 // void MainWindow::tirarDado()
