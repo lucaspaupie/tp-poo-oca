@@ -15,5 +15,11 @@
         <file>imagenes/dado4.png</file>
         <file>imagenes/dado5.png</file>
         <file>imagenes/dado6.png</file>
+        <file>imagenes/CS2_Glock-18_Inventory.png</file>
+        <file>imagenes/CS2_USP-S_Inventory.png</file>
+        <file>imagenes/CS2_M4A1-S_Inventory.png</file>
+        <file>imagenes/CS2_AK-47_Inventory (3).png</file>
+        <file>imagenes/aa.png</file>
+        <file>imagenes/aaa.png</file>
     </qresource>
 </RCC>
