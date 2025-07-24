@@ -8,6 +8,7 @@
 #include <QPixmap>
 #include "tablero.h"
 #include <QPoint>
+#include "casillaespecial.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -27,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent)
     juegoActual.agregarJugador("Lucas");
     juegoActual.agregarJugador("Axel");
     juegoActual.agregarJugador("Luciano");
+
 
 
     juegoActual.getTablero()->cargarCoordenadas();
@@ -59,6 +61,8 @@ MainWindow::MainWindow(QWidget *parent)
         QPoint(490, 310)
     };
 
+
+
     iniciarjuego();
     actualizarUI();
 }
@@ -66,7 +70,6 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
-    delete miDado;
 }
 
 void MainWindow::actualizarUI()
@@ -89,9 +92,46 @@ void MainWindow::BTdado(bool)
         ui->labelDado->setPixmap(skin1.scaled(ui->labelDado->size(), Qt::KeepAspectRatio));
     }
 
+
     // Mover jugador actual
     jugador& actual = juegoActual.getJugadorActual();
     actual.mover(resultado1);
+
+
+    //mover jugador correctamente  o no
+
+    //esto de abajo esta mal pero lo dejo por las dudas
+  //  juegoActual.getTablero()->moverJugador(actual, resultado1);
+
+    // Ahora verificamos si la nueva posición es una casilla especial
+    int currentPos = actual.getPosicion();
+    casilla* landedCasilla = juegoActual.getTablero()->getCasilla(currentPos);
+
+    if (landedCasilla) {
+        casillaespecial* especial = dynamic_cast<casillaespecial*>(landedCasilla);
+        if (especial) {
+
+            QString tipoCasilla = especial->getTipo();
+            QString mensaje = "";
+            bool applyActionAfterMessage = true;
+
+            if(tipoCasilla == "puente"){
+                //mensaje, caiste en el puente avanza a la 12
+                juegoActual.getJugadorActual().setPosicion(12);
+            }
+             else if (tipoCasilla == "posada") {
+              //  mensaje = "¡Caiste en la Posada! Pierdes 1 turno.";
+            } else if (tipoCasilla == "pozo") {
+                //mensaje = "¡Caiste en el Pozo! Quedas atrapado.";
+            } else if (tipoCasilla == "laberinto") {
+               // mensaje = "¡Caiste en el Laberinto! Retrocedes a la casilla 30.";
+            } else if (tipoCasilla == "carcel") {
+              //  mensaje = "¡Caiste en la Cárcel! Pierdes 2 turnos.";
+            } else if (tipoCasilla == "calavera") {
+               // mensaje = "¡Caiste en la Calavera! Vuelves al inicio.";
+            }
+            }
+    }
 
     // Actualizar posición visual
     actualizarTablero();

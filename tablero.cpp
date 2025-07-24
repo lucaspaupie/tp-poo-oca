@@ -39,8 +39,9 @@ void tablero::moverJugador(jugador& j,int pasos){
     if(nuevaPos>= casillas.size()){
         nuevaPos = casillas.size()-1;
     }
-    j.retrocederACasilla(nuevaPos);            // actualiza posicion del jugador
-    aplicarAccion(j);
+    j.setPosicion(nuevaPos);
+   /* j.retrocederACasilla(nuevaPos);            // actualiza posicion del jugador
+    aplicarAccion(j);*/
 
 }
 
@@ -85,6 +86,8 @@ void tablero::cargarCoordenadas() {
         QPoint(490, 310)
     };
 
+
+
     /*
     // Copiá la misma para los demás con desplazamiento si querés
     for (int j = 1; j < 4; ++j) {
@@ -95,7 +98,15 @@ void tablero::cargarCoordenadas() {
     }
 }
 
+
 QPoint tablero::getCoordenadaCasilla(int casilla, int jugadorID) {
     return posicionesJugadores[jugadorID][casilla];
 }*/
-};
+}
+
+casilla* tablero::getCasilla(int numero){
+    if(numero>=0 && numero < casillas.size()){
+        return casillas[numero];
+    }
+    return nullptr;
+}

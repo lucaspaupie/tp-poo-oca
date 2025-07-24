@@ -4,7 +4,7 @@
 #include <QVector>
 #include <QPoint>
 #include "casilla.h"
-// #include "casillaespecial.h"
+#include "casillaespecial.h"
 // ver esto de arriba por que lo agregue y no ocupo ninguna funcion, me tira warning
 class jugador;
 
@@ -21,7 +21,7 @@ public:
     void moverJugador(jugador& j, int pasos);
     QPoint getCoordenadaCasilla(int casilla, int jugadorID = 0); // Coordenada para X jugador
     void cargarCoordenadas();
-
+    casilla* getCasilla(int numero); //obtener casilla por su numero
 };
 
 #endif // TABLERO_H
