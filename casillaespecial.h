@@ -12,6 +12,7 @@ public:
     casillaespecial(int numero, const QString& tipo);
 
     void accion(jugador& j ) override;
+    QString getTipo() const;
 };
 
 #endif // CASILLAESPECIAL_H

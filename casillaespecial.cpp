@@ -19,3 +19,6 @@ void casillaespecial::accion(jugador& j) {
         j.reiniciar();
     }
 }
+QString casillaespecial::getTipo() const {
+    return tipo;
+}

@@ -14,12 +14,13 @@ public:
     jugador(const QString& nombre);
     void mover(int pasos);
     int getPosicion() const;
+    void setPosicion(int nuevaPos); //nuevo
     QString getNombre() const;
     bool ganador() const;
     void penalizar(int turnos);
     bool puedeJugar() const;
-    void atrapar();
-    void liberar();
+    void atrapar(); //pozo
+    void liberar(); //para calavera
     void retrocederACasilla(int nuevaPosicion);
     void reiniciar();
 };

@@ -24,7 +24,6 @@ private slots:
     void confirmarCantidadJugadores();
     void BTdado(bool);
 
-
     void on_botoncomenzar_clicked();
 
     void on_comboBox_activated(int index);
@@ -41,6 +40,10 @@ private:
     void pj();
     Juego juego;
     dado* miDado;
+
+    void actualizarTablero();
+    QVector<QVector<QPoint>> posicionesJugadores;
+
 };
 
 

@@ -6,6 +6,9 @@
 #include <QMessageBox>
 #include <QDebug>
 #include <QPixmap>
+#include "tablero.h"
+#include <QPoint>
+#include "casillaespecial.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -26,6 +29,40 @@ MainWindow::MainWindow(QWidget *parent)
     juegoActual.agregarJugador("Axel");
     juegoActual.agregarJugador("Luciano");
 
+
+
+    juegoActual.getTablero()->cargarCoordenadas();
+
+    //jugadores coordenadas
+    posicionesJugadores.resize(4); //4 jugadores
+
+    posicionesJugadores[0] = {
+        QPoint(120, 620), QPoint(250, 620), QPoint(320, 620),
+        QPoint(390, 620), QPoint(450, 620), QPoint(520, 620),
+        QPoint(600, 620), QPoint(670, 620), QPoint(720, 620),
+        QPoint(800, 600), QPoint(850, 550), QPoint(880, 500),
+        QPoint(910, 450), QPoint(950, 300), QPoint(950, 600),
+        QPoint(940, 240), QPoint(930, 170), QPoint(890, 120),
+        QPoint(800, 50),  QPoint(720, 20),  QPoint(640, 10),
+        QPoint(580, 10),  QPoint(510, 10),  QPoint(450, 10),
+        QPoint(380, 10),  QPoint(320, 10),  QPoint(250, 10),
+        QPoint(180, 30),  QPoint(120, 70),  QPoint(130, 49),
+        QPoint(40, 180),  QPoint(30, 250),  QPoint(40, 320),
+        QPoint(40, 400),  QPoint(70, 470),  QPoint(160, 480),
+        QPoint(210, 510), QPoint(320, 520), QPoint(320, 10),
+        QPoint(450, 520),  QPoint(450, 10),  QPoint(520, 10),
+        QPoint(600, 10),  QPoint(660, 10),  QPoint(720, 510),
+        QPoint(780, 460), QPoint(810, 410), QPoint(820, 360),
+        QPoint(820, 310), QPoint(850, 230), QPoint(780, 150),
+        QPoint(720, 120), QPoint(620, 110), QPoint(530, 110),
+        QPoint(450, 110), QPoint(380, 110), QPoint(310, 110),
+        QPoint(240, 110), QPoint(190, 170), QPoint(140, 280),
+        QPoint(200, 350), QPoint(230, 400), QPoint(270, 420),
+        QPoint(490, 310)
+    };
+
+
+
     iniciarjuego();
     actualizarUI();
 }
@@ -33,12 +70,11 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
-    delete miDado;
 }
 
 void MainWindow::actualizarUI()
 {
-    jugador &actual = juegoActual.getJugadorActual();
+    jugador& actual = juegoActual.getJugadorActual();
     setWindowTitle("Turno de: " + actual.getNombre() + " (Casilla "
                    + QString::number(actual.getPosicion()) + ")");
 }
@@ -52,14 +88,57 @@ void MainWindow::BTdado(bool)
     QString rutaImagen1 = QString(":/new/prefix1/imagenes/dado%1.png").arg(resultado1);
     QPixmap skin1(rutaImagen1);
 
-    if (skin1.isNull()) qDebug() << "❌ ERROR: No se pudo cargar imagen dado 1.";
-
-    if (!ui->labelDado ) {
-        qDebug() << "❌ QLabel no encontrado.";
-        return;
+    if (!skin1.isNull()) {
+        ui->labelDado->setPixmap(skin1.scaled(ui->labelDado->size(), Qt::KeepAspectRatio));
     }
 
-    ui->labelDado->setPixmap(skin1.scaled(ui->labelDado->size(), Qt::KeepAspectRatio));
+
+    // Mover jugador actual
+    jugador& actual = juegoActual.getJugadorActual();
+    actual.mover(resultado1);
+
+
+    //mover jugador correctamente  o no
+
+    //esto de abajo esta mal pero lo dejo por las dudas
+  //  juegoActual.getTablero()->moverJugador(actual, resultado1);
+
+    // Ahora verificamos si la nueva posición es una casilla especial
+    int currentPos = actual.getPosicion();
+    casilla* landedCasilla = juegoActual.getTablero()->getCasilla(currentPos);
+
+    if (landedCasilla) {
+        casillaespecial* especial = dynamic_cast<casillaespecial*>(landedCasilla);
+        if (especial) {
+
+            QString tipoCasilla = especial->getTipo();
+            QString mensaje = "";
+            bool applyActionAfterMessage = true;
+
+            if(tipoCasilla == "puente"){
+                //mensaje, caiste en el puente avanza a la 12
+                juegoActual.getJugadorActual().setPosicion(12);
+            }
+             else if (tipoCasilla == "posada") {
+              //  mensaje = "¡Caiste en la Posada! Pierdes 1 turno.";
+            } else if (tipoCasilla == "pozo") {
+                //mensaje = "¡Caiste en el Pozo! Quedas atrapado.";
+            } else if (tipoCasilla == "laberinto") {
+               // mensaje = "¡Caiste en el Laberinto! Retrocedes a la casilla 30.";
+            } else if (tipoCasilla == "carcel") {
+              //  mensaje = "¡Caiste en la Cárcel! Pierdes 2 turnos.";
+            } else if (tipoCasilla == "calavera") {
+               // mensaje = "¡Caiste en la Calavera! Vuelves al inicio.";
+            }
+            }
+    }
+
+    // Actualizar posición visual
+    actualizarTablero();
+
+    // Pasar turno
+    juegoActual.pasarTurno();
+    actualizarUI();
 }
 
 // void MainWindow::tirarDado()
@@ -106,4 +185,39 @@ void MainWindow::cantjug()
 void MainWindow::pj()
 {
     ui->stackedWidget->setCurrentWidget(ui->tablero);
+}
+
+void MainWindow::actualizarTablero() {
+    for (int i = 0; i < juegoActual.getCantidadJugadores(); ++i) {
+        int posicion = juegoActual.getJugador(i).getPosicion();
+        QPoint baseCoord = juegoActual.getTablero()->getCoordenadaCasilla(posicion);
+
+        int offsetX = 0 * i;
+        int offsetY = 24 * i;
+
+        QPoint coord = baseCoord + QPoint(offsetX, offsetY);
+
+        QLabel* ficha = nullptr;
+        switch (i) {
+        case 0: ficha = ui->Jugador_1; break;
+        case 1: ficha = ui->Jugador_2; break;
+        case 2: ficha = ui->Jugador_3; break;
+        case 3: ficha = ui->Jugador_4; break;
+        }
+
+        if (ficha) ficha->move(coord);
+    }
+}
+
+
+
+
+void MainWindow::on_botoncomenzar_clicked() {
+    // Código para iniciar el juego
+}
+void MainWindow::on_siguiente_clicked() {
+    // Código para pasar al siguiente turno
+}
+void MainWindow::confirmarCantidadJugadores() {
+    // Código para pasar al siguiente turno
 }

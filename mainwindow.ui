@@ -226,68 +226,81 @@ background-color: transparent;
        <string/>
       </property>
      </widget>
-     <widget class="QLabel" name="label_2">
+     <widget class="QLabel" name="Jugador_1">
       <property name="geometry">
        <rect>
-        <x>380</x>
-        <y>610</y>
-        <width>61</width>
+        <x>140</x>
+        <y>600</y>
+        <width>49</width>
         <height>31</height>
        </rect>
       </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
       <property name="text">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/new/prefix1/imagenes/CS2_AK-47_Inventory.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/new/prefix1/imagenes/CS2_AK-47_Inventory_3.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_3">
+     <widget class="QLabel" name="Jugador_2">
       <property name="geometry">
        <rect>
-        <x>380</x>
+        <x>140</x>
         <y>630</y>
-        <width>51</width>
-        <height>51</height>
+        <width>49</width>
+        <height>41</height>
        </rect>
       </property>
-      <property name="minimumSize">
-       <size>
-        <width>30</width>
-        <height>23</height>
-       </size>
+      <property name="styleSheet">
+       <string notr="true"/>
       </property>
       <property name="text">
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/new/prefix1/imagenes/CS2_Glock-18_Inventory.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_4">
+     <widget class="QLabel" name="Jugador_3">
       <property name="geometry">
        <rect>
-        <x>380</x>
+        <x>140</x>
         <y>680</y>
-        <width>51</width>
+        <width>49</width>
         <height>31</height>
        </rect>
       </property>
-      <property name="minimumSize">
-       <size>
-        <width>30</width>
-        <height>23</height>
-       </size>
+      <property name="styleSheet">
+       <string notr="true"/>
       </property>
       <property name="text">
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/new/prefix1/imagenes/CS2_M4A1-S_Inventory.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_5">
+     <widget class="QLabel" name="Jugador_4">
       <property name="geometry">
        <rect>
-        <x>380</x>
+        <x>140</x>
         <y>660</y>
-        <width>71</width>
-        <height>41</height>
+        <width>49</width>
+        <height>31</height>
        </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
       </property>
       <property name="text">
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/new/prefix1/imagenes/CS2_USP-S_Inventory.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_2">
+      <property name="geometry">
+       <rect>
+        <x>950</x>
+        <y>300</y>
+        <width>49</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
       </property>
      </widget>
     </widget>
