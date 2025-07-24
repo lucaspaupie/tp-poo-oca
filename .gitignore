@@ -1,5 +1,39 @@
-build/Desktop_Qt_6_9_1_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/mainwindow.cpp.6227D0CEFAB07334.idx
-build/Desktop_Qt_6_9_1_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/mainwindow.h.BE7BFD1BE55B6B00.idx
-build/Desktop_Qt_6_9_1_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/ui_mainwindow.h.0B692A8EE8DC5855.idx
-build/Desktop_Qt_6_9_1_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/mainwindow.cpp.6227D0CEFAB07334.idx
-tp_juegooca.pro.user
+# Archivos de configuración de Qt Creator
+*.pro.user
+*.pro.user.*
+*.qmake.stash
+
+# Carpetas de build generadas por Qt Creator
+build*/
+debug/
+release/
+
+# Archivos de compilación
+*.o
+*.obj
+*.a
+*.so
+*.dll
+*.exe
+
+# Archivos de moc, uic, rcc (generados automáticamente)
+moc_*.cpp
+ui_*.h
+qrc_*.cpp
+
+# Caché de Clangd/Qt Creator
+.qtc_clangd/
+*.idx
+
+# Otros archivos temporales
+*.log
+*.tmp
+*.bak
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Configuración de IDEs
+.idea/
+.vscode/
