@@ -167,8 +167,8 @@ void MainWindow::actualizarTablero() {
         int posicion = juegoActual.getJugador(i).getPosicion();
         QPoint baseCoord = juegoActual.getTablero()->getCoordenadaCasilla(posicion);
 
-        int offsetX = 6 * i;
-        int offsetY = 6 * i;
+        int offsetX = 5 * i;
+        int offsetY = 24 * i;
 
         QPoint destino = baseCoord + QPoint(offsetX, offsetY);
 

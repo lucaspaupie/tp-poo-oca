@@ -39,7 +39,6 @@ public:
     QLabel *Jugador_2;
     QLabel *Jugador_3;
     QLabel *Jugador_4;
-    QLabel *label_2;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -140,9 +139,6 @@ public:
         Jugador_4->setObjectName("Jugador_4");
         Jugador_4->setGeometry(QRect(140, 660, 49, 31));
         Jugador_4->setStyleSheet(QString::fromUtf8(""));
-        label_2 = new QLabel(tablero);
-        label_2->setObjectName("label_2");
-        label_2->setGeometry(QRect(950, 300, 49, 16));
         stackedWidget->addWidget(tablero);
         MainWindow->setCentralWidget(centralwidget);
 
@@ -178,7 +174,6 @@ public:
         Jugador_2->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p><img src=\":/new/prefix1/imagenes/CS2_Glock-18_Inventory.png\"/></p></body></html>", nullptr));
         Jugador_3->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p><img src=\":/new/prefix1/imagenes/CS2_M4A1-S_Inventory.png\"/></p></body></html>", nullptr));
         Jugador_4->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p><img src=\":/new/prefix1/imagenes/CS2_USP-S_Inventory.png\"/></p></body></html>", nullptr));
-        label_2->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
     } // retranslateUi
 
 };
