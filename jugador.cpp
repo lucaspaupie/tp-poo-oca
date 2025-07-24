@@ -21,7 +21,9 @@ void jugador::mover(int pasos) {
 int jugador::getPosicion() const{
     return posicion;
 }
-
+void jugador::setPosicion(int nuevaPos) { //set posicion para acomodarlo
+    posicion = nuevaPos;
+}
 QString jugador::getNombre() const{
     return nombre;
 }
