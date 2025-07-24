@@ -1,54 +1,99 @@
-# ⛔ Carpeta de compilación (generada por Qt/CMake)
+/build
 build/
-build-*/
-Desktop_Qt_*/
+/backup
+*.exe
+/.vscode
+/output
+/build*/
+
+# Ignorar archivos de CMake #
+CMakeCache.txt
+CMakeCache.txt.prev
+
+**/CMakeCache.txt
+**/CMakeCache.txt.prev
+
+# This file is used to ignore files which are generated
+# ----------------------------------------------------------------------------
+
+*~
+*.autosave
+*.a
+*.core
+*.moc
 *.o
 *.obj
+*.orig
+*.rej
 *.so
-*.a
+*.so.*
+*_pch.h.cpp
+*_resource.rc
+*.qm
+.#*
+*.*#
+core
+!core/
+tags
+.DS_Store
+.directory
+*.debug
+Makefile*
+*.prl
+*.app
+moc_*.cpp
+ui_*.h
+qrc_*.cpp
+Thumbs.db
+*.res
+*.rc
+/.qmake.cache
+/.qmake.stash
+
+# qtcreator generated files
+*.pro.user*
+*.pro.user
+*.qbs.user*
+CMakeLists.txt.user*
+CMakeLists.txt.user
+
+# xemacs temporary files
+*.flc
+
+# Vim temporary files
+.*.swp
+
+# Visual Studio generated files
+*.ib_pdb_index
+*.idb
+*.ilk
+*.pdb
+*.sln
+*.suo
+*.vcproj
+*vcproj.*.*.user
+*.ncb
+*.sdf
+*.opensdf
+*.vcxproj
+*vcxproj.*
+
+# MinGW generated files
+*.Debug
+*.Release
+
+# Python byte code
+*.pyc
+
+# Binaries
+# --------
 *.dll
 *.exe
-*.out
 
-# ⛔ Archivos temporales y de configuración de Qt Creator
-*.autosave
-*.user
-*.pro.user
-*.pro.user.*
-*.qbs.user
-*.qmlproject.user
-*.creator.*
-*.qrc
-*.moc
-
-# ⛔ Qt Creator / clangd
-.cache/
-*.idx
-*.cpp.autosave
-*.h.autosave
-*.c.autosave
-
-# ⛔ CMake
-CMakeFiles/
-CMakeCache.txt
-cmake_install.cmake
-Makefile
-CTestTestfile.cmake
-CPackConfig.cmake
-CPackSourceConfig.cmake
-install_manifest.txt
-
-# ⛔ Archivos de sistema
-.DS_Store
-Thumbs.db
-
-# ⛔ VSCode (si lo usás también)
-.vscode/
-
-# ✅ Carpetas o archivos que SÍ querés mantener
-!imagenes/
-!*.png
-!*.ui
-!*.cpp
-!*.h
-!*.pro
+# Directories with generated files
+.moc/
+.obj/
+.pch/
+.rcc/
+.uic/
+/build*/
