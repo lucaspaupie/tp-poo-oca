@@ -22,6 +22,7 @@ public:
     void liberar();
     void retrocederACasilla(int nuevaPosicion);
     void reiniciar();
+    void setPosicion(int nuevaPos);
 };
 
 #endif // JUGADOR_H

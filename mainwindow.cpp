@@ -8,6 +8,8 @@
 #include <QPixmap>
 #include "tablero.h"
 #include <QPoint>
+#include <QPropertyAnimation>
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -89,16 +91,29 @@ void MainWindow::BTdado(bool)
         ui->labelDado->setPixmap(skin1.scaled(ui->labelDado->size(), Qt::KeepAspectRatio));
     }
 
-    // Mover jugador actual
+    // Mover jugador actual con lógica de rebote y victoria
     jugador& actual = juegoActual.getJugadorActual();
-    actual.mover(resultado1);
+    int posicionActual = actual.getPosicion();
+    int nuevaPosicion = posicionActual + resultado1;
 
-    // Actualizar posición visual
+    if (nuevaPosicion == 63) {
+        actual.setPosicion(63);
+        actualizarTablero();
+        QMessageBox::information(this, "¡Ganaste!", actual.getNombre() + " ha ganado el juego 🎉");
+        // Aquí podrías deshabilitar botones o finalizar el juego si querés
+        return;
+    } else if (nuevaPosicion > 63) {
+        int exceso = nuevaPosicion - 63;
+        nuevaPosicion = 63 - exceso;
+        actual.setPosicion(nuevaPosicion);
+    } else {
+        actual.setPosicion(nuevaPosicion);
+    }
+
     actualizarTablero();
-
-    // Pasar turno
     juegoActual.pasarTurno();
     actualizarUI();
+
 }
 
 // void MainWindow::tirarDado()
@@ -152,10 +167,10 @@ void MainWindow::actualizarTablero() {
         int posicion = juegoActual.getJugador(i).getPosicion();
         QPoint baseCoord = juegoActual.getTablero()->getCoordenadaCasilla(posicion);
 
-        int offsetX = 0 * i;
-        int offsetY = 24 * i;
+        int offsetX = 6 * i;
+        int offsetY = 6 * i;
 
-        QPoint coord = baseCoord + QPoint(offsetX, offsetY);
+        QPoint destino = baseCoord + QPoint(offsetX, offsetY);
 
         QLabel* ficha = nullptr;
         switch (i) {
@@ -165,11 +180,37 @@ void MainWindow::actualizarTablero() {
         case 3: ficha = ui->Jugador_4; break;
         }
 
-        if (ficha) ficha->move(coord);
+        if (ficha) {
+            // Crear animación para mover la ficha
+            QPropertyAnimation* anim = new QPropertyAnimation(ficha, "pos");
+            anim->setDuration(400); // en milisegundos
+            anim->setStartValue(ficha->pos());
+            anim->setEndValue(destino);
+            anim->setEasingCurve(QEasingCurve::OutCubic); // curva de movimiento suave
+            anim->start(QAbstractAnimation::DeleteWhenStopped); // borra animación al terminar
+        }
+       /*
+         ARREGLEN ESTO QUE ME COSTO BASTANTE ES LO DE LA IMAGEN DE EL GANADOR, YA TERMINE LO DEL GANADOR Y EL EFFECTO REBOTE QUE SI SE PASA
+
+VUELVE PARA ATRAS DEPENDIENDO DEL RESULTADO
+
+
+
+
+
+          if (nuevaPosicion == 63) {
+            jugadorActual->setPosicion(63);
+
+            // Mostrar imagen de victoria
+            QPixmap imagenVictoria(":/new/prefi1/imagenes/tt_wins.png"); // Cambiá la ruta según tu imagen
+            ui->widgetGanador->setPixmap(imagenVictoria);
+            ui->widgetGanador->setScaledContents(true); // Para que se ajuste al tamaño del label
+            ui->widgetGanador->setVisible(true);
+
+            QMessageBox::information(this, "¡Victoria!", "¡El jugador ha ganado!");
+            return;}*/
     }
 }
-
-
 
 
 void MainWindow::on_botoncomenzar_clicked() {

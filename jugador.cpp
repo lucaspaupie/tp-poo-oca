@@ -17,6 +17,9 @@ void jugador::mover(int pasos) {
         posicion = 63 - exceso;
     }
 }
+void jugador::setPosicion(int nuevaPos) {
+    posicion = nuevaPos;
+}
 
 int jugador::getPosicion() const{
     return posicion;
