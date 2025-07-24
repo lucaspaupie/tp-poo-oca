@@ -1,62 +1,54 @@
-# Build folders
+# ⛔ Carpeta de compilación (generada por Qt/CMake)
 build/
-cmake-build-*/
-
-# Qt Creator / Qt-related
-*.autosave
-*.pro.user
-*.qbs.user
-*.qmlproject.user
-*.pro.user.*
-*.moc
+build-*/
+Desktop_Qt_*/
 *.o
 *.obj
-*.gch
-*.user
-*.creator.*
-*.log
-*.bak
-
-# Clang / Qt Creator Index cache
-.cache/
-*.idx
-
-# Compiled files
+*.so
+*.a
+*.dll
 *.exe
 *.out
-*.app
-*.a
-*.so
-*.dll
-*.dylib
 
-# CMake generated files
+# ⛔ Archivos temporales y de configuración de Qt Creator
+*.autosave
+*.user
+*.pro.user
+*.pro.user.*
+*.qbs.user
+*.qmlproject.user
+*.creator.*
+*.qrc
+*.moc
+
+# ⛔ Qt Creator / clangd
+.cache/
+*.idx
+*.cpp.autosave
+*.h.autosave
+*.c.autosave
+
+# ⛔ CMake
 CMakeFiles/
 CMakeCache.txt
-Makefile
 cmake_install.cmake
+Makefile
 CTestTestfile.cmake
 CPackConfig.cmake
 CPackSourceConfig.cmake
 install_manifest.txt
 
-# VSCode (por si usás VSCode)
-.vscode/
-
-# Archivos de sistema
+# ⛔ Archivos de sistema
 .DS_Store
 Thumbs.db
 
-# Ignorar todas las carpetas de build
-build/
-build-*/
-*.o
-*.obj
-*.user
-*.pro.user
-*.qrc
-*.moc
-*.qmlc
-*.idx
-*.cpp.autosave
-*.h.autosave
+# ⛔ VSCode (si lo usás también)
+.vscode/
+
+# ✅ Carpetas o archivos que SÍ querés mantener
+!imagenes/
+!*.png
+!*.ui
+!*.cpp
+!*.h
+!*.pro
