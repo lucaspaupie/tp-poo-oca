@@ -39,7 +39,7 @@ MainWindow::MainWindow(QWidget *parent)
         QPoint(390, 620), QPoint(450, 620), QPoint(520, 620),
         QPoint(600, 620), QPoint(670, 620), QPoint(720, 620),
         QPoint(800, 600), QPoint(850, 550), QPoint(880, 500),
-        QPoint(910, 450), QPoint(920, 400), QPoint(950, 600),
+        QPoint(910, 450), QPoint(950, 300), QPoint(950, 600),
         QPoint(940, 240), QPoint(930, 170), QPoint(890, 120),
         QPoint(800, 50),  QPoint(720, 20),  QPoint(640, 10),
         QPoint(580, 10),  QPoint(510, 10),  QPoint(450, 10),
@@ -47,8 +47,8 @@ MainWindow::MainWindow(QWidget *parent)
         QPoint(180, 30),  QPoint(120, 70),  QPoint(130, 49),
         QPoint(40, 180),  QPoint(30, 250),  QPoint(40, 320),
         QPoint(40, 400),  QPoint(70, 470),  QPoint(160, 480),
-        QPoint(210, 510), QPoint(270, 520), QPoint(320, 10),
-        QPoint(390, 10),  QPoint(450, 10),  QPoint(520, 10),
+        QPoint(210, 510), QPoint(320, 520), QPoint(320, 10),
+        QPoint(450, 520),  QPoint(450, 10),  QPoint(520, 10),
         QPoint(600, 10),  QPoint(660, 10),  QPoint(720, 510),
         QPoint(780, 460), QPoint(810, 410), QPoint(820, 360),
         QPoint(820, 310), QPoint(850, 230), QPoint(780, 150),
@@ -71,7 +71,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::actualizarUI()
 {
-    jugador &actual = juegoActual.getJugadorActual();
+    jugador& actual = juegoActual.getJugadorActual();
     setWindowTitle("Turno de: " + actual.getNombre() + " (Casilla "
                    + QString::number(actual.getPosicion()) + ")");
 }
@@ -148,23 +148,28 @@ void MainWindow::pj()
 }
 
 void MainWindow::actualizarTablero() {
+    for (int i = 0; i < juegoActual.getCantidadJugadores(); ++i) {
+        int posicion = juegoActual.getJugador(i).getPosicion();
+        QPoint baseCoord = juegoActual.getTablero()->getCoordenadaCasilla(posicion);
 
-        jugador jugadorActual = juegoActual.getJugadorActual();
-        int posicion = jugadorActual.getPosicion();
-        int id = juegoActual.getTurno(); // este método debería devolverte 0, 1, 2...
+        int offsetX = 0 * i;
+        int offsetY = 24 * i;
 
-        QPoint coordenada = juegoActual.getTablero()->getCoordenadaCasilla(posicion, id);
+        QPoint coord = baseCoord + QPoint(offsetX, offsetY);
 
-        // Suponiendo que tenés un array de QLabel fichas:
-        ui->Jugador_1->move(coordenada); // si es el jugador 0
+        QLabel* ficha = nullptr;
+        switch (i) {
+        case 0: ficha = ui->Jugador_1; break;
+        case 1: ficha = ui->Jugador_2; break;
+        case 2: ficha = ui->Jugador_3; break;
+        case 3: ficha = ui->Jugador_4; break;
+        }
 
-    /*jugador jugadorActual = juego.getJugadorActual();
-    int posicion = jugadorActual.getPosicion();
-
-    QPoint coordenada =tablero->getCoordenadaCasilla(posicion);
-
-    ui->fichaJugador->move(coordenada); //Qlabel hacerlo despues*/
+        if (ficha) ficha->move(coord);
+    }
 }
+
+
 
 
 void MainWindow::on_botoncomenzar_clicked() {

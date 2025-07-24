@@ -47,10 +47,17 @@ void tablero::moverJugador(jugador& j,int pasos){
 QPoint tablero::getCoordenadaCasilla(int casilla, int jugadorID) {
     if (jugadorID >= posicionesJugadores.size() || casilla >= posicionesJugadores[jugadorID].size())
         return QPoint(0, 0);  // fallback
-    return posicionesJugadores[jugadorID][casilla];
+    QPoint base = posicionesJugadores[0][casilla];
+    switch (jugadorID) {
+    case 1: return base + QPoint(15, 0);
+    case 2: return base + QPoint(0, 15);
+    case 3: return base + QPoint(15,15);
+    default: return base;
+        break;
+    }
 }
 void tablero::cargarCoordenadas() {
-    this->posicionesJugadores.resize(4);
+    this->posicionesJugadores.resize(1);
     // Aquí cargás las posiciones de cada jugador como ya hiciste en MainWindow
 
     this->posicionesJugadores[0] = {

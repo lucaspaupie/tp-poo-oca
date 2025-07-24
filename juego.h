@@ -24,8 +24,9 @@ public:
     bool esFinDelJuego() const;
     QString ganador() const;
     void pasarTurno();
-
-    jugador& getJugadorActual(); // importante para reemplazar turnoActual()
+    jugador& getJugadorActual();
+    jugador& getJugador(int i);
+    int getCantidadJugadores() const { return jugadores.size(); }
     int getTurno() const { return turnoActual; }
     tablero* getTablero() { return &miTablero; }
 

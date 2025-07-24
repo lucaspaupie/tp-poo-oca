@@ -33,3 +33,8 @@ void Juego::pasarTurno() {
 jugador& Juego::getJugadorActual() {
     return jugadores[turnoActual];
 }
+
+jugador& Juego::getJugador(int i) {
+    return jugadores[i];
+}
+
