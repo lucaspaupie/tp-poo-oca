@@ -293,10 +293,10 @@ background-color: transparent;
      <widget class="QLabel" name="label_2">
       <property name="geometry">
        <rect>
-        <x>950</x>
-        <y>300</y>
-        <width>49</width>
-        <height>16</height>
+        <x>490</x>
+        <y>310</y>
+        <width>41</width>
+        <height>20</height>
        </rect>
       </property>
       <property name="text">
