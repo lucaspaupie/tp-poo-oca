@@ -46,3 +46,17 @@ install_manifest.txt
 # Archivos de sistema
 .DS_Store
 Thumbs.db
+
+# Ignorar todas las carpetas de build
+build/
+build-*/
+*.o
+*.obj
+*.user
+*.pro.user
+*.qrc
+*.moc
+*.qmlc
+*.idx
+*.cpp.autosave
+*.h.autosave
