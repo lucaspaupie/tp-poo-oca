@@ -1,0 +1,16 @@
+*.pro.user
+*.qmake.stash
+build*/
+debug/
+release/
+moc_*.cpp
+ui_*.h
+qrc_*.cpp
+*.o
+*.obj
+*.so
+*.exe
+.qtc_clangd/
+*.idx
+.idea/
+.vscode/
