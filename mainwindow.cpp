@@ -208,3 +208,27 @@ void MainWindow::actualizarTablero() {
         if (ficha) ficha->move(coord);
     }
 }
+
+void MainWindow::confirmarCantidadJugadores() {
+    // Tu código para confirmar la cantidad de jugadores
+
+    // Esto podría ser un stackedWidget->setCurrentWidget(ui->tablero);
+    // o cualquier lógica que corresponda a esta función.
+}
+
+// Asegúrate de que esta función exista:
+void MainWindow::on_botoncomenzar_clicked() {
+    // Código para iniciar el juego cuando se pulsa el botón "Comenzar"
+    // Por ejemplo, podrías llamar a mostrarSeleccionPersonajes();
+    // o directamente cambiar al stackedWidget del tablero.
+
+    mostrarSeleccionPersonajes(); // O la lógica que tengas aquí
+}
+
+// Asegúrate de que esta función exista:
+void MainWindow::on_siguiente_clicked() {
+    // Código para pasar al siguiente turno, si este botón hace eso
+
+    // Aquí podrías tener lógica como juegoActual.pasarTurno();
+    // o cualquier otra acción que haga tu botón "siguiente".
+}

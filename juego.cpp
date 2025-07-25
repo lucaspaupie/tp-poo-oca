@@ -1,6 +1,9 @@
 #include "Juego.h"
+#include <QDebug>
 
-Juego::Juego() : turnoActual(0) {}
+Juego::Juego() : turnoActual(0) {
+    miTablero.cargarCoordenadas();
+}
 
 void    Juego::agregarJugador(const QString& nombre){
     jugadores.append(jugador(nombre));
@@ -8,6 +11,10 @@ void    Juego::agregarJugador(const QString& nombre){
 
 void Juego::iniciar(){
     turnoActual = 0;
+    for(int i=0;i<jugadores.size();i++){
+        jugadores[i].setPosicion(0);
+        jugadores[i].penalizar(-jugadores[i].getTurnosPenalizados());
+    }
 }
 
 int Juego::tirarDadoYAvanzar() {
@@ -27,7 +34,25 @@ QString Juego::ganador() const {
 }
 
 void Juego::pasarTurno() {
-    turnoActual = (turnoActual + 1) % jugadores.size();
+    jugadores[turnoActual].restarTurnosPenalizado();
+
+    int jugadoresTotales = jugadores.size();
+    int intentos=0;
+    const int max_intentos = jugadoresTotales * 2;
+
+    if(jugadoresTotales==0){
+        qDebug() <<"No hay jugadores en el juego";
+        return;
+    }
+    do{
+         turnoActual = (turnoActual + 1) % jugadores.size();
+        intentos++;
+         if(intentos>=max_intentos){
+            break;
+         }
+    }while(jugadores[turnoActual].estaPenalizado());
+    qDebug() << "Turno ahora para: " << jugadores[turnoActual].getNombre()
+             << " en casilla " << jugadores[turnoActual].getPosicion();
 }
 
 jugador& Juego::getJugadorActual() {

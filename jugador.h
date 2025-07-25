@@ -8,7 +8,7 @@ class jugador
 private:
     QString nombre;
     int posicion;
-    int turnosPenalizado = 0;
+    int turnosPenalizado;
     bool atrapado = false;
 public:
     jugador(const QString& nombre);
@@ -17,8 +17,13 @@ public:
     void setPosicion(int nuevaPos); //nuevo
     QString getNombre() const;
     bool ganador() const;
+    // funciones casilla posada
     void penalizar(int turnos);
-    bool puedeJugar() const;
+    bool estaPenalizado() const;
+    void restarTurnosPenalizado();
+    int getTurnosPenalizados() const;
+  //  bool puedeJugar() const;
+
     void atrapar(); //pozo
     void liberar(); //para calavera
     void retrocederACasilla(int nuevaPosicion);
