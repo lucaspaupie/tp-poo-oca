@@ -96,6 +96,9 @@ void MainWindow::BTdado(bool)
     // Actualizar posición visual
     actualizarTablero();
 
+    // aca se fija si alguno termino el juego
+    verificarFinDelJuego();
+
     // Mostrar mensaje especial (si lo hay) en labelMensaje
     ui->mensaje->setText(mensajeEspecial);
 
@@ -211,4 +214,31 @@ void MainWindow::actualizarTablero() {
 void MainWindow::on_siguiente_clicked() {
 }
 void MainWindow::confirmarCantidadJugadores() {
+}
+
+void MainWindow::verificarFinDelJuego()
+{
+    for (int i = 0; i < juegoActual.getCantidadJugadores(); ++i) {
+        jugador& j = juegoActual.getJugador(i);
+        if (j.getPosicion() >= 63) {
+            qDebug() << "Jugador" << i + 1 << "ganó en la casilla 63.";
+
+            QString nombreGanador = j.getNombre();
+            bool esTT = (i == 0 || i == 1); // jugador 1 o 2 = TT
+            mostrarGanadorEnPantalla(nombreGanador, esTT);
+
+            return;
+        }
+    }
+}
+
+void MainWindow::mostrarGanadorEnPantalla(const QString& nombre, bool esTT)
+{
+    if (esTT) {
+        ui->fichaganadoratt->setText("Ganador: " + nombre);
+        ui->stackedWidget->setCurrentWidget(ui->ganadortt);
+    } else {
+        ui->fichaganadoract->setText("Ganador: " + nombre);
+        ui->stackedWidget->setCurrentWidget(ui->ganadorct);
+    }
 }

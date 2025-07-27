@@ -38,8 +38,11 @@ private:
     void mostrarSeleccionPersonajes();
     void cantjug();
     void pj();
+    void verificarFinDelJuego();
     Juego juego;
     dado* miDado;
+    void mostrarGanadorEnPantalla(const QString& nombre, bool esTT);
+
 
     void actualizarTablero();
   //  QVector<QVector<QPoint>> posicionesJugadores;

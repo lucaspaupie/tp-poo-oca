@@ -304,6 +304,46 @@ background-color: transparent;
       </property>
      </widget>
     </widget>
+    <widget class="QWidget" name="ganadorct">
+     <property name="styleSheet">
+      <string notr="true">#ganadorct{
+background-image:url(:/new/prefix1/imagenes/ctwins.png);
+}</string>
+     </property>
+     <widget class="QLabel" name="fichaganadoract">
+      <property name="geometry">
+       <rect>
+        <x>540</x>
+        <y>280</y>
+        <width>191</width>
+        <height>101</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="ganadortt">
+     <property name="styleSheet">
+      <string notr="true">#ganadortt{
+background-image:url(:/new/prefix1/imagenes/tt_wins.png)
+}</string>
+     </property>
+     <widget class="QLabel" name="fichaganadoratt">
+      <property name="geometry">
+       <rect>
+        <x>560</x>
+        <y>280</y>
+        <width>181</width>
+        <height>121</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </widget>
    </widget>
   </widget>
  </widget>
