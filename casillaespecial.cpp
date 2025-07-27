@@ -7,32 +7,41 @@ casillaespecial::casillaespecial(int numero, const QString& tipo)
 
 QString casillaespecial::accion(jugador& j) {
     if (tipo == "puente") {
-        j.mover(6);
+        j.setPosicion(12);
         return "Caíste en el puente. Avanzás a la casilla 12.";
     } else if (tipo == "posada") {
         j.penalizar(1);
         return "Caíste en la posada. Perdés un turno.";
     } else if (tipo == "pozo") {
-        j.atrapar();
-        return "Caíste en el pozo. Quedas atrapado hasta que otro jugador caiga aquí.";
+        static jugador* atrapado = nullptr;
+
+        if (atrapado == nullptr) {
+            atrapado = &j;
+            j.atrapar();
+            return "Caíste en el pozo. Quedás atrapado hasta que otro jugador caiga aquí.";
+        } else if (atrapado != &j) {
+            atrapado->liberar();
+            atrapado = &j;
+            j.atrapar();
+            return "Caíste en el pozo. Liberaste al jugador anterior, y ahora quedás atrapado vos.";
+        } else {
+            return "Seguís atrapado en el pozo.";
+        }
+        return "Caíste en el pozo. Quedás atrapado hasta que otro jugador caiga aquí.";
     } else if (tipo == "laberinto") {
         j.retrocederACasilla(30);
-        return "Caíste en el laberinto. Retrocedes a la casilla 30.";
+        return "Caíste en el laberinto. Retrocedés a la casilla 30.";
     } else if (tipo == "carcel") {
         j.penalizar(2);
-        return "Caíste en la cárcel. Pierdes 2 turnos.";
+        return "Caíste en la cárcel. Perdés 2 turnos.";
     } else if (tipo == "calavera") {
         j.reiniciar();
-        return "Caíste en la calavera. Vuelves al inicio.";
-    }
-    else if (tipo == "oca") {
-        int siguiente = casillaespecial::siguienteOca(j.getPosicion());
-        if (siguiente != -1) {
-            j.setPosicion(siguiente);
-        }
+        return "Caíste en la calavera. Volvés al inicio.";
+    } else if (tipo == "oca") {
         j.setRepetirTurno(true);
-          return "Caíste en una casilla especial: Oca. ¡Volvé a tirar!";
+        return "Caíste en una Oca. ¡Volvé a tirar!";
     }
+
     return "";
 }
 
