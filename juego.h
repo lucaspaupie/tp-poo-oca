@@ -29,6 +29,7 @@ public:
     int getCantidadJugadores() const { return jugadores.size(); }
     int getTurno() const { return turnoActual; }
     tablero* getTablero() { return &miTablero; }
+    void limpiarJugadores();
 
 };
 
