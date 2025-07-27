@@ -1,6 +1,8 @@
 #include "Juego.h"
 
-Juego::Juego() : turnoActual(0) {}
+Juego::Juego() : turnoActual(0) {
+    miTablero.cargarCoordenadas();
+}
 
 void    Juego::agregarJugador(const QString& nombre){
     jugadores.append(jugador(nombre));
@@ -38,3 +40,7 @@ jugador& Juego::getJugador(int i) {
     return jugadores[i];
 }
 
+void Juego::limpiarJugadores() {
+    jugadores.clear(); // Elimina todos los jugadores de la lista
+    turnoActual = 0; // Reinicia el turno actual
+}

@@ -26,7 +26,7 @@ private slots:
 
     void on_botoncomenzar_clicked();
 
-    void on_comboBox_activated(int index);
+    void on_numpj_activated(int index);
 
     void on_siguiente_clicked();
 
@@ -42,7 +42,7 @@ private:
     dado* miDado;
 
     void actualizarTablero();
-    QVector<QVector<QPoint>> posicionesJugadores;
+  //  QVector<QVector<QPoint>> posicionesJugadores;
 
 };
 
