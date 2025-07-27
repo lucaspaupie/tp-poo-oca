@@ -40,6 +40,18 @@ void Juego::pasarTurno() {
     int intentos=0;
     const int max_intentos = jugadoresTotales * 2;
 
+    // int inicioBusqueda = turnoActual;
+    bool encontradoSiguienteJugador = false;
+
+    for (int i = 0; i < jugadoresTotales; ++i) {
+        turnoActual = (turnoActual + 1) % jugadoresTotales;
+        if (jugadores[turnoActual].estaPenalizado()) {
+            encontradoSiguienteJugador = true;
+            break;
+        }
+    }
+
+
     if(jugadoresTotales==0){
         qDebug() <<"No hay jugadores en el juego";
         return;
@@ -63,3 +75,7 @@ jugador& Juego::getJugador(int i) {
     return jugadores[i];
 }
 
+void Juego::limpiarJugadores() {
+    jugadores.clear();
+    turnoActual = 0;
+}

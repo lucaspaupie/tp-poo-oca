@@ -25,43 +25,48 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->siguiente, &QPushButton::clicked, this, &MainWindow::pj);
     connect(ui->BTdado, &QPushButton::clicked, this, &MainWindow::BTdado);
 
-    // Crear jugadores
-    juegoActual.agregarJugador("Lucas");
-    juegoActual.agregarJugador("Axel");
-    juegoActual.agregarJugador("Luciano");
+    //seleccion de jugadores
+    connect(ui->numpj, QOverload<int>::of(&QComboBox::activated), this, &MainWindow::on_numpj_activated);
+    on_numpj_activated(ui->numpj->currentIndex());
+
+
+    // // Crear jugadores
+    // juegoActual.agregarJugador("Lucas");
+    // juegoActual.agregarJugador("Axel");
+    // juegoActual.agregarJugador("Luciano");
 
 
 
     juegoActual.getTablero()->cargarCoordenadas();
 
     //jugadores coordenadas
-    posicionesJugadores.resize(4); //4 jugadores
+   // posicionesJugadores.resize(4); //4 jugadores
 
-    posicionesJugadores[0] = {
-    QPoint(120, 620), QPoint(250, 620), QPoint(320, 620),
-    QPoint(390, 620), QPoint(450, 620), QPoint(520, 620),
-    QPoint(600, 620), QPoint(670, 620), QPoint(720, 620),
-    QPoint(800, 620), QPoint(850, 550), QPoint(880, 500),
-    QPoint(910, 450), QPoint(930, 390), QPoint(950, 300),
-    QPoint(940, 240), QPoint(930, 170), QPoint(890, 120),
-    QPoint(800, 50),  QPoint(720, 20),  QPoint(640, 10),
-    QPoint(580, 10),  QPoint(510, 10),  QPoint(450, 10),
-    QPoint(380, 10),  QPoint(320, 10),  QPoint(250, 10),
-    QPoint(180, 30),  QPoint(120, 70),  QPoint(80, 120),
-    QPoint(40, 180),  QPoint(30, 250),  QPoint(40, 320),
-    QPoint(40, 400),  QPoint(70, 470),  QPoint(160, 480),
-    QPoint(210, 510), QPoint(270, 520), QPoint(320, 520),
-    QPoint(390, 520), QPoint(450, 520), QPoint(520, 520),
-    QPoint(600, 520), QPoint(670, 520), QPoint(720, 510),
-    QPoint(780, 460), QPoint(810, 410), QPoint(820, 360),
-    QPoint(820, 310), QPoint(850, 230), QPoint(780, 150),
-    QPoint(720, 120), QPoint(620, 110), QPoint(530, 110),
-    QPoint(450, 110), QPoint(380, 110), QPoint(310, 110),
-    QPoint(240, 110), QPoint(190, 170), QPoint(140, 280),
-    QPoint(200, 350), QPoint(230, 400), QPoint(270, 420),
-    QPoint(490, 310)
+    // posicionesJugadores[0] = {
+    // QPoint(120, 620), QPoint(250, 620), QPoint(320, 620),
+    // QPoint(390, 620), QPoint(450, 620), QPoint(520, 620),
+    // QPoint(600, 620), QPoint(670, 620), QPoint(720, 620),
+    // QPoint(800, 620), QPoint(850, 550), QPoint(880, 500),
+    // QPoint(910, 450), QPoint(930, 390), QPoint(950, 300),
+    // QPoint(940, 240), QPoint(930, 170), QPoint(890, 120),
+    // QPoint(800, 50),  QPoint(720, 20),  QPoint(640, 10),
+    // QPoint(580, 10),  QPoint(510, 10),  QPoint(450, 10),
+    // QPoint(380, 10),  QPoint(320, 10),  QPoint(250, 10),
+    // QPoint(180, 30),  QPoint(120, 70),  QPoint(80, 120),
+    // QPoint(40, 180),  QPoint(30, 250),  QPoint(40, 320),
+    // QPoint(40, 400),  QPoint(70, 470),  QPoint(160, 480),
+    // QPoint(210, 510), QPoint(270, 520), QPoint(320, 520),
+    // QPoint(390, 520), QPoint(450, 520), QPoint(520, 520),
+    // QPoint(600, 520), QPoint(670, 520), QPoint(720, 510),
+    // QPoint(780, 460), QPoint(810, 410), QPoint(820, 360),
+    // QPoint(820, 310), QPoint(850, 230), QPoint(780, 150),
+    // QPoint(720, 120), QPoint(620, 110), QPoint(530, 110),
+    // QPoint(450, 110), QPoint(380, 110), QPoint(310, 110),
+    // QPoint(240, 110), QPoint(190, 170), QPoint(140, 280),
+    // QPoint(200, 350), QPoint(230, 400), QPoint(270, 420),
+    // QPoint(490, 310)
 
-    };
+    // };
 
 
     iniciarjuego();
@@ -141,20 +146,41 @@ void MainWindow::mostrarSeleccionPersonajes()
     ui->stackedWidget->setCurrentWidget(ui->seleccionpjs);
 }
 
-void MainWindow::on_comboBox_activated(int index)
-{
+void MainWindow::on_numpj_activated(int index){
+
     Q_UNUSED(index);  // para que no dé warning dsp lo saco
 
-    connect(ui->numpj, QOverload<int>::of(&QComboBox::activated),
-            this, &MainWindow::cantjug);
-}
+    int numJugadoresSeleccionados = ui->numpj->currentText().toInt();
+    if (numJugadoresSeleccionados < 2 || numJugadoresSeleccionados > 4) {
+        numJugadoresSeleccionados = 2; // Valor por defecto si hay un error
+    }
 
-void MainWindow::cantjug()
-{
-    qDebug() << "Función cantjug llamada correctamente";
+    // qDebug() << "on_comboBox_activated: Seleccionados " << numJugadoresSeleccionados << " jugadores.";
+
+
+    //agregar esto777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
+    juegoActual.limpiarJugadores();
+
+    QStringList nombresBase = {"Lucas", "Axel", "Luciano", "Julio"}; // Nombres predefinidos
+    for (int i = 0; i < numJugadoresSeleccionados; ++i) {
+        juegoActual.agregarJugador(nombresBase.at(i));
+    }
+
+    QList<QLabel*> fichas = {ui->Jugador_1, ui->Jugador_2, ui->Jugador_3, ui->Jugador_4};
+
+    for (int i = 0; i < fichas.size(); ++i) {
+        if (fichas.at(i)) {
+            if (i < numJugadoresSeleccionados) {
+                fichas.at(i)->setVisible(true);
+            } else {
+                fichas.at(i)->setVisible(false);
+            }
+        }
+    }
+
+    actualizarTablero();
     actualizarUI();
 }
-
 void MainWindow::pj()
 {
     ui->stackedWidget->setCurrentWidget(ui->tablero);
@@ -182,20 +208,16 @@ void MainWindow::actualizarTablero() {
     }
 }
 
-void MainWindow::confirmarCantidadJugadores() {
-    // Tu código para confirmar la cantidad de jugadores
 
-    // Esto podría ser un stackedWidget->setCurrentWidget(ui->tablero);
-    // o cualquier lógica que corresponda a esta función.
-}
 
 // Asegúrate de que esta función exista:
 void MainWindow::on_botoncomenzar_clicked() {
-    // Código para iniciar el juego cuando se pulsa el botón "Comenzar"
-    // Por ejemplo, podrías llamar a mostrarSeleccionPersonajes();
-    // o directamente cambiar al stackedWidget del tablero.
-
-    mostrarSeleccionPersonajes(); // O la lógica que tengas aquí
+    qDebug() << "on_botoncomenzar_clicked: Iniciando el juego.";
+    // Ahora que los jugadores están configurados, puedes iniciar el juego
+    juegoActual.iniciar(); // Resetea posiciones y penalizaciones
+    ui->stackedWidget->setCurrentWidget(ui->tablero); // Cambia a la pantalla del tablero
+    actualizarTablero(); // Asegura que las fichas estén en Start
+    actualizarUI();
 }
 
 // Asegúrate de que esta función exista:
