@@ -31,6 +31,8 @@ public:
     void reiniciar();
     void setRepetirTurno(bool val);
     bool getRepetirTurno() const;
+    int getTurnosPenalizado() const;
+    bool estaAtrapado() const;
 };
 
 #endif // JUGADOR_H

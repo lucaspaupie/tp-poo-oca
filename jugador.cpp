@@ -3,13 +3,6 @@
 jugador::jugador(const QString& nombre): nombre(nombre), posicion(0) {}
 
 void jugador::mover(int pasos) {
-    if (turnosPenalizado > 0) {
-        turnosPenalizado--;
-        return;
-    }
-
-    if (atrapado) return;
-
     if (posicion + pasos <= 63) {
         posicion += pasos;
     } else {
@@ -35,6 +28,7 @@ bool jugador::ganador() const{
 /////////////penalizar casilla/////////////////
 void jugador::penalizar(int turnos) {
     turnosPenalizado += turnos;
+
 }
 
 bool jugador::estaPenalizado() const{
@@ -48,8 +42,15 @@ void jugador::restarTurnosPenalizado(){
 }
 //////////////////////////////////////
 
-int jugador::getTurnosPenalizados() const{
+int jugador::getTurnosPenalizados() const {
+    if (turnosPenalizado < 0) turnosPenalizado = 0;
     return turnosPenalizado;
+}
+
+bool jugador::puedeJugar() const {
+    return !atrapado && turnosPenalizado <= 0;
+}
+
 }
 // esto lo saque para hacer la casilla posada
 // bool jugador::puedeJugar() const {
@@ -78,4 +79,12 @@ void jugador::setRepetirTurno(bool val) {
 
 bool jugador::getRepetirTurno() const {
     return repetirTurno;
+}
+
+int jugador::getTurnosPenalizado() const {
+    return turnosPenalizado;
+}
+
+bool jugador::estaAtrapado() const {
+    return atrapado;
 }
