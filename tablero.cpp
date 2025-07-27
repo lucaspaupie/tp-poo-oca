@@ -6,6 +6,7 @@
 tablero::tablero() {
     QMap<int, QString> especiales = {
         {6, "puente"},
+        {9, "oca"}, {18, "oca"}, {27, "oca"}, {36, "oca"}, {45, "oca"}, {54, "oca"},
         {19, "posada"},
         {31, "pozo"},
         {42, "laberinto"},
@@ -34,16 +35,16 @@ void tablero::aplicarAccion(jugador& j) {
     }
 }
 
-void tablero::moverJugador(jugador& j,int pasos){
+QString tablero::moverJugador(jugador& j, int pasos){
     int nuevaPos = j.getPosicion() + pasos;
-    if(nuevaPos>= casillas.size()){
+    if(nuevaPos >= casillas.size()){
         nuevaPos = casillas.size()-1;
     }
     j.setPosicion(nuevaPos);
-   /* j.retrocederACasilla(nuevaPos);            // actualiza posicion del jugador
-    aplicarAccion(j);*/
 
+    return casillas[nuevaPos]->accion(j); // devuelve el mensaje de casilla especial
 }
+
 
 QPoint tablero::getCoordenadaCasilla(int casilla, int jugadorID) {
     if (jugadorID >= posicionesJugadores.size() || casilla >= posicionesJugadores[jugadorID].size())
@@ -59,7 +60,6 @@ QPoint tablero::getCoordenadaCasilla(int casilla, int jugadorID) {
 }
 void tablero::cargarCoordenadas() {
     this->posicionesJugadores.resize(1);
-    // Aquí cargás las posiciones de cada jugador como ya hiciste en MainWindow
 
     this->posicionesJugadores[0] = {
                                     QPoint(120, 620), QPoint(250, 620), QPoint(320, 620),

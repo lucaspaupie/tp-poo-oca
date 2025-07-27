@@ -10,6 +10,7 @@ private:
     int posicion;
     int turnosPenalizado = 0;
     bool atrapado = false;
+    bool repetirTurno = false;
 public:
     jugador(const QString& nombre);
     void mover(int pasos);
@@ -23,6 +24,8 @@ public:
     void liberar(); //para calavera
     void retrocederACasilla(int nuevaPosicion);
     void reiniciar();
+    void setRepetirTurno(bool val);
+    bool getRepetirTurno() const;
 };
 
 #endif // JUGADOR_H

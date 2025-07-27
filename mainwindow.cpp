@@ -9,6 +9,7 @@
 #include "tablero.h"
 #include <QPoint>
 #include "casillaespecial.h"
+#include <QTimer>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -92,65 +93,37 @@ void MainWindow::BTdado(bool)
         ui->labelDado->setPixmap(skin1.scaled(ui->labelDado->size(), Qt::KeepAspectRatio));
     }
 
-
     // Mover jugador actual
     jugador& actual = juegoActual.getJugadorActual();
-    actual.mover(resultado1);
+    QString mensajeEspecial = juegoActual.getTablero()->moverJugador(actual, resultado1);
 
-
-    //mover jugador correctamente  o no
-
-    //esto de abajo esta mal pero lo dejo por las dudas
-  //  juegoActual.getTablero()->moverJugador(actual, resultado1);
-
-    // Ahora verificamos si la nueva posición es una casilla especial
+    // Verificar si cayó en casilla especial y obtener mensaje
     int currentPos = actual.getPosicion();
-    casilla* landedCasilla = juegoActual.getTablero()->getCasilla(currentPos);
-
-    if (landedCasilla) {
-        casillaespecial* especial = dynamic_cast<casillaespecial*>(landedCasilla);
-        if (especial) {
-
-            QString tipoCasilla = especial->getTipo();
-            QString mensaje = "";
-            bool applyActionAfterMessage = true;
-
-            if(tipoCasilla == "puente"){
-                //mensaje, caiste en el puente avanza a la 12
-                juegoActual.getJugadorActual().setPosicion(12);
-            }
-             else if (tipoCasilla == "posada") {
-              //  mensaje = "¡Caiste en la Posada! Pierdes 1 turno.";
-            } else if (tipoCasilla == "pozo") {
-                //mensaje = "¡Caiste en el Pozo! Quedas atrapado.";
-            } else if (tipoCasilla == "laberinto") {
-               // mensaje = "¡Caiste en el Laberinto! Retrocedes a la casilla 30.";
-            } else if (tipoCasilla == "carcel") {
-              //  mensaje = "¡Caiste en la Cárcel! Pierdes 2 turnos.";
-            } else if (tipoCasilla == "calavera") {
-               // mensaje = "¡Caiste en la Calavera! Vuelves al inicio.";
-            }
-            }
-    }
 
     // Actualizar posición visual
     actualizarTablero();
+
+    // Mostrar mensaje especial (si lo hay) en labelMensaje
+    ui->mensaje->setText(mensajeEspecial);
+
+    // Si querés que el mensaje desaparezca después de 3 segundos:
+    if (!mensajeEspecial.isEmpty()) {
+        QTimer::singleShot(3000, this, [this]() {
+            ui->mensaje->clear();
+        });
+    }
+
+    if (actual.getRepetirTurno()) {
+        actual.setRepetirTurno(false); // reseteamos
+        actualizarUI();
+        return; // no se pasa turno
+    }
 
     // Pasar turno
     juegoActual.pasarTurno();
     actualizarUI();
 }
 
-// void MainWindow::tirarDado()
-// {
-//     int resultado = juegoActual.tirarDadoYAvanzar();
-//     if (juegoActual.esFinDelJuego()) {
-//         QMessageBox::information(this, "Fin del juego", juegoActual.ganador() + " ha ganado 🎉");
-//     } else {
-//         juegoActual.pasarTurno();
-//         actualizarUI();
-//     }
-// }
 
 void MainWindow::iniciarjuego()
 {

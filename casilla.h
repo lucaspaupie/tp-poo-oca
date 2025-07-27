@@ -1,5 +1,6 @@
 #ifndef CASILLA_H
 #define CASILLA_H
+#include <QString>
 
 class jugador;
 
@@ -12,7 +13,7 @@ public:
     virtual ~casilla();
 
 
-    virtual void accion(jugador& j);
+    virtual QString accion(jugador& j);
     int getNumero() const;
 };
 
