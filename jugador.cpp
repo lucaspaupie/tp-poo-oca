@@ -3,6 +3,13 @@
 jugador::jugador(const QString& nombre): nombre(nombre), posicion(0) {}
 
 void jugador::mover(int pasos) {
+    if (turnosPenalizado > 0) {
+        turnosPenalizado--;
+        return;
+    }
+
+    if (atrapado) return;
+
     if (posicion + pasos <= 63) {
         posicion += pasos;
     } else {
@@ -27,6 +34,7 @@ bool jugador::ganador() const{
 
 /////////////penalizar casilla/////////////////
 void jugador::penalizar(int turnos) {
+<<<<<<< HEAD
     turnosPenalizado += turnos;
 
 }
@@ -45,10 +53,13 @@ void jugador::restarTurnosPenalizado(){
 int jugador::getTurnosPenalizados() const {
     if (turnosPenalizado < 0) turnosPenalizado = 0;
     return turnosPenalizado;
+=======
+    turnosPenalizado = turnos;
+>>>>>>> parent of 4be2d4d (pozo arreglado)
 }
 
 bool jugador::puedeJugar() const {
-    return !atrapado && turnosPenalizado <= 0;
+    return !atrapado && turnosPenalizado == 0;
 }
 
 }
@@ -79,12 +90,4 @@ void jugador::setRepetirTurno(bool val) {
 
 bool jugador::getRepetirTurno() const {
     return repetirTurno;
-}
-
-int jugador::getTurnosPenalizado() const {
-    return turnosPenalizado;
-}
-
-bool jugador::estaAtrapado() const {
-    return atrapado;
 }

@@ -87,7 +87,6 @@ void MainWindow::actualizarUI()
 
 void MainWindow::BTdado(bool)
 {
-
     int resultado1 = miDado->tirar();
 
     qDebug() << "Dado 1:" << resultado1;
@@ -101,31 +100,7 @@ void MainWindow::BTdado(bool)
 
     // Mover jugador actual
     jugador& actual = juegoActual.getJugadorActual();
-
-    //comprueba si puede jugar
-    if (!actual.puedeJugar()) {
-        QString msg;
-
-        if (actual.getTurnosPenalizado() > 0) {
-            int turnosRestantes = actual.getTurnosPenalizado();
-            msg = "Estás penalizado. Te quedan " + QString::number(turnosRestantes) + " turno(s).";
-            actual.penalizar(-1);  // Restar un turno
-        } else if (actual.estaAtrapado()) {
-            msg = "Estás atrapado en el pozo. Esperá que otro jugador te libere.";
-        }
-
-        ui->mensaje->setText(msg);
-        QTimer::singleShot(3000, this, [this]() {
-            ui->mensaje->clear();
-        });
-
-        juegoActual.pasarTurno();
-        actualizarUI();
-        return;
-    }
-
     QString mensajeEspecial = juegoActual.getTablero()->moverJugador(actual, resultado1);
-    ui->mensaje->setText(mensajeEspecial);
 
     // Verificar si cayó en casilla especial y obtener mensaje
     int currentPos = actual.getPosicion();

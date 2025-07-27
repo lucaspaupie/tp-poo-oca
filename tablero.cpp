@@ -34,26 +34,17 @@ void tablero::aplicarAccion(jugador& j) {
         casillas[pos]->accion(j);
     }
 }
-QString tablero::moverJugador(jugador& j, int pasos) {
-    int nuevaPos = j.getPosicion() + pasos;
-    if (nuevaPos >= casillas.size()) {
-        nuevaPos = casillas.size() - 1;
-    }
 
+QString tablero::moverJugador(jugador& j, int pasos){
+    int nuevaPos = j.getPosicion() + pasos;
+    if(nuevaPos >= casillas.size()){
+        nuevaPos = casillas.size()-1;
+    }
     j.setPosicion(nuevaPos);
 
-    QString mensaje = casillas[nuevaPos]->accion(j);
-
-    // Si es una oca, saltamos automáticamente a la siguiente
-    casillaespecial* especial = dynamic_cast<casillaespecial*>(casillas[nuevaPos]);
-    if (especial && especial->getTipo() == "oca") {
-        int siguiente = casillaespecial::siguienteOca(nuevaPos);
-        if (siguiente != -1) {
-            j.setPosicion(siguiente);  // Teletransporta
-        }
-    }
-    return mensaje;
+    return casillas[nuevaPos]->accion(j); // devuelve el mensaje de casilla especial
 }
+
 
 QPoint tablero::getCoordenadaCasilla(int casilla, int jugadorID) {
     if (jugadorID >= posicionesJugadores.size() || casilla >= posicionesJugadores[jugadorID].size())
