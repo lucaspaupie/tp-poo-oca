@@ -35,6 +35,7 @@ bool jugador::ganador() const{
 /////////////penalizar casilla/////////////////
 void jugador::penalizar(int turnos) {
 <<<<<<< HEAD
+<<<<<<< HEAD
     turnosPenalizado += turnos;
 
 }
@@ -53,6 +54,9 @@ void jugador::restarTurnosPenalizado(){
 int jugador::getTurnosPenalizados() const {
     if (turnosPenalizado < 0) turnosPenalizado = 0;
     return turnosPenalizado;
+=======
+    turnosPenalizado = turnos;
+>>>>>>> parent of 4be2d4d (pozo arreglado)
 =======
     turnosPenalizado = turnos;
 >>>>>>> parent of 4be2d4d (pozo arreglado)
