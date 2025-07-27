@@ -18,7 +18,7 @@ public:
     ~tablero();
 
     void aplicarAccion(jugador& j);
-    void moverJugador(jugador& j, int pasos);
+    QString moverJugador(jugador& j, int pasos);
     QPoint getCoordenadaCasilla(int casilla, int jugadorID = 0); // Coordenada para X jugador
     void cargarCoordenadas();
     casilla* getCasilla(int numero); //obtener casilla por su numero

@@ -10,9 +10,10 @@ private:
     QString tipo;
 public:
     casillaespecial(int numero, const QString& tipo);
-
-    void accion(jugador& j ) override;
+    virtual ~casillaespecial();
+    virtual QString accion(jugador& j) override;
     QString getTipo() const;
+    static int siguienteOca(int posActual);
 };
 
 #endif // CASILLAESPECIAL_H

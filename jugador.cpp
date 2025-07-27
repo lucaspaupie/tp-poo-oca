@@ -71,3 +71,11 @@ void jugador::retrocederACasilla(int nuevaPosicion) {
 void jugador::reiniciar() {
     posicion = 1;
 }
+
+void jugador::setRepetirTurno(bool val) {
+    repetirTurno = val;
+}
+
+bool jugador::getRepetirTurno() const {
+    return repetirTurno;
+}
