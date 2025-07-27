@@ -293,9 +293,9 @@ background-color: transparent;
      <widget class="QLabel" name="mensaje">
       <property name="geometry">
        <rect>
-        <x>950</x>
-        <y>10</y>
-        <width>321</width>
+        <x>940</x>
+        <y>0</y>
+        <width>341</width>
         <height>161</height>
        </rect>
       </property>
