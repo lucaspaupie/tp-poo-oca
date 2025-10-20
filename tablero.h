@@ -4,7 +4,7 @@
 #include <QVector>
 #include <QPoint>
 #include "casilla.h"
-#include "casillaespecial.h"
+// #include "casillaespecial.h"  quitado por el momento
 // ver esto de arriba por que lo agregue y no ocupo ninguna funcion, me tira warning
 class jugador;
 
@@ -13,8 +13,12 @@ class tablero
 private:
     QVector<casilla*> casillas;
      QVector<QVector<QPoint>> posicionesJugadores;
+
+    int     m_numCasillas;
+     void generarCasillasEspeciales(); // <-- NUEVA: Función privada
 public:
-    tablero();
+     // MODIFICADO: Acepta el número máximo de la casilla (ej: 63 o 90)
+    tablero(int numCasillasMaximas=63);
     ~tablero();
 
     void aplicarAccion(jugador& j);
@@ -22,6 +26,9 @@ public:
     QPoint getCoordenadaCasilla(int casilla, int jugadorID = 0); // Coordenada para X jugador
     void cargarCoordenadas();
     casilla* getCasilla(int numero); //obtener casilla por su numero
+
+
+    int getNumCasillas() const { return m_numCasillas; }
 };
 
 #endif // TABLERO_H

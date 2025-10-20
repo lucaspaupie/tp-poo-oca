@@ -51,7 +51,7 @@ bool jugador::puedeJugar() const {
     return !atrapado && turnosPenalizado <= 0;
 }
 
-}
+
 // esto lo saque para hacer la casilla posada
 // bool jugador::puedeJugar() const {
 //     return !atrapado && turnosPenalizado == 0;
