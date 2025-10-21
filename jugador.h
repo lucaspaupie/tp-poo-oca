@@ -20,9 +20,9 @@ public:
     bool ganador() const;
     // funciones casilla posada
     void penalizar(int turnos);
-    bool estaPenalizado() const;
+    bool estaPenalizado();
     void restarTurnosPenalizado();
-    int getTurnosPenalizados() const;
+    int getTurnosPenalizados();
   //  bool puedeJugar() const;
 
     void atrapar(); //pozo
@@ -33,6 +33,8 @@ public:
     bool getRepetirTurno() const;
     int getTurnosPenalizado() const;
     bool estaAtrapado() const;
+
+    bool puedeJugar(); // <-- ¡AÑADE ESTA LÍNEA! (sin const)
 };
 
 #endif // JUGADOR_H

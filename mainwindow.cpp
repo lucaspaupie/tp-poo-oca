@@ -128,7 +128,8 @@ void MainWindow::BTdado(bool)
     ui->mensaje->setText(mensajeEspecial);
 
     // Verificar si cayó en casilla especial y obtener mensaje
-    int currentPos = actual.getPosicion();
+
+    // int currentPos = actual.getPosicion();
 
     // Actualizar posición visual
     actualizarTablero();
