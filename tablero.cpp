@@ -7,7 +7,8 @@
 #include <QSet>     // <-- NUEVO (para evitar casillas duplicadas)
 #include <QDebug>   // <-- NUEVO (opcional, para depurar)
 
-tablero::tablero() {
+tablero::tablero(int numCasillasMaximas) : m_numCasillas(numCasillasMaximas + 1)
+{
 
    /* QMap<int, QString> especiales = {
         {6, "puente"},
@@ -19,21 +20,14 @@ tablero::tablero() {
         {58, "calavera"}
     };
         */
+
     for (int i = 0; i < m_numCasillas; ++i) {
         casillas.append(new casilla(i));
     }
-
     generarCasillasEspeciales();
-
     cargarCoordenadas();
 
-    for (int i = 0; i <= 63; ++i) {
-        if (especiales.contains(i)) {
-            casillas.append(new casillaespecial(i, especiales[i]));
-        } else {
-            casillas.append(new casilla(i));
-        }
-    }
+
 }
 
 tablero::~tablero() {
@@ -48,9 +42,12 @@ void tablero::aplicarAccion(jugador& j) {
     }
 }
 QString tablero::moverJugador(jugador& j, int pasos) {
+    int meta = casillas.size() - 1;
     int nuevaPos = j.getPosicion() + pasos;
-    if (nuevaPos >= casillas.size()) {
-        nuevaPos = casillas.size() - 1;
+
+    if (nuevaPos > meta) {
+        int exceso = nuevaPos - meta;
+        nuevaPos = meta - exceso; // Rebota
     }
 
     j.setPosicion(nuevaPos);
@@ -134,7 +131,7 @@ void tablero::cargarCoordenadas() {
 QPoint tablero::getCoordenadaCasilla(int casilla, int jugadorID) {
     return posicionesJugadores[jugadorID][casilla];
 }*/
-}
+
 
 casilla* tablero::getCasilla(int numero){
     if(numero>=0 && numero < casillas.size()){
@@ -187,9 +184,9 @@ void tablero::generarCasillasEspeciales() {
     for (int i = 0; i < numPuentes; ++i) {
         plantarEspecial("puente");
     }
-    plantarEspecial("posada");
-    plantarEspecial("pozo");
-    plantarEspecial("laberinto");
-    plantarEspecial("carcel");
-    plantarEspecial("calavera");
+    for (int i = 0; i < numPosadas; ++i) { plantarEspecial("posada"); }
+    for (int i = 0; i < numPozos; ++i) { plantarEspecial("pozo"); }
+    for (int i = 0; i < numLaberintos; ++i) { plantarEspecial("laberinto"); }
+    for (int i = 0; i < numCarceles; ++i) { plantarEspecial("carcel"); }
+    for (int i = 0; i < numCalaveras; ++i) { plantarEspecial("calavera"); }
 }
