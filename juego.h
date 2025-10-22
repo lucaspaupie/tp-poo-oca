@@ -11,7 +11,9 @@ class Juego
 {
 private:
     QVector<jugador> jugadores;
-    dado dado;
+    dado dado1;
+    dado dado2;
+
     int turnoActual;
     tablero miTablero;
 public:
@@ -19,7 +21,9 @@ public:
     void agregarJugador(const QString& nombre);
     void iniciar();
 
-    int tirarDadoYAvanzar();
+    //int tirarDadoYAvanzar();
+    QString jugarTurno();
+
     void aplicarCasilla();
     bool esFinDelJuego() const;
     QString ganador() const;
@@ -30,7 +34,6 @@ public:
     int getTurno() const { return turnoActual; }
     tablero* getTablero() { return &miTablero; }
     void limpiarJugadores();
-
 };
 
 #endif // JUEGO_H
