@@ -8,7 +8,7 @@ class jugador
 private:
     QString nombre;
     int posicion;
-    int turnosPenalizado;
+    int turnosPenalizado=0;
     bool atrapado = false;
     bool repetirTurno = false;
 public:
