@@ -45,7 +45,6 @@ void jugador::restarTurnosPenalizado(){
 int jugador::getTurnosPenalizados() {
     if (turnosPenalizado < 0) turnosPenalizado = 0;
     return turnosPenalizado;
-    turnosPenalizado = turnos;
 
 }
 
