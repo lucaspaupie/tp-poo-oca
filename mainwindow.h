@@ -21,12 +21,11 @@ public:
 private slots:
    // void tirarDado(); // conectado al botón
     void iniciarjuego();
-    void confirmarCantidadJugadores();
     void BTdado(bool);
 
     void on_botoncomenzar_clicked();
 
-    void on_comboBox_activated(int index);
+    void on_numpj_activated(int index);
 
     void on_siguiente_clicked();
 
