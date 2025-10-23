@@ -1,5 +1,4 @@
 #include "mainwindow.h"
-#include "mainwindow.h"
 #include <QLabel>
 #include <QPushButton>
 #include <QVBoxLayout>
@@ -34,17 +33,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     juegoActual.getTablero()->cargarCoordenadas();
 
-    // --- CONEXIÓN DE PERSISTENCIA (Asumiendo que tienes actions o botones con estos nombres) ---
-    /*
-    // Si usas menú/actions:
-    if (ui->actionGuardar) connect(ui->actionGuardar, &QAction::triggered, this, &MainWindow::on_actionGuardar_triggered); // JSON (Texto)
-    if (ui->actionCargar) connect(ui->actionCargar, &QAction::triggered, this, &MainWindow::on_actionCargar_triggered);   // JSON (Texto)
-
-    // Conexión para Binario (AVANCE DE PARTIDA)
-    if (ui->actionGuardarBinario) connect(ui->actionGuardarBinario, &QAction::triggered, this, &MainWindow::on_actionGuardarBinario_triggered);
-    if (ui->actionCargarBinario) connect(ui->actionCargarBinario, &QAction::triggered, this, &MainWindow::on_actionCargarBinario_triggered);
-    */
-    // --- FIN CONEXIÓN ---
+    // NOTA IMPORTANTE: Para usar los slots de guardar/cargar (ej: on_actionGuardarBinario_triggered),
+    // debes conectar un QAction (si usas menú) o un QPushButton (si usas un botón)
+    // en tu archivo .ui a estos slots en tu código.
 
     iniciarjuego();
     actualizarUI();
@@ -82,7 +73,7 @@ void MainWindow::on_actionCargar_triggered() {
     if (!fileName.isEmpty()) {
         if (juegoActual.cargarJuego(fileName)) {
             QMessageBox::information(this, "Cargar", "Configuración cargada (JSON) correctamente.");
-            ui->stackedWidget->setCurrentWidget(ui->tablero); // Ir al tablero
+            ui->stackedWidget->setCurrentWidget(ui->tablero);
             actualizarTablero();
             actualizarUI();
         } else {
@@ -117,7 +108,7 @@ void MainWindow::on_actionCargarBinario_triggered() {
     if (!fileName.isEmpty()) {
         if (juegoActual.cargarPartidaBinario(fileName)) {
             QMessageBox::information(this, "Cargar", "Partida cargada (Binario) correctamente.");
-            ui->stackedWidget->setCurrentWidget(ui->tablero); // Ir al tablero
+            ui->stackedWidget->setCurrentWidget(ui->tablero);
             actualizarTablero();
             actualizarUI();
         } else {
@@ -126,7 +117,7 @@ void MainWindow::on_actionCargarBinario_triggered() {
     }
 }
 
-// --- MÉTODOS EXISTENTES ---
+// --- MÉTODOS EXISTENTES Y CORREGIDOS ---
 
 void MainWindow::actualizarUI()
 {
@@ -135,7 +126,12 @@ void MainWindow::actualizarUI()
     jugador& actual = juegoActual.getJugadorActual();
     setWindowTitle("Turno de: " + actual.getNombre() + " (Casilla "
                    + QString::number(actual.getPosicion()) + ")");
-    ui->labelTurno->setText("Turno: " + actual.getNombre());
+
+    // ** CORRECCIÓN DE ERROR 'labelTurno' **
+    // Usamos 'mensaje' como alternativa para evitar el error de compilación.
+    if (ui->mensaje && ui->mensaje->text().isEmpty()) {
+        ui->mensaje->setText("Turno actual: " + actual.getNombre());
+    }
 }
 
 void MainWindow::BTdado(bool)
@@ -284,4 +280,3 @@ void MainWindow::on_siguiente_clicked() {
 }
 
 void MainWindow::cantjug(){}
-void MainWindow::pj(){}
