@@ -4,8 +4,15 @@
 #include <QMap>
 #include "mainwindow.h"
 
-tablero::tablero() {
-    QMap<int, QString> especiales = {
+
+#include <random>   // <-- NUEVO
+#include <QSet>     // <-- NUEVO (para evitar casillas duplicadas)
+#include <QDebug>   // <-- NUEVO (opcional, para depurar)
+
+tablero::tablero(int numCasillasMaximas) : m_numCasillas(numCasillasMaximas + 1)
+{
+
+   /* QMap<int, QString> especiales = {
         {6, "puente"},
         {9, "oca"}, {18, "oca"}, {27, "oca"}, {36, "oca"}, {45, "oca"}, {54, "oca"},
         {19, "posada"},
@@ -14,14 +21,15 @@ tablero::tablero() {
         {56, "carcel"},
         {58, "calavera"}
     };
+        */
 
-    for (int i = 0; i <= 63; ++i) {
-        if (especiales.contains(i)) {
-            casillas.append(new casillaespecial(i, especiales[i]));
-        } else {
-            casillas.append(new casilla(i));
-        }
+    for (int i = 0; i < m_numCasillas; ++i) {
+        casillas.append(new casilla(i));
     }
+    generarCasillasEspeciales();
+    cargarCoordenadas();
+
+
 }
 
 tablero::~tablero() {
@@ -36,11 +44,12 @@ void tablero::aplicarAccion(jugador& j) {
     }
 }
 QString tablero::moverJugador(jugador& j, int pasos) {
+    int meta = casillas.size() - 1;
     int nuevaPos = j.getPosicion() + pasos;
-    if (nuevaPos >= casillas.size()) {
-        // Al llegar o pasar la casilla final (63) rebota
-        int exceso = nuevaPos - (casillas.size() - 1);
-        nuevaPos = (casillas.size() - 1) - exceso;
+
+    if (nuevaPos > meta) {
+        int exceso = nuevaPos - meta;
+        nuevaPos = meta - exceso; // Rebota
     }
 
     j.setPosicion(nuevaPos);
@@ -74,32 +83,47 @@ QPoint tablero::getCoordenadaCasilla(int casilla, int jugadorID) {
 void tablero::cargarCoordenadas() {
     this->posicionesJugadores.resize(1);
 
-    // ... (Coordenadas existentes) ...
-    this->posicionesJugadores[0] = {
-        QPoint(120, 620), QPoint(250, 620), QPoint(320, 620),
-        QPoint(390, 620), QPoint(450, 620), QPoint(520, 620),
-        QPoint(600, 620), QPoint(670, 620), QPoint(720, 620),
-        QPoint(800, 620), QPoint(850, 550), QPoint(880, 500),
-        QPoint(910, 450), QPoint(930, 390), QPoint(950, 300),
-        QPoint(940, 240), QPoint(930, 170), QPoint(890, 120),
-        QPoint(800, 50),  QPoint(720, 20),  QPoint(640, 10),
-        QPoint(580, 10),  QPoint(510, 10),  QPoint(450, 10),
-        QPoint(380, 10),  QPoint(320, 10),  QPoint(250, 10),
-        QPoint(180, 30),  QPoint(120, 70),  QPoint(80, 120),
-        QPoint(40, 180),  QPoint(30, 250),  QPoint(40, 320),
-        QPoint(40, 400),  QPoint(70, 470),  QPoint(160, 480),
-        QPoint(210, 510), QPoint(270, 520), QPoint(320, 520),
-        QPoint(390, 520), QPoint(450, 520), QPoint(520, 520),
-        QPoint(600, 520), QPoint(670, 520), QPoint(720, 510),
-        QPoint(780, 460), QPoint(810, 410), QPoint(820, 360),
-        QPoint(820, 310), QPoint(850, 230), QPoint(780, 150),
-        QPoint(720, 120), QPoint(620, 110), QPoint(530, 110),
-        QPoint(450, 110), QPoint(380, 110), QPoint(310, 110),
-        QPoint(240, 110), QPoint(190, 170), QPoint(140, 280),
-        QPoint(200, 350), QPoint(230, 400), QPoint(270, 420),
-        QPoint(490, 310) // Casilla 63
+    this->posicionesJugadores[0].resize(m_numCasillas);
+
+    // Generamos coordenadas "dummy" solo para que funcione
+    // Esto creará una simple línea recta
+
+    for (int i = 0; i < m_numCasillas; ++i) {
+        this->posicionesJugadores[0][i] = QPoint(10 + (i * 10), 300);
+    }
+
+    /*this->posicionesJugadores[0] = {
+                                    QPoint(120, 620), QPoint(250, 620), QPoint(320, 620),
+                                    QPoint(390, 620), QPoint(450, 620), QPoint(520, 620),
+                                    QPoint(600, 620), QPoint(670, 620), QPoint(720, 620),
+                                    QPoint(800, 620), QPoint(850, 550), QPoint(880, 500),
+                                    QPoint(910, 450), QPoint(930, 390), QPoint(950, 300),
+                                    QPoint(940, 240), QPoint(930, 170), QPoint(890, 120),
+                                    QPoint(800, 50),  QPoint(720, 20),  QPoint(640, 10),
+                                    QPoint(580, 10),  QPoint(510, 10),  QPoint(450, 10),
+                                    QPoint(380, 10),  QPoint(320, 10),  QPoint(250, 10),
+                                    QPoint(180, 30),  QPoint(120, 70),  QPoint(80, 120),
+                                    QPoint(40, 180),  QPoint(30, 250),  QPoint(40, 320),
+                                    QPoint(40, 400),  QPoint(70, 470),  QPoint(160, 480),
+                                    QPoint(210, 510), QPoint(270, 520), QPoint(320, 520),
+                                    QPoint(390, 520), QPoint(450, 520), QPoint(520, 520),
+                                    QPoint(600, 520), QPoint(670, 520), QPoint(720, 510),
+                                    QPoint(780, 460), QPoint(810, 410), QPoint(820, 360),
+                                    QPoint(820, 310), QPoint(850, 230), QPoint(780, 150),
+                                    QPoint(720, 120), QPoint(620, 110), QPoint(530, 110),
+                                    QPoint(450, 110), QPoint(380, 110), QPoint(310, 110),
+                                    QPoint(240, 110), QPoint(190, 170), QPoint(140, 280),
+                                    QPoint(200, 350), QPoint(230, 400), QPoint(270, 420),
+                                    QPoint(490, 310)
+    */
     };
 }
+
+/*
+QPoint tablero::getCoordenadaCasilla(int casilla, int jugadorID) {
+    return posicionesJugadores[jugadorID][casilla];
+}*/
+
 
 
 casilla* tablero::getCasilla(int numero){
@@ -109,7 +133,54 @@ casilla* tablero::getCasilla(int numero){
     return nullptr;
 }
 
-// Nueva función getCasillas (solo el vector, para obtener el tamaño)
-const QVector<casilla*>& tablero::getCasillas() const {
-    return casillas;
+
+
+void tablero::generarCasillasEspeciales() {
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+
+    std::uniform_int_distribution<> dis(1, m_numCasillas - 2);
+    QSet<int> posicionesUsadas;
+
+    // Hacemos que sea proporcional al tamaño del tablero
+    int numOcas = m_numCasillas / 10;     // Ej: 64/10 = 6 ocas
+    int numPuentes = m_numCasillas / 30;  // Ej: 64/30 = 2 puentes
+    int numPozos = 1;
+    int numPosadas = 1;
+    int numLaberintos = 1;
+    int numCarceles = 1;
+    int numCalaveras = 1;
+
+    // --- Función auxiliar (Lambda) para plantar una casilla ---
+    // Esto es para no repetir código. Captura 'dis', 'gen', y 'posicionesUsadas'
+    auto plantarEspecial = [&](const QString& tipo) {
+        int pos;
+        do {
+            pos = dis(gen); // Elige un número al azar
+        } while (posicionesUsadas.contains(pos)); // Si ya está usado, elige otro
+
+        posicionesUsadas.insert(pos); // Marca la posición como usada
+
+        // ¡IMPORTANTE! Borramos la casilla normal ANTES de reemplazarla
+        delete casillas[pos];
+
+        // Creamos y asignamos la nueva casilla especial
+        casillas[pos] = new casillaespecial(pos, tipo);
+
+       // qDebug() << "Generada casilla" << tipo << "en" << pos; // Para depurar
+    };
+
+    // --- Plantamos las casillas --- [cite: 31, 33]
+    for (int i = 0; i < numOcas; ++i) {
+        plantarEspecial("oca");
+    }
+    for (int i = 0; i < numPuentes; ++i) {
+        plantarEspecial("puente");
+    }
+    for (int i = 0; i < numPosadas; ++i) { plantarEspecial("posada"); }
+    for (int i = 0; i < numPozos; ++i) { plantarEspecial("pozo"); }
+    for (int i = 0; i < numLaberintos; ++i) { plantarEspecial("laberinto"); }
+    for (int i = 0; i < numCarceles; ++i) { plantarEspecial("carcel"); }
+    for (int i = 0; i < numCalaveras; ++i) { plantarEspecial("calavera"); }
 }

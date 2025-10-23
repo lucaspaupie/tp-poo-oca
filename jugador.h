@@ -10,7 +10,7 @@ class jugador
 private:
     QString nombre;
     int posicion;
-    int turnosPenalizado;
+    int turnosPenalizado=0;
     bool atrapado = false;
     bool repetirTurno = false;
 public:
@@ -32,9 +32,11 @@ public:
 
     // funciones casilla posada
     void penalizar(int turnos);
-    bool estaPenalizado() const;
+    bool estaPenalizado();
     void restarTurnosPenalizado();
-    int getTurnosPenalizados() const;
+
+    int getTurnosPenalizados();
+  //  bool puedeJugar() const;
 
     void atrapar(); //pozo
     void liberar(); //para calavera
@@ -45,7 +47,7 @@ public:
     int getTurnosPenalizado() const;
     bool estaAtrapado() const;
 
-    bool puedeJugar() const; // Asegurando que está declarado
+    bool puedeJugar(); // <-- ¡AÑADE ESTA LÍNEA! (sin const)
 };
 
 #endif // JUGADOR_H

@@ -169,6 +169,12 @@ void MainWindow::BTdado(bool)
 
     QString mensajeEspecial = juegoActual.getTablero()->moverJugador(actual, resultado1);
 
+    // Verificar si cayó en casilla especial y obtener mensaje
+
+    // int currentPos = actual.getPosicion();
+
+    // Actualizar posición visual
+
     actualizarTablero();
 
     ui->mensaje->setText(mensajeEspecial);

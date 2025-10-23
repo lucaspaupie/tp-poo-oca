@@ -92,7 +92,7 @@ void jugador::penalizar(int turnos) {
     if (turnosPenalizado < 0) turnosPenalizado = 0; // Asegura que no sea negativo
 }
 
-bool jugador::estaPenalizado() const{
+bool jugador::estaPenalizado(){
 
     return turnosPenalizado>0;
 }
@@ -101,15 +101,20 @@ void jugador::restarTurnosPenalizado(){
         turnosPenalizado--;
     }
 }
-//////////////////////////////////////
 
-int jugador::getTurnosPenalizados() const {
+int jugador::getTurnosPenalizados() {
+    if (turnosPenalizado < 0) turnosPenalizado = 0;
     return turnosPenalizado;
 }
 
-bool jugador::puedeJugar() const {
+bool jugador::puedeJugar() {
     return !atrapado && turnosPenalizado <= 0;
 }
+
+// esto lo saque para hacer la casilla posada
+// bool jugador::puedeJugar() const {
+//     return !atrapado && turnosPenalizado == 0;
+// }
 
 void jugador::atrapar() {
     atrapado = true;
