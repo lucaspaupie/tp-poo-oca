@@ -19,7 +19,6 @@ public:
     ~MainWindow();
 
 private slots:
-   // void tirarDado(); // conectado al botón
     void iniciarjuego();
     void BTdado(bool);
 
@@ -28,6 +27,14 @@ private slots:
     void on_numpj_activated(int index);
 
     void on_siguiente_clicked();
+
+    // SLOTS PARA PERSISTENCIA JSON (Texto)
+    void on_actionGuardar_triggered(); // Asume que este es el JSON
+    void on_actionCargar_triggered();  // Asume que este es el JSON
+
+    // NUEVOS SLOTS PARA PERSISTENCIA BINARIA
+    void on_actionGuardarBinario_triggered();
+    void on_actionCargarBinario_triggered();
 
 private:
     Ui::MainWindow *ui;
@@ -44,8 +51,5 @@ private:
     QVector<QVector<QPoint>> posicionesJugadores;
 
 };
-
-
-
 
 #endif // MAINWINDOW_H

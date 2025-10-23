@@ -3,6 +3,7 @@
 
 #include <QVector>
 #include <QString>
+#include <QJsonDocument>
 #include "jugador.h"
 #include "dado.h"
 #include "tablero.h"
@@ -16,6 +17,15 @@ private:
     tablero miTablero;
 public:
     Juego();
+
+    // MÉTODOS DE PERSISTENCIA (JSON - texto)
+    bool guardarJuego(const QString& nombreArchivo);
+    bool cargarJuego(const QString& nombreArchivo);
+
+    // MÉTODOS DE PERSISTENCIA (BINARIO - avance de partida)
+    bool guardarPartidaBinario(const QString& nombreArchivo);
+    bool cargarPartidaBinario(const QString& nombreArchivo);
+
     void agregarJugador(const QString& nombre);
     void iniciar();
 

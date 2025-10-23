@@ -3,6 +3,7 @@
 #include "casillaespecial.h"
 #include <QMap>
 #include "mainwindow.h"
+
 tablero::tablero() {
     QMap<int, QString> especiales = {
         {6, "puente"},
@@ -37,7 +38,9 @@ void tablero::aplicarAccion(jugador& j) {
 QString tablero::moverJugador(jugador& j, int pasos) {
     int nuevaPos = j.getPosicion() + pasos;
     if (nuevaPos >= casillas.size()) {
-        nuevaPos = casillas.size() - 1;
+        // Al llegar o pasar la casilla final (63) rebota
+        int exceso = nuevaPos - (casillas.size() - 1);
+        nuevaPos = (casillas.size() - 1) - exceso;
     }
 
     j.setPosicion(nuevaPos);
@@ -50,13 +53,15 @@ QString tablero::moverJugador(jugador& j, int pasos) {
         int siguiente = casillaespecial::siguienteOca(nuevaPos);
         if (siguiente != -1) {
             j.setPosicion(siguiente);  // Teletransporta
+            mensaje += "\n¡De oca en oca y tiro porque me toca! (Avanzaste a la casilla " + QString::number(siguiente) + ")";
         }
     }
     return mensaje;
 }
 
 QPoint tablero::getCoordenadaCasilla(int casilla, int jugadorID) {
-    if (jugadorID >= posicionesJugadores.size() || casilla >= posicionesJugadores[jugadorID].size())
+    // Usamos el jugadorID para calcular el offset, tal como se definió en el cpp
+    if (casilla >= posicionesJugadores[0].size())
         return QPoint(0, 0);  // fallback
     QPoint base = posicionesJugadores[0][casilla];
     switch (jugadorID) {
@@ -64,58 +69,47 @@ QPoint tablero::getCoordenadaCasilla(int casilla, int jugadorID) {
     case 2: return base + QPoint(0, 15);
     case 3: return base + QPoint(15,15);
     default: return base;
-        break;
     }
 }
 void tablero::cargarCoordenadas() {
     this->posicionesJugadores.resize(1);
 
+    // ... (Coordenadas existentes) ...
     this->posicionesJugadores[0] = {
-                                    QPoint(120, 620), QPoint(250, 620), QPoint(320, 620),
-                                    QPoint(390, 620), QPoint(450, 620), QPoint(520, 620),
-                                    QPoint(600, 620), QPoint(670, 620), QPoint(720, 620),
-                                    QPoint(800, 620), QPoint(850, 550), QPoint(880, 500),
-                                    QPoint(910, 450), QPoint(930, 390), QPoint(950, 300),
-                                    QPoint(940, 240), QPoint(930, 170), QPoint(890, 120),
-                                    QPoint(800, 50),  QPoint(720, 20),  QPoint(640, 10),
-                                    QPoint(580, 10),  QPoint(510, 10),  QPoint(450, 10),
-                                    QPoint(380, 10),  QPoint(320, 10),  QPoint(250, 10),
-                                    QPoint(180, 30),  QPoint(120, 70),  QPoint(80, 120),
-                                    QPoint(40, 180),  QPoint(30, 250),  QPoint(40, 320),
-                                    QPoint(40, 400),  QPoint(70, 470),  QPoint(160, 480),
-                                    QPoint(210, 510), QPoint(270, 520), QPoint(320, 520),
-                                    QPoint(390, 520), QPoint(450, 520), QPoint(520, 520),
-                                    QPoint(600, 520), QPoint(670, 520), QPoint(720, 510),
-                                    QPoint(780, 460), QPoint(810, 410), QPoint(820, 360),
-                                    QPoint(820, 310), QPoint(850, 230), QPoint(780, 150),
-                                    QPoint(720, 120), QPoint(620, 110), QPoint(530, 110),
-                                    QPoint(450, 110), QPoint(380, 110), QPoint(310, 110),
-                                    QPoint(240, 110), QPoint(190, 170), QPoint(140, 280),
-                                    QPoint(200, 350), QPoint(230, 400), QPoint(270, 420),
-                                    QPoint(490, 310)
+        QPoint(120, 620), QPoint(250, 620), QPoint(320, 620),
+        QPoint(390, 620), QPoint(450, 620), QPoint(520, 620),
+        QPoint(600, 620), QPoint(670, 620), QPoint(720, 620),
+        QPoint(800, 620), QPoint(850, 550), QPoint(880, 500),
+        QPoint(910, 450), QPoint(930, 390), QPoint(950, 300),
+        QPoint(940, 240), QPoint(930, 170), QPoint(890, 120),
+        QPoint(800, 50),  QPoint(720, 20),  QPoint(640, 10),
+        QPoint(580, 10),  QPoint(510, 10),  QPoint(450, 10),
+        QPoint(380, 10),  QPoint(320, 10),  QPoint(250, 10),
+        QPoint(180, 30),  QPoint(120, 70),  QPoint(80, 120),
+        QPoint(40, 180),  QPoint(30, 250),  QPoint(40, 320),
+        QPoint(40, 400),  QPoint(70, 470),  QPoint(160, 480),
+        QPoint(210, 510), QPoint(270, 520), QPoint(320, 520),
+        QPoint(390, 520), QPoint(450, 520), QPoint(520, 520),
+        QPoint(600, 520), QPoint(670, 520), QPoint(720, 510),
+        QPoint(780, 460), QPoint(810, 410), QPoint(820, 360),
+        QPoint(820, 310), QPoint(850, 230), QPoint(780, 150),
+        QPoint(720, 120), QPoint(620, 110), QPoint(530, 110),
+        QPoint(450, 110), QPoint(380, 110), QPoint(310, 110),
+        QPoint(240, 110), QPoint(190, 170), QPoint(140, 280),
+        QPoint(200, 350), QPoint(230, 400), QPoint(270, 420),
+        QPoint(490, 310) // Casilla 63
     };
-
-
-
-    /*
-    // Copiá la misma para los demás con desplazamiento si querés
-    for (int j = 1; j < 4; ++j) {
-        for (int i = 0; i < 64; ++i) {
-            QPoint base = posicionesJugadores[0][i];
-            posicionesJugadores[j].append(QPoint(base.x() + j*10, base.y() + j*10)); // pequeño offset
-        }
-    }
 }
 
-
-QPoint tablero::getCoordenadaCasilla(int casilla, int jugadorID) {
-    return posicionesJugadores[jugadorID][casilla];
-}*/
-}
 
 casilla* tablero::getCasilla(int numero){
     if(numero>=0 && numero < casillas.size()){
         return casillas[numero];
     }
     return nullptr;
+}
+
+// Nueva función getCasillas (solo el vector, para obtener el tamaño)
+const QVector<casilla*>& tablero::getCasillas() const {
+    return casillas;
 }

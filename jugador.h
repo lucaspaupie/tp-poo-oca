@@ -2,6 +2,8 @@
 #define JUGADOR_H
 
 #include <QString>
+#include <QJsonObject>
+#include <QDataStream> // Añadido para serialización binaria
 
 class jugador
 {
@@ -13,17 +15,26 @@ private:
     bool repetirTurno = false;
 public:
     jugador(const QString& nombre);
+
+    // Métodos de serialización JSON (texto)
+    QJsonObject toJson() const;
+    static jugador fromJson(const QJsonObject& json);
+
+    // Métodos de serialización BINARIA (NUEVO)
+    friend QDataStream &operator<<(QDataStream &out, const jugador &j);
+    friend QDataStream &operator>>(QDataStream &in, jugador &j);
+
     void mover(int pasos);
     int getPosicion() const;
     void setPosicion(int nuevaPos); //nuevo
     QString getNombre() const;
     bool ganador() const;
+
     // funciones casilla posada
     void penalizar(int turnos);
     bool estaPenalizado() const;
     void restarTurnosPenalizado();
     int getTurnosPenalizados() const;
-  //  bool puedeJugar() const;
 
     void atrapar(); //pozo
     void liberar(); //para calavera
@@ -33,6 +44,8 @@ public:
     bool getRepetirTurno() const;
     int getTurnosPenalizado() const;
     bool estaAtrapado() const;
+
+    bool puedeJugar() const; // Asegurando que está declarado
 };
 
 #endif // JUGADOR_H
