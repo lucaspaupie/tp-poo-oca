@@ -19,6 +19,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void actualizarCasillas(int cantidadCasillas);
 
 private slots:
     void iniciarjuego();
@@ -56,7 +57,7 @@ private:
     QVector<QVector<QPoint>> posicionesJugadores;
 
     std::map<int, QLabel*> m_fichasJugadores;
-
+    int cantidadCasillas;
 };
 
 #endif // MAINWINDOW_H

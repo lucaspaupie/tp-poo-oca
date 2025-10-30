@@ -44,6 +44,11 @@ MainWindow::MainWindow(QWidget *parent)
 
     iniciarjuego();
     actualizarUI();
+    // int cantidadCasillas = 63; // la cantidad que quieras mostrar
+
+    // QTimer::singleShot(0, this, [this, cantidadCasillas]() {
+    //     actualizarCasillas(cantidadCasillas);
+    // });
 }
 
 MainWindow::~MainWindow()
@@ -315,8 +320,12 @@ void MainWindow::actualizarTablero() {
     for (int i = 0; i < juegoActual.getCantidadJugadores(); ++i) {
         int posicion = juegoActual.getJugador(i).getPosicion();
 
-        // Obtenemos el QLabel correspondiente a la casilla
-        QString nombreCasilla = QString("casilla%1").arg(posicion);
+        if (posicion < 0) {
+            qDebug() << "Jugador" << i << "tiene posición inválida:" << posicion;
+            continue; // evita buscar casilla0
+        }
+
+        QString nombreCasilla = QString("casilla%1").arg(posicion + 1);
         QLabel* labelCasilla = findChild<QLabel*>(nombreCasilla);
 
         if (!labelCasilla) {
@@ -327,10 +336,8 @@ void MainWindow::actualizarTablero() {
         QLabel* ficha = m_fichasJugadores[i];
         if (!ficha) continue;
 
-        // Movemos la ficha sobre el QLabel de la casilla
         QPoint destino = labelCasilla->pos();
 
-        // Pequeño offset visual según jugador (para que no se superpongan)
         switch (i) {
         case 1: destino += QPoint(10, 0); break;
         case 2: destino += QPoint(0, 10); break;
@@ -338,16 +345,39 @@ void MainWindow::actualizarTablero() {
         }
 
         ficha->move(destino);
-        ficha->raise(); // traer ficha al frente
+        ficha->raise();
     }
 }
 
 void MainWindow::on_botoncomenzar_clicked() {
-    qDebug() << "on_botoncomenzar_clicked: Iniciando el juego.";
+    qDebug() << "Iniciando el juego...";
+
+    // 1. Inicia el juego: resetea posiciones y turnos
     juegoActual.iniciar();
+    QTimer::singleShot(0, this, [this]() {
+
+
+    // 2. Toma la cantidad de casillas del spinBox (si existe)
+    int cantidadCasillas = ui->spinCasillas->value();
+
+    // 3. Cambia la vista al tablero
     ui->stackedWidget->setCurrentWidget(ui->tablero);
+    actualizarCasillas(cantidadCasillas);
+    // 4. Actualiza tablero y UI
     actualizarTablero();
     actualizarUI();
+    // 🔹 Esperamos un ciclo de evento para asegurar que el UI esté cargado
+        });
+}
+
+void MainWindow::actualizarCasillas(int cantidad)
+{
+    for (int i = 1; i <= 90; ++i) {
+        QLabel *casilla = this->findChild<QLabel*>(QString("casilla%1").arg(i));
+        if (casilla) {
+            casilla->setVisible(i <= cantidad); // solo mostramos hasta la cantidad elegida
+        }
+    }
 }
 
 void MainWindow::on_siguiente_clicked() {
