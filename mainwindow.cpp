@@ -25,7 +25,8 @@ MainWindow::MainWindow(QWidget *parent)
     m_fichasJugadores[3] = ui->Jugador_4;
 
     //cosas del dado
-    miDado = new dado();
+    miDado1 = new dado();
+    miDado2 = new dado();
 
     //aca vamos a poner todos los connect de botones
     connect(ui->botoncomenzar, &QPushButton::clicked, this, &MainWindow::mostrarSeleccionPersonajes);
@@ -49,7 +50,8 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
-    delete miDado;
+    delete miDado1;
+    delete miDado2;
 }
 
 // --- SLOTS DE PERSISTENCIA JSON (Texto - Configuración) ---
@@ -138,7 +140,7 @@ void MainWindow::actualizarUI()
         ui->mensaje->setText("Turno actual: " + actual.getNombre());
     }
 }
-
+/*
 void MainWindow::BTdado(bool)
 {
     int resultado1 = miDado->tirar();
@@ -210,6 +212,74 @@ void MainWindow::BTdado(bool)
     juegoActual.pasarTurno();
     actualizarUI();
 }
+*/
+void MainWindow::BTdado(bool)
+{
+    int resultado1 = miDado1->tirar();
+    int resultado2 = miDado2->tirar();
+    int suma = resultado1 + resultado2;
+
+    qDebug() << "Dado 1:" << resultado1 << "Dado 2:" << resultado2 << "Suma:" << suma;
+
+    // Mostrar imágenes de ambos dados
+    QString rutaImagen1 = QString(":/new/prefix1/imagenes/dado%1.png").arg(resultado1);
+    QString rutaImagen2 = QString(":/new/prefix1/imagenes/dado%1.png").arg(resultado2);
+
+    QPixmap skin1(rutaImagen1);
+    QPixmap skin2(rutaImagen2);
+
+    if (!skin1.isNull()) {
+        ui->labelDado->setPixmap(skin1.scaled(ui->labelDado->size(), Qt::KeepAspectRatio));
+    }
+    if (!skin2.isNull() && ui->labelDado2) { // labelDado2 creado en Qt Designer
+        ui->labelDado2->setPixmap(skin2.scaled(ui->labelDado2->size(), Qt::KeepAspectRatio));
+    }
+
+    jugador& actual = juegoActual.getJugadorActual();
+
+    if (!actual.puedeJugar()) {
+        QString msg;
+
+        if (actual.getTurnosPenalizado() > 0) {
+            msg = "Estás penalizado. Te quedan " + QString::number(actual.getTurnosPenalizado()) + " turno(s) para descansar.";
+        } else if (actual.estaAtrapado()) {
+            msg = "Estás atrapado en el pozo. Esperá que otro jugador te libere.";
+        }
+
+        ui->mensaje->setText(msg);
+        QTimer::singleShot(3000, this, [this]() { ui->mensaje->clear(); });
+
+        juegoActual.pasarTurno();
+        actualizarUI();
+        return;
+    }
+
+    // Movimiento del jugador
+    QString mensajeEspecial = juegoActual.getTablero()->moverJugador(actual, suma);
+    actualizarTablero();
+
+    ui->mensaje->setText(mensajeEspecial);
+
+    if (!mensajeEspecial.isEmpty()) {
+        QTimer::singleShot(3000, this, [this]() { ui->mensaje->clear(); });
+    }
+
+    if (actual.getRepetirTurno()) {
+        actual.setRepetirTurno(false);
+        ui->mensaje->setText("Caíste en la Oca. ¡Volvé a tirar!");
+        actualizarUI();
+        return;
+    }
+
+    if (juegoActual.esFinDelJuego()) {
+        QMessageBox::information(this, "Fin del Juego", "¡" + actual.getNombre() + " ha ganado!");
+        cerrarJuego();
+        return;
+    }
+
+    juegoActual.pasarTurno();
+    actualizarUI();
+}
 
 
 void MainWindow::iniciarjuego()
@@ -271,45 +341,7 @@ void MainWindow::pj()
 {
     ui->stackedWidget->setCurrentWidget(ui->tablero);
 }
-/*
-void MainWindow::actualizarTablero() {
-   /* for (int i = 0; i < juegoActual.getCantidadJugadores(); ++i) {
-        int posicion = juegoActual.getJugador(i).getPosicion();
-        QPoint baseCoord = juegoActual.getTablero()->getCoordenadaCasilla(posicion, i);
 
-        QLabel* ficha = nullptr;
-        switch (i) {
-        case 0: ficha = ui->Jugador_1; break;
-        case 1: ficha = ui->Jugador_2; break;
-        case 2: ficha = ui->Jugador_3; break;
-        case 3: ficha = ui->Jugador_4; break;
-        }
-
-        if (ficha) ficha->move(baseCoord);
-    }
-
-   //funcion modificada lucho 29/10
-   for (int i = 0; i < juegoActual.getCantidadJugadores(); ++i) {
-
-       // 1. Obtenemos la posición LÓGICA (ej: casilla 25)
-       int posicion = juegoActual.getJugador(i).getPosicion();
-
-
-       // 2. Pedimos a la clase Tablero las coordenadas (x, y) de esa casilla
-       //    (Tu función ya incluye el offset para que no se pisen)
-       QPoint baseCoord = juegoActual.getTablero()->getCoordenadaCasilla(posicion, i);
-
-       // 3. Obtenemos el QLabel de la ficha usando nuestro MAPA
-       QLabel* ficha = m_fichasJugadores[i];
-
-       // 4. Movemos el QLabel a esas coordenadas
-       if (ficha) {
-           ficha->move(baseCoord);
-           ficha->raise(); // (Opcional) Pone la ficha "encima" de todo
-       }
-   }
-}
-*/
 
 void MainWindow::actualizarTablero() {
     for (int i = 0; i < juegoActual.getCantidadJugadores(); ++i) {

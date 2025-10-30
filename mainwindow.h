@@ -47,7 +47,8 @@ private:
     void cantjug();
     void pj();
     Juego juego;
-    dado* miDado;
+    dado* miDado1;
+    dado* miDado2;
 
     void moverJugadorACasilla(int indiceJugador, int numeroCasilla);
     void actualizarPosicionesJugadores();
