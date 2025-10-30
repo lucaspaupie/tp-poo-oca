@@ -30,7 +30,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="comienzo">
      <property name="minimumSize">
@@ -229,8 +229,8 @@ background-color: transparent;
      <widget class="QLabel" name="Jugador_1">
       <property name="geometry">
        <rect>
-        <x>140</x>
-        <y>600</y>
+        <x>20</x>
+        <y>540</y>
         <width>49</width>
         <height>31</height>
        </rect>
@@ -245,8 +245,8 @@ background-color: transparent;
      <widget class="QLabel" name="Jugador_2">
       <property name="geometry">
        <rect>
-        <x>140</x>
-        <y>630</y>
+        <x>20</x>
+        <y>570</y>
         <width>49</width>
         <height>41</height>
        </rect>
@@ -261,8 +261,8 @@ background-color: transparent;
      <widget class="QLabel" name="Jugador_3">
       <property name="geometry">
        <rect>
-        <x>140</x>
-        <y>680</y>
+        <x>-20</x>
+        <y>570</y>
         <width>49</width>
         <height>31</height>
        </rect>
@@ -277,8 +277,8 @@ background-color: transparent;
      <widget class="QLabel" name="Jugador_4">
       <property name="geometry">
        <rect>
-        <x>140</x>
-        <y>660</y>
+        <x>-20</x>
+        <y>540</y>
         <width>49</width>
         <height>31</height>
        </rect>
@@ -1756,6 +1756,104 @@ background-color: transparent;
        <string/>
       </property>
      </widget>
+     <zorder>labelDado</zorder>
+     <zorder>BTdado</zorder>
+     <zorder>mensaje</zorder>
+     <zorder>casilla11</zorder>
+     <zorder>casilla12</zorder>
+     <zorder>casilla13</zorder>
+     <zorder>casilla15</zorder>
+     <zorder>casilla21</zorder>
+     <zorder>casilla19</zorder>
+     <zorder>casilla17</zorder>
+     <zorder>casilla25</zorder>
+     <zorder>casilla27</zorder>
+     <zorder>casilla31</zorder>
+     <zorder>casilla29</zorder>
+     <zorder>casilla33</zorder>
+     <zorder>casilla37</zorder>
+     <zorder>casilla39</zorder>
+     <zorder>casilla35</zorder>
+     <zorder>casilla43</zorder>
+     <zorder>casilla41</zorder>
+     <zorder>casilla55</zorder>
+     <zorder>casilla49</zorder>
+     <zorder>casilla45</zorder>
+     <zorder>casilla51</zorder>
+     <zorder>casilla9</zorder>
+     <zorder>casilla47</zorder>
+     <zorder>casilla67</zorder>
+     <zorder>casilla57</zorder>
+     <zorder>casilla7</zorder>
+     <zorder>casilla59</zorder>
+     <zorder>casilla1</zorder>
+     <zorder>casilla3</zorder>
+     <zorder>casilla65</zorder>
+     <zorder>casilla63</zorder>
+     <zorder>casilla5</zorder>
+     <zorder>casilla14</zorder>
+     <zorder>casilla16</zorder>
+     <zorder>casilla18</zorder>
+     <zorder>casilla20</zorder>
+     <zorder>casilla22</zorder>
+     <zorder>casilla24</zorder>
+     <zorder>casilla30</zorder>
+     <zorder>casilla32</zorder>
+     <zorder>casilla28</zorder>
+     <zorder>casilla36</zorder>
+     <zorder>casilla38</zorder>
+     <zorder>casilla34</zorder>
+     <zorder>casilla42</zorder>
+     <zorder>casilla40</zorder>
+     <zorder>casilla44</zorder>
+     <zorder>casilla46</zorder>
+     <zorder>casilla54</zorder>
+     <zorder>casilla50</zorder>
+     <zorder>casilla48</zorder>
+     <zorder>casilla66</zorder>
+     <zorder>casilla8</zorder>
+     <zorder>casilla68</zorder>
+     <zorder>casilla60</zorder>
+     <zorder>casilla56</zorder>
+     <zorder>casilla58</zorder>
+     <zorder>casilla64</zorder>
+     <zorder>casilla62</zorder>
+     <zorder>casilla2</zorder>
+     <zorder>casilla6</zorder>
+     <zorder>casilla4</zorder>
+     <zorder>casilla74</zorder>
+     <zorder>casilla10</zorder>
+     <zorder>casilla72</zorder>
+     <zorder>casilla70</zorder>
+     <zorder>casilla78</zorder>
+     <zorder>casilla76</zorder>
+     <zorder>casilla82</zorder>
+     <zorder>casilla86</zorder>
+     <zorder>casilla84</zorder>
+     <zorder>casilla90</zorder>
+     <zorder>casilla88</zorder>
+     <zorder>casilla69</zorder>
+     <zorder>casilla71</zorder>
+     <zorder>casilla73</zorder>
+     <zorder>casilla75</zorder>
+     <zorder>casilla87</zorder>
+     <zorder>casilla85</zorder>
+     <zorder>casilla77</zorder>
+     <zorder>casilla89</zorder>
+     <zorder>casilla83</zorder>
+     <zorder>casilla81</zorder>
+     <zorder>casilla23</zorder>
+     <zorder>casilla79</zorder>
+     <zorder>casilla53</zorder>
+     <zorder>casilla61</zorder>
+     <zorder>casilla26</zorder>
+     <zorder>casilla80</zorder>
+     <zorder>casilla52</zorder>
+     <zorder>labelTurno</zorder>
+     <zorder>Jugador_1</zorder>
+     <zorder>Jugador_2</zorder>
+     <zorder>Jugador_4</zorder>
+     <zorder>Jugador_3</zorder>
     </widget>
    </widget>
   </widget>

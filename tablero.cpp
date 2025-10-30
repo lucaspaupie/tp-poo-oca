@@ -81,7 +81,7 @@ QPoint tablero::getCoordenadaCasilla(int casilla, int jugadorID) {
     }
 }
 void tablero::cargarCoordenadas() {
-    this->posicionesJugadores.resize(1);
+   /* this->posicionesJugadores.resize(1);
 
     this->posicionesJugadores[0].resize(m_numCasillas);
 
@@ -91,7 +91,7 @@ void tablero::cargarCoordenadas() {
     for (int i = 0; i < m_numCasillas; ++i) {
         this->posicionesJugadores[0][i] = QPoint(10 + (i * 10), 300);
     }
-
+*/
     /*this->posicionesJugadores[0] = {
                                     QPoint(120, 620), QPoint(250, 620), QPoint(320, 620),
                                     QPoint(390, 620), QPoint(450, 620), QPoint(520, 620),
@@ -116,8 +116,9 @@ void tablero::cargarCoordenadas() {
                                     QPoint(200, 350), QPoint(230, 400), QPoint(270, 420),
                                     QPoint(490, 310)
     */
-    };
-//}
+
+  //  };
+}
 
 /*
 QPoint tablero::getCoordenadaCasilla(int casilla, int jugadorID) {
