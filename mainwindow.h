@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 #include "juego.h"
+#include <map>      // <--- AÑADIR ESTO
+#include <QLabel>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -49,6 +51,8 @@ private:
 
     void actualizarTablero();
     QVector<QVector<QPoint>> posicionesJugadores;
+
+    std::map<int, QLabel*> m_fichasJugadores;
 
 };
 

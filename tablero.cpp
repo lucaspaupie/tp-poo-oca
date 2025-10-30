@@ -116,7 +116,7 @@ void tablero::cargarCoordenadas() {
                                     QPoint(200, 350), QPoint(230, 400), QPoint(270, 420),
                                     QPoint(490, 310)
     */
-    };
+  //  };
 }
 
 /*

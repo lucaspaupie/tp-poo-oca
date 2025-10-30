@@ -19,6 +19,11 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    m_fichasJugadores[0] = ui->Jugador_1;
+    m_fichasJugadores[1] = ui->Jugador_2;
+    m_fichasJugadores[2] = ui->Jugador_3;
+    m_fichasJugadores[3] = ui->Jugador_4;
+
     //cosas del dado
     miDado = new dado();
 
@@ -167,13 +172,16 @@ void MainWindow::BTdado(bool)
         return;
     }
 
-    QString mensajeEspecial = juegoActual.getTablero()->moverJugador(actual, resultado1);
 
     // Verificar si cayó en casilla especial y obtener mensaje
 
     // int currentPos = actual.getPosicion();
 
     // Actualizar posición visual
+
+    ////nuevo lucho 29/10
+    QString mensajeEspecial = juegoActual.getTablero()->moverJugador(actual, resultado1);
+    ///
 
     actualizarTablero();
 
@@ -234,7 +242,7 @@ void MainWindow::on_numpj_activated(int index){
     for (int i = 0; i < numJugadoresSeleccionados; ++i) {
         juegoActual.agregarJugador(nombresBase.at(i));
     }
-
+/*
     QList<QLabel*> fichas = {ui->Jugador_1, ui->Jugador_2, ui->Jugador_3, ui->Jugador_4};
 
     for (int i = 0; i < fichas.size(); ++i) {
@@ -244,6 +252,14 @@ void MainWindow::on_numpj_activated(int index){
             } else {
                 fichas.at(i)->setVisible(false);
             }
+        }
+    }
+*/
+    for (int i = 0; i < m_fichasJugadores.size(); ++i){
+        QLabel* ficha = m_fichasJugadores[i];
+        if (ficha) {
+            // Mostrar la ficha si su índice es menor que la cantidad de jugadores
+            ficha->setVisible(i < numJugadoresSeleccionados);
         }
     }
 
@@ -256,7 +272,7 @@ void MainWindow::pj()
 }
 
 void MainWindow::actualizarTablero() {
-    for (int i = 0; i < juegoActual.getCantidadJugadores(); ++i) {
+   /* for (int i = 0; i < juegoActual.getCantidadJugadores(); ++i) {
         int posicion = juegoActual.getJugador(i).getPosicion();
         QPoint baseCoord = juegoActual.getTablero()->getCoordenadaCasilla(posicion, i);
 
@@ -270,6 +286,33 @@ void MainWindow::actualizarTablero() {
 
         if (ficha) ficha->move(baseCoord);
     }
+    */
+   //funcion modificada lucho 29/10
+   for (int i = 0; i < juegoActual.getCantidadJugadores(); ++i) {
+
+       // 1. Obtenemos la posición LÓGICA (ej: casilla 25)
+       int posicion = juegoActual.getJugador(i).getPosicion();
+
+       int posicionVisual = posicion; // Usamos una variable temporal
+
+       if (posicionVisual == 0) {
+           posicionVisual = 1; // ¡Forzamos que la posición visual sea la 1!
+       }
+
+       // 2. Pedimos a la clase Tablero las coordenadas (x, y) de esa casilla
+       //    (Tu función ya incluye el offset para que no se pisen)
+       QPoint baseCoord = juegoActual.getTablero()->getCoordenadaCasilla(posicion, i);
+
+       // 3. Obtenemos el QLabel de la ficha usando nuestro MAPA
+       QLabel* ficha = m_fichasJugadores[i];
+
+       // 4. Movemos el QLabel a esas coordenadas
+       if (ficha) {
+           ficha->move(baseCoord);
+           ficha->raise(); // (Opcional) Pone la ficha "encima" de todo
+       }
+   }
+
 }
 
 
