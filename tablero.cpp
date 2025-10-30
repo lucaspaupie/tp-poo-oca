@@ -117,7 +117,7 @@ void tablero::cargarCoordenadas() {
                                     QPoint(490, 310)
     */
     };
-}
+//}
 
 /*
 QPoint tablero::getCoordenadaCasilla(int casilla, int jugadorID) {
