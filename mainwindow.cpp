@@ -36,7 +36,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->numpj, QOverload<int>::of(&QComboBox::activated), this, &MainWindow::on_numpj_activated);
     on_numpj_activated(ui->numpj->currentIndex());
 
-    juegoActual.getTablero()->cargarCoordenadas();
+
 
     // NOTA IMPORTANTE: Para usar los slots de guardar/cargar (ej: on_actionGuardarBinario_triggered),
     // debes conectar un QAction (si usas menú) o un QPushButton (si usas un botón)
@@ -206,6 +206,7 @@ void MainWindow::BTdado(bool)
         return;
     }
 
+
     juegoActual.pasarTurno();
     actualizarUI();
 }
@@ -270,7 +271,7 @@ void MainWindow::pj()
 {
     ui->stackedWidget->setCurrentWidget(ui->tablero);
 }
-
+/*
 void MainWindow::actualizarTablero() {
    /* for (int i = 0; i < juegoActual.getCantidadJugadores(); ++i) {
         int posicion = juegoActual.getJugador(i).getPosicion();
@@ -286,18 +287,13 @@ void MainWindow::actualizarTablero() {
 
         if (ficha) ficha->move(baseCoord);
     }
-    */
+
    //funcion modificada lucho 29/10
    for (int i = 0; i < juegoActual.getCantidadJugadores(); ++i) {
 
        // 1. Obtenemos la posición LÓGICA (ej: casilla 25)
        int posicion = juegoActual.getJugador(i).getPosicion();
 
-       int posicionVisual = posicion; // Usamos una variable temporal
-
-       if (posicionVisual == 0) {
-           posicionVisual = 1; // ¡Forzamos que la posición visual sea la 1!
-       }
 
        // 2. Pedimos a la clase Tablero las coordenadas (x, y) de esa casilla
        //    (Tu función ya incluye el offset para que no se pisen)
@@ -312,9 +308,39 @@ void MainWindow::actualizarTablero() {
            ficha->raise(); // (Opcional) Pone la ficha "encima" de todo
        }
    }
-
 }
+*/
 
+void MainWindow::actualizarTablero() {
+    for (int i = 0; i < juegoActual.getCantidadJugadores(); ++i) {
+        int posicion = juegoActual.getJugador(i).getPosicion();
+
+        // Obtenemos el QLabel correspondiente a la casilla
+        QString nombreCasilla = QString("casilla%1").arg(posicion);
+        QLabel* labelCasilla = findChild<QLabel*>(nombreCasilla);
+
+        if (!labelCasilla) {
+            qDebug() << "No se encontró la" << nombreCasilla;
+            continue;
+        }
+
+        QLabel* ficha = m_fichasJugadores[i];
+        if (!ficha) continue;
+
+        // Movemos la ficha sobre el QLabel de la casilla
+        QPoint destino = labelCasilla->pos();
+
+        // Pequeño offset visual según jugador (para que no se superpongan)
+        switch (i) {
+        case 1: destino += QPoint(10, 0); break;
+        case 2: destino += QPoint(0, 10); break;
+        case 3: destino += QPoint(10, 10); break;
+        }
+
+        ficha->move(destino);
+        ficha->raise(); // traer ficha al frente
+    }
+}
 
 void MainWindow::on_botoncomenzar_clicked() {
     qDebug() << "on_botoncomenzar_clicked: Iniciando el juego.";

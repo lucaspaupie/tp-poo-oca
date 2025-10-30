@@ -49,6 +49,9 @@ private:
     Juego juego;
     dado* miDado;
 
+    void moverJugadorACasilla(int indiceJugador, int numeroCasilla);
+    void actualizarPosicionesJugadores();
+
     void actualizarTablero();
     QVector<QVector<QPoint>> posicionesJugadores;
 
