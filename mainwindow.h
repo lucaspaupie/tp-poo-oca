@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 #include "juego.h"
+#include <map>      // <--- AÑADIR ESTO
+#include <QLabel>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -19,7 +21,6 @@ public:
     ~MainWindow();
 
 private slots:
-   // void tirarDado(); // conectado al botón
     void iniciarjuego();
     void BTdado(bool);
 
@@ -28,6 +29,14 @@ private slots:
     void on_numpj_activated(int index);
 
     void on_siguiente_clicked();
+
+    // SLOTS PARA PERSISTENCIA JSON (Texto)
+    void on_actionGuardar_triggered(); // Asume que este es el JSON
+    void on_actionCargar_triggered();  // Asume que este es el JSON
+
+    // NUEVOS SLOTS PARA PERSISTENCIA BINARIA
+    void on_actionGuardarBinario_triggered();
+    void on_actionCargarBinario_triggered();
 
 private:
     Ui::MainWindow *ui;
@@ -40,12 +49,14 @@ private:
     Juego juego;
     dado* miDado;
 
+    void moverJugadorACasilla(int indiceJugador, int numeroCasilla);
+    void actualizarPosicionesJugadores();
+
     void actualizarTablero();
     QVector<QVector<QPoint>> posicionesJugadores;
 
+    std::map<int, QLabel*> m_fichasJugadores;
+
 };
-
-
-
 
 #endif // MAINWINDOW_H

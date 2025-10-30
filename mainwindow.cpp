@@ -10,12 +10,19 @@
 #include <QPoint>
 #include "casillaespecial.h"
 #include <QTimer>
+#include <QFileDialog>
+#include <QAction>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    m_fichasJugadores[0] = ui->Jugador_1;
+    m_fichasJugadores[1] = ui->Jugador_2;
+    m_fichasJugadores[2] = ui->Jugador_3;
+    m_fichasJugadores[3] = ui->Jugador_4;
 
     //cosas del dado
     miDado = new dado();
@@ -30,44 +37,10 @@ MainWindow::MainWindow(QWidget *parent)
     on_numpj_activated(ui->numpj->currentIndex());
 
 
-    // // Crear jugadores
-    // juegoActual.agregarJugador("Lucas");
-    // juegoActual.agregarJugador("Axel");
-    // juegoActual.agregarJugador("Luciano");
 
-
-
-    juegoActual.getTablero()->cargarCoordenadas();
-
-    //jugadores coordenadas
-   // posicionesJugadores.resize(4); //4 jugadores
-
-    // posicionesJugadores[0] = {
-    // QPoint(120, 620), QPoint(250, 620), QPoint(320, 620),
-    // QPoint(390, 620), QPoint(450, 620), QPoint(520, 620),
-    // QPoint(600, 620), QPoint(670, 620), QPoint(720, 620),
-    // QPoint(800, 620), QPoint(850, 550), QPoint(880, 500),
-    // QPoint(910, 450), QPoint(930, 390), QPoint(950, 300),
-    // QPoint(940, 240), QPoint(930, 170), QPoint(890, 120),
-    // QPoint(800, 50),  QPoint(720, 20),  QPoint(640, 10),
-    // QPoint(580, 10),  QPoint(510, 10),  QPoint(450, 10),
-    // QPoint(380, 10),  QPoint(320, 10),  QPoint(250, 10),
-    // QPoint(180, 30),  QPoint(120, 70),  QPoint(80, 120),
-    // QPoint(40, 180),  QPoint(30, 250),  QPoint(40, 320),
-    // QPoint(40, 400),  QPoint(70, 470),  QPoint(160, 480),
-    // QPoint(210, 510), QPoint(270, 520), QPoint(320, 520),
-    // QPoint(390, 520), QPoint(450, 520), QPoint(520, 520),
-    // QPoint(600, 520), QPoint(670, 520), QPoint(720, 510),
-    // QPoint(780, 460), QPoint(810, 410), QPoint(820, 360),
-    // QPoint(820, 310), QPoint(850, 230), QPoint(780, 150),
-    // QPoint(720, 120), QPoint(620, 110), QPoint(530, 110),
-    // QPoint(450, 110), QPoint(380, 110), QPoint(310, 110),
-    // QPoint(240, 110), QPoint(190, 170), QPoint(140, 280),
-    // QPoint(200, 350), QPoint(230, 400), QPoint(270, 420),
-    // QPoint(490, 310)
-
-    // };
-
+    // NOTA IMPORTANTE: Para usar los slots de guardar/cargar (ej: on_actionGuardarBinario_triggered),
+    // debes conectar un QAction (si usas menú) o un QPushButton (si usas un botón)
+    // en tu archivo .ui a estos slots en tu código.
 
     iniciarjuego();
     actualizarUI();
@@ -76,20 +49,99 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete miDado;
 }
+
+// --- SLOTS DE PERSISTENCIA JSON (Texto - Configuración) ---
+
+void MainWindow::on_actionGuardar_triggered() {
+    QString fileName = QFileDialog::getSaveFileName(this,
+                                                    "Guardar Configuración de Juego",
+                                                    QDir::homePath(),
+                                                    "Archivos JSON (*.json)");
+
+    if (!fileName.isEmpty()) {
+        if (juegoActual.guardarJuego(fileName)) {
+            QMessageBox::information(this, "Guardar", "Configuración de juego (JSON) guardada correctamente.");
+        } else {
+            QMessageBox::critical(this, "Error", "Fallo al guardar la configuración (JSON).");
+        }
+    }
+}
+
+void MainWindow::on_actionCargar_triggered() {
+    QString fileName = QFileDialog::getOpenFileName(this,
+                                                    "Cargar Configuración de Juego",
+                                                    QDir::homePath(),
+                                                    "Archivos JSON (*.json)");
+
+    if (!fileName.isEmpty()) {
+        if (juegoActual.cargarJuego(fileName)) {
+            QMessageBox::information(this, "Cargar", "Configuración cargada (JSON) correctamente.");
+            ui->stackedWidget->setCurrentWidget(ui->tablero);
+            actualizarTablero();
+            actualizarUI();
+        } else {
+            QMessageBox::critical(this, "Error", "Fallo al cargar la configuración (JSON).");
+        }
+    }
+}
+
+// --- SLOTS DE PERSISTENCIA BINARIA (Avance de Partida) ---
+
+void MainWindow::on_actionGuardarBinario_triggered() {
+    QString fileName = QFileDialog::getSaveFileName(this,
+                                                    "Guardar Partida (Binario)",
+                                                    QDir::homePath(),
+                                                    "Archivos de Partida (*.dat)");
+
+    if (!fileName.isEmpty()) {
+        if (juegoActual.guardarPartidaBinario(fileName)) {
+            QMessageBox::information(this, "Guardar", "Partida (Binario) guardada correctamente.");
+        } else {
+            QMessageBox::critical(this, "Error", "Fallo al guardar la partida (Binario).");
+        }
+    }
+}
+
+void MainWindow::on_actionCargarBinario_triggered() {
+    QString fileName = QFileDialog::getOpenFileName(this,
+                                                    "Cargar Partida (Binario)",
+                                                    QDir::homePath(),
+                                                    "Archivos de Partida (*.dat)");
+
+    if (!fileName.isEmpty()) {
+        if (juegoActual.cargarPartidaBinario(fileName)) {
+            QMessageBox::information(this, "Cargar", "Partida cargada (Binario) correctamente.");
+            ui->stackedWidget->setCurrentWidget(ui->tablero);
+            actualizarTablero();
+            actualizarUI();
+        } else {
+            QMessageBox::critical(this, "Error", "Fallo al cargar la partida (Binario).");
+        }
+    }
+}
+
+// --- MÉTODOS EXISTENTES Y CORREGIDOS ---
 
 void MainWindow::actualizarUI()
 {
+    if (juegoActual.getCantidadJugadores() == 0) return;
+
     jugador& actual = juegoActual.getJugadorActual();
     setWindowTitle("Turno de: " + actual.getNombre() + " (Casilla "
                    + QString::number(actual.getPosicion()) + ")");
+
+    // ** CORRECCIÓN DE ERROR 'labelTurno' **
+    // Usamos 'mensaje' como alternativa para evitar el error de compilación.
+    if (ui->mensaje && ui->mensaje->text().isEmpty()) {
+        ui->mensaje->setText("Turno actual: " + actual.getNombre());
+    }
 }
 
 void MainWindow::BTdado(bool)
 {
-
     int resultado1 = miDado->tirar();
-
     qDebug() << "Dado 1:" << resultado1;
 
     QString rutaImagen1 = QString(":/new/prefix1/imagenes/dado%1.png").arg(resultado1);
@@ -99,17 +151,13 @@ void MainWindow::BTdado(bool)
         ui->labelDado->setPixmap(skin1.scaled(ui->labelDado->size(), Qt::KeepAspectRatio));
     }
 
-    // Mover jugador actual
     jugador& actual = juegoActual.getJugadorActual();
 
-    //comprueba si puede jugar
     if (!actual.puedeJugar()) {
         QString msg;
 
         if (actual.getTurnosPenalizado() > 0) {
-            int turnosRestantes = actual.getTurnosPenalizado();
-            msg = "Estás penalizado. Te quedan " + QString::number(turnosRestantes) + " turno(s).";
-            actual.penalizar(-1);  // Restar un turno
+            msg = "Estás penalizado. Te quedan " + QString::number(actual.getTurnosPenalizado()) + " turno(s) para descansar.";
         } else if (actual.estaAtrapado()) {
             msg = "Estás atrapado en el pozo. Esperá que otro jugador te libere.";
         }
@@ -124,20 +172,21 @@ void MainWindow::BTdado(bool)
         return;
     }
 
-    QString mensajeEspecial = juegoActual.getTablero()->moverJugador(actual, resultado1);
-    ui->mensaje->setText(mensajeEspecial);
 
     // Verificar si cayó en casilla especial y obtener mensaje
 
     // int currentPos = actual.getPosicion();
 
     // Actualizar posición visual
+
+    ////nuevo lucho 29/10
+    QString mensajeEspecial = juegoActual.getTablero()->moverJugador(actual, resultado1);
+    ///
+
     actualizarTablero();
 
-    // Mostrar mensaje especial (si lo hay) en labelMensaje
     ui->mensaje->setText(mensajeEspecial);
 
-    // Si querés que el mensaje desaparezca después de 3 segundos:
     if (!mensajeEspecial.isEmpty()) {
         QTimer::singleShot(3000, this, [this]() {
             ui->mensaje->clear();
@@ -145,12 +194,19 @@ void MainWindow::BTdado(bool)
     }
 
     if (actual.getRepetirTurno()) {
-        actual.setRepetirTurno(false); // reseteamos
+        actual.setRepetirTurno(false);
+        ui->mensaje->setText("Caíste en la Oca. ¡Volvé a tirar!");
         actualizarUI();
-        return; // no se pasa turno
+        return;
     }
 
-    // Pasar turno
+    if (juegoActual.esFinDelJuego()) {
+        QMessageBox::information(this, "Fin del Juego", "¡" + actual.getNombre() + " ha ganado!");
+        cerrarJuego();
+        return;
+    }
+
+
     juegoActual.pasarTurno();
     actualizarUI();
 }
@@ -174,24 +230,20 @@ void MainWindow::mostrarSeleccionPersonajes()
 
 void MainWindow::on_numpj_activated(int index){
 
-    Q_UNUSED(index);  // para que no dé warning dsp lo saco
+    Q_UNUSED(index);
 
     int numJugadoresSeleccionados = ui->numpj->currentText().toInt();
     if (numJugadoresSeleccionados < 2 || numJugadoresSeleccionados > 4) {
-        numJugadoresSeleccionados = 2; // Valor por defecto si hay un error
+        numJugadoresSeleccionados = 2;
     }
 
-    // qDebug() << "on_comboBox_activated: Seleccionados " << numJugadoresSeleccionados << " jugadores.";
-
-
-    //agregar esto777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
     juegoActual.limpiarJugadores();
 
-    QStringList nombresBase = {"Lucas", "Axel", "Luciano", "Julio"}; // Nombres predefinidos
+    QStringList nombresBase = {"Lucas", "Axel", "Luciano", "Julio"};
     for (int i = 0; i < numJugadoresSeleccionados; ++i) {
         juegoActual.agregarJugador(nombresBase.at(i));
     }
-
+/*
     QList<QLabel*> fichas = {ui->Jugador_1, ui->Jugador_2, ui->Jugador_3, ui->Jugador_4};
 
     for (int i = 0; i < fichas.size(); ++i) {
@@ -203,6 +255,14 @@ void MainWindow::on_numpj_activated(int index){
             }
         }
     }
+*/
+    for (int i = 0; i < m_fichasJugadores.size(); ++i){
+        QLabel* ficha = m_fichasJugadores[i];
+        if (ficha) {
+            // Mostrar la ficha si su índice es menor que la cantidad de jugadores
+            ficha->setVisible(i < numJugadoresSeleccionados);
+        }
+    }
 
     actualizarTablero();
     actualizarUI();
@@ -211,16 +271,11 @@ void MainWindow::pj()
 {
     ui->stackedWidget->setCurrentWidget(ui->tablero);
 }
-
+/*
 void MainWindow::actualizarTablero() {
-    for (int i = 0; i < juegoActual.getCantidadJugadores(); ++i) {
+   /* for (int i = 0; i < juegoActual.getCantidadJugadores(); ++i) {
         int posicion = juegoActual.getJugador(i).getPosicion();
-        QPoint baseCoord = juegoActual.getTablero()->getCoordenadaCasilla(posicion);
-
-        int offsetX = 0 * i;
-        int offsetY = 24 * i;
-
-        QPoint coord = baseCoord + QPoint(offsetX, offsetY);
+        QPoint baseCoord = juegoActual.getTablero()->getCoordenadaCasilla(posicion, i);
 
         QLabel* ficha = nullptr;
         switch (i) {
@@ -230,26 +285,73 @@ void MainWindow::actualizarTablero() {
         case 3: ficha = ui->Jugador_4; break;
         }
 
-        if (ficha) ficha->move(coord);
+        if (ficha) ficha->move(baseCoord);
+    }
+
+   //funcion modificada lucho 29/10
+   for (int i = 0; i < juegoActual.getCantidadJugadores(); ++i) {
+
+       // 1. Obtenemos la posición LÓGICA (ej: casilla 25)
+       int posicion = juegoActual.getJugador(i).getPosicion();
+
+
+       // 2. Pedimos a la clase Tablero las coordenadas (x, y) de esa casilla
+       //    (Tu función ya incluye el offset para que no se pisen)
+       QPoint baseCoord = juegoActual.getTablero()->getCoordenadaCasilla(posicion, i);
+
+       // 3. Obtenemos el QLabel de la ficha usando nuestro MAPA
+       QLabel* ficha = m_fichasJugadores[i];
+
+       // 4. Movemos el QLabel a esas coordenadas
+       if (ficha) {
+           ficha->move(baseCoord);
+           ficha->raise(); // (Opcional) Pone la ficha "encima" de todo
+       }
+   }
+}
+*/
+
+void MainWindow::actualizarTablero() {
+    for (int i = 0; i < juegoActual.getCantidadJugadores(); ++i) {
+        int posicion = juegoActual.getJugador(i).getPosicion();
+
+        // Obtenemos el QLabel correspondiente a la casilla
+        QString nombreCasilla = QString("casilla%1").arg(posicion);
+        QLabel* labelCasilla = findChild<QLabel*>(nombreCasilla);
+
+        if (!labelCasilla) {
+            qDebug() << "No se encontró la" << nombreCasilla;
+            continue;
+        }
+
+        QLabel* ficha = m_fichasJugadores[i];
+        if (!ficha) continue;
+
+        // Movemos la ficha sobre el QLabel de la casilla
+        QPoint destino = labelCasilla->pos();
+
+        // Pequeño offset visual según jugador (para que no se superpongan)
+        switch (i) {
+        case 1: destino += QPoint(10, 0); break;
+        case 2: destino += QPoint(0, 10); break;
+        case 3: destino += QPoint(10, 10); break;
+        }
+
+        ficha->move(destino);
+        ficha->raise(); // traer ficha al frente
     }
 }
 
-
-
-// Asegúrate de que esta función exista:
 void MainWindow::on_botoncomenzar_clicked() {
     qDebug() << "on_botoncomenzar_clicked: Iniciando el juego.";
-    // Ahora que los jugadores están configurados, puedes iniciar el juego
-    juegoActual.iniciar(); // Resetea posiciones y penalizaciones
-    ui->stackedWidget->setCurrentWidget(ui->tablero); // Cambia a la pantalla del tablero
-    actualizarTablero(); // Asegura que las fichas estén en Start
+    juegoActual.iniciar();
+    ui->stackedWidget->setCurrentWidget(ui->tablero);
+    actualizarTablero();
     actualizarUI();
 }
 
-// Asegúrate de que esta función exista:
 void MainWindow::on_siguiente_clicked() {
-    // Código para pasar al siguiente turno, si este botón hace eso
-
-    // Aquí podrías tener lógica como juegoActual.pasarTurno();
-    // o cualquier otra acción que haga tu botón "siguiente".
+    // Código para pasar al siguiente turno (parece no tener funcionalidad directa en este botón)
 }
+
+void MainWindow::cantjug(){}

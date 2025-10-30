@@ -3,6 +3,8 @@
 #include "casillaespecial.h"
 #include <QMap>
 #include "mainwindow.h"
+
+
 #include <random>   // <-- NUEVO
 #include <QSet>     // <-- NUEVO (para evitar casillas duplicadas)
 #include <QDebug>   // <-- NUEVO (opcional, para depurar)
@@ -60,13 +62,15 @@ QString tablero::moverJugador(jugador& j, int pasos) {
         int siguiente = casillaespecial::siguienteOca(nuevaPos);
         if (siguiente != -1) {
             j.setPosicion(siguiente);  // Teletransporta
+            mensaje += "\n¡De oca en oca y tiro porque me toca! (Avanzaste a la casilla " + QString::number(siguiente) + ")";
         }
     }
     return mensaje;
 }
 
 QPoint tablero::getCoordenadaCasilla(int casilla, int jugadorID) {
-    if (jugadorID >= posicionesJugadores.size() || casilla >= posicionesJugadores[jugadorID].size())
+    // Usamos el jugadorID para calcular el offset, tal como se definió en el cpp
+    if (casilla >= posicionesJugadores[0].size())
         return QPoint(0, 0);  // fallback
     QPoint base = posicionesJugadores[0][casilla];
     switch (jugadorID) {
@@ -74,11 +78,10 @@ QPoint tablero::getCoordenadaCasilla(int casilla, int jugadorID) {
     case 2: return base + QPoint(0, 15);
     case 3: return base + QPoint(15,15);
     default: return base;
-        break;
     }
 }
 void tablero::cargarCoordenadas() {
-    this->posicionesJugadores.resize(1);
+   /* this->posicionesJugadores.resize(1);
 
     this->posicionesJugadores[0].resize(m_numCasillas);
 
@@ -88,7 +91,7 @@ void tablero::cargarCoordenadas() {
     for (int i = 0; i < m_numCasillas; ++i) {
         this->posicionesJugadores[0][i] = QPoint(10 + (i * 10), 300);
     }
-
+*/
     /*this->posicionesJugadores[0] = {
                                     QPoint(120, 620), QPoint(250, 620), QPoint(320, 620),
                                     QPoint(390, 620), QPoint(450, 620), QPoint(520, 620),
@@ -113,24 +116,14 @@ void tablero::cargarCoordenadas() {
                                     QPoint(200, 350), QPoint(230, 400), QPoint(270, 420),
                                     QPoint(490, 310)
     */
-    };
-
-
-
-    /*
-    // Copiá la misma para los demás con desplazamiento si querés
-    for (int j = 1; j < 4; ++j) {
-        for (int i = 0; i < 64; ++i) {
-            QPoint base = posicionesJugadores[0][i];
-            posicionesJugadores[j].append(QPoint(base.x() + j*10, base.y() + j*10)); // pequeño offset
-        }
-    }
+  //  };
 }
 
-
+/*
 QPoint tablero::getCoordenadaCasilla(int casilla, int jugadorID) {
     return posicionesJugadores[jugadorID][casilla];
 }*/
+
 
 
 casilla* tablero::getCasilla(int numero){
@@ -139,6 +132,7 @@ casilla* tablero::getCasilla(int numero){
     }
     return nullptr;
 }
+
 
 
 void tablero::generarCasillasEspeciales() {

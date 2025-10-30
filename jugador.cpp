@@ -1,6 +1,67 @@
 #include "jugador.h"
+#include <QJsonObject>
+#include <QDebug>
+#include <QDataStream>
 
-jugador::jugador(const QString& nombre): nombre(nombre), posicion(0) {}
+// --- Serialización Binaria (QDataStream) ---
+
+/**
+ * @brief Escribe el estado de un objeto jugador en un QDataStream.
+ * @param out El flujo de datos binario de salida.
+ * @param j El objeto jugador a serializar.
+ * @return Referencia al QDataStream de salida.
+ */
+QDataStream &operator<<(QDataStream &out, const jugador &j) {
+    out << j.nombre
+        << j.posicion
+        << j.turnosPenalizado
+        << j.atrapado
+        << j.repetirTurno;
+    return out;
+}
+
+/**
+ * @brief Lee el estado de un objeto jugador desde un QDataStream.
+ * @param in El flujo de datos binario de entrada.
+ * @param j El objeto jugador donde se almacenarán los datos leídos.
+ * @return Referencia al QDataStream de entrada.
+ */
+QDataStream &operator>>(QDataStream &in, jugador &j) {
+    in >> j.nombre
+        >> j.posicion
+        >> j.turnosPenalizado
+        >> j.atrapado
+        >> j.repetirTurno;
+    return in;
+}
+
+// --- Serialización JSON (Texto) ---
+
+QJsonObject jugador::toJson() const {
+    QJsonObject json;
+    json["nombre"] = nombre;
+    json["posicion"] = posicion;
+    json["turnosPenalizado"] = turnosPenalizado;
+    json["atrapado"] = atrapado;
+    json["repetirTurno"] = repetirTurno;
+    return json;
+}
+
+// Implementación de deserialización (Cargar)
+jugador jugador::fromJson(const QJsonObject& json) {
+    jugador j(json["nombre"].toString());
+
+    j.posicion = json["posicion"].toInt();
+    j.turnosPenalizado = json["turnosPenalizado"].toInt();
+    j.atrapado = json["atrapado"].toBool();
+    j.repetirTurno = json["repetirTurno"].toBool();
+
+    return j;
+}
+
+// --- MÉTODOS EXISTENTES ---
+
+jugador::jugador(const QString& nombre): nombre(nombre), posicion(0), turnosPenalizado(0) {}
 
 void jugador::mover(int pasos) {
     if (posicion + pasos <= 63) {
@@ -28,7 +89,7 @@ bool jugador::ganador() const{
 /////////////penalizar casilla/////////////////
 void jugador::penalizar(int turnos) {
     turnosPenalizado += turnos;
-
+    if (turnosPenalizado < 0) turnosPenalizado = 0; // Asegura que no sea negativo
 }
 
 bool jugador::estaPenalizado(){
@@ -40,12 +101,10 @@ void jugador::restarTurnosPenalizado(){
         turnosPenalizado--;
     }
 }
-//////////////////////////////////////
 
 int jugador::getTurnosPenalizados() {
     if (turnosPenalizado < 0) turnosPenalizado = 0;
     return turnosPenalizado;
-
 }
 
 bool jugador::puedeJugar() {

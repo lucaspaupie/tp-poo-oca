@@ -12,6 +12,7 @@ class tablero
 {
 private:
     QVector<casilla*> casillas;
+
      QVector<QVector<QPoint>> posicionesJugadores;
 
     int     m_numCasillas;
@@ -26,8 +27,6 @@ public:
     QPoint getCoordenadaCasilla(int casilla, int jugadorID = 0); // Coordenada para X jugador
     void cargarCoordenadas();
     casilla* getCasilla(int numero); //obtener casilla por su numero
-
-
     int getNumCasillas() const { return m_numCasillas; }
 };
 
