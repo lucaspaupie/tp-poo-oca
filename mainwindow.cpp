@@ -26,6 +26,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     //cosas del dado
     miDado = new dado();
+    miDado2 = new dado();
 
     //aca vamos a poner todos los connect de botones
     connect(ui->botoncomenzar, &QPushButton::clicked, this, &MainWindow::mostrarSeleccionPersonajes);
@@ -50,6 +51,7 @@ MainWindow::~MainWindow()
 {
     delete ui;
     delete miDado;
+    delete miDado2;
 }
 
 // --- SLOTS DE PERSISTENCIA JSON (Texto - Configuración) ---
@@ -141,15 +143,29 @@ void MainWindow::actualizarUI()
 
 void MainWindow::BTdado(bool)
 {
+    // Tirar ambos dados
     int resultado1 = miDado->tirar();
-    qDebug() << "Dado 1:" << resultado1;
+    int resultado2 = miDado2->tirar();
 
-    QString rutaImagen1 = QString(":/new/prefix1/imagenes/dado%1.png").arg(resultado1);
-    QPixmap skin1(rutaImagen1);
+    qDebug() << "Dado 1:" << resultado1 << " Dado 2:" << resultado2;
+
+    // Cargar imágenes
+    QString ruta1 = QString(":/new/prefix1/imagenes/dado%1.png").arg(resultado1);
+    QString ruta2 = QString(":/new/prefix1/imagenes/dado%1.png").arg(resultado2);
+
+    QPixmap skin1(ruta1);
+    QPixmap skin2(ruta2);
 
     if (!skin1.isNull()) {
         ui->labelDado->setPixmap(skin1.scaled(ui->labelDado->size(), Qt::KeepAspectRatio));
     }
+
+    if (ui->labelDado2_2 && !skin2.isNull()) {
+        ui->labelDado2_2->setPixmap(skin2.scaled(ui->labelDado2_2->size(), Qt::KeepAspectRatio));
+    }
+
+    // Sumar los resultados de ambos dados
+    int avance = resultado1 + resultado2;
 
     jugador& actual = juegoActual.getJugadorActual();
 
@@ -172,20 +188,14 @@ void MainWindow::BTdado(bool)
         return;
     }
 
-
-    // Verificar si cayó en casilla especial y obtener mensaje
-
-    // int currentPos = actual.getPosicion();
-
-    // Actualizar posición visual
-
-    ////nuevo lucho 29/10
-    QString mensajeEspecial = juegoActual.getTablero()->moverJugador(actual, resultado1);
-    ///
+    // Mover al jugador la suma de los dos dados
+    QString mensajeEspecial = juegoActual.getTablero()->moverJugador(actual, avance);
 
     actualizarTablero();
-
-    ui->mensaje->setText(mensajeEspecial);
+    ui->mensaje->setText("Sacaste " + QString::number(resultado1) + " y " +
+                         QString::number(resultado2) +
+                         " → avanzás " + QString::number(avance) + " casillas.\n" +
+                         mensajeEspecial);
 
     if (!mensajeEspecial.isEmpty()) {
         QTimer::singleShot(3000, this, [this]() {
@@ -206,10 +216,10 @@ void MainWindow::BTdado(bool)
         return;
     }
 
-
     juegoActual.pasarTurno();
     actualizarUI();
 }
+
 
 
 void MainWindow::iniciarjuego()
@@ -311,26 +321,37 @@ void MainWindow::actualizarTablero() {
 }
 */
 
-void MainWindow::actualizarTablero() {
+void MainWindow::actualizarTablero()
+{
+    int numCasillas = juegoActual.getTablero()->getNumCasillas();
+
+    // Mostrar solo las casillas que existen
+    for (int i = 0; i <= 90; ++i) {  // <= en lugar de < 90
+        QString nombreCasilla = QString("casilla%1").arg(i);
+        QLabel* label = findChild<QLabel*>(nombreCasilla);
+        if (label) {
+            label->setVisible(i < numCasillas); // ocultará las que sobran
+        }
+    }
+
+
+    // Ahora actualizamos las fichas de los jugadores
     for (int i = 0; i < juegoActual.getCantidadJugadores(); ++i) {
         int posicion = juegoActual.getJugador(i).getPosicion();
 
-        // Obtenemos el QLabel correspondiente a la casilla
+        if (posicion >= numCasillas) posicion = numCasillas - 1;
+
         QString nombreCasilla = QString("casilla%1").arg(posicion);
         QLabel* labelCasilla = findChild<QLabel*>(nombreCasilla);
 
-        if (!labelCasilla) {
-            qDebug() << "No se encontró la" << nombreCasilla;
-            continue;
-        }
+        if (!labelCasilla) continue;
 
         QLabel* ficha = m_fichasJugadores[i];
         if (!ficha) continue;
 
-        // Movemos la ficha sobre el QLabel de la casilla
         QPoint destino = labelCasilla->pos();
 
-        // Pequeño offset visual según jugador (para que no se superpongan)
+        // pequeño offset visual
         switch (i) {
         case 1: destino += QPoint(10, 0); break;
         case 2: destino += QPoint(0, 10); break;
@@ -338,7 +359,7 @@ void MainWindow::actualizarTablero() {
         }
 
         ficha->move(destino);
-        ficha->raise(); // traer ficha al frente
+        ficha->raise();
     }
 }
 

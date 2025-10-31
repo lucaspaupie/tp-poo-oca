@@ -48,6 +48,7 @@ private:
     void pj();
     Juego juego;
     dado* miDado;
+    dado* miDado2;
 
     void moverJugadorACasilla(int indiceJugador, int numeroCasilla);
     void actualizarPosicionesJugadores();

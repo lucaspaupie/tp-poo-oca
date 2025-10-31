@@ -4,33 +4,30 @@
 #include <QMap>
 #include "mainwindow.h"
 
-
 #include <random>   // <-- NUEVO
 #include <QSet>     // <-- NUEVO (para evitar casillas duplicadas)
 #include <QDebug>   // <-- NUEVO (opcional, para depurar)
 
-tablero::tablero(int numCasillasMaximas) : m_numCasillas(numCasillasMaximas + 1)
-{
 
-   /* QMap<int, QString> especiales = {
-        {6, "puente"},
-        {9, "oca"}, {18, "oca"}, {27, "oca"}, {36, "oca"}, {45, "oca"}, {54, "oca"},
-        {19, "posada"},
-        {31, "pozo"},
-        {42, "laberinto"},
-        {56, "carcel"},
-        {58, "calavera"}
-    };
-        */
+
+tablero::tablero(int numCasillasMaximas)
+{
+    // En lugar de usar numCasillasMaximas directamente,
+    // generamos un número aleatorio entre 63 y 90
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dist(63, 90);
+
+    m_numCasillas = dist(gen); // +1 porque casilla 0 existe
 
     for (int i = 0; i < m_numCasillas; ++i) {
         casillas.append(new casilla(i));
     }
+
     generarCasillasEspeciales();
     cargarCoordenadas();
-
-
 }
+
 
 tablero::~tablero() {
     qDeleteAll(casillas);
