@@ -3,30 +3,29 @@
 #include "casillaespecial.h"
 #include <QMap>
 #include "mainwindow.h"
-
 #include <random>   // <-- NUEVO
 #include <QSet>     // <-- NUEVO (para evitar casillas duplicadas)
 #include <QDebug>   // <-- NUEVO (opcional, para depurar)
 
 
 
-tablero::tablero(int numCasillasMaximas)
+tablero::tablero(int numCasillasElegidas)
 {
-    // En lugar de usar numCasillasMaximas directamente,
-    // generamos un número aleatorio entre 63 y 90
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dist(63, 90);
+    if (numCasillasElegidas < 63)
+        numCasillasElegidas = 63;
+    else if (numCasillasElegidas > 90)
+        numCasillasElegidas = 90;
 
-    m_numCasillas = dist(gen); // +1 porque casilla 0 existe
+    m_numCasillas = numCasillasElegidas;
 
-    for (int i = 0; i < m_numCasillas; ++i) {
+    for (int i = 0; i < m_numCasillas; ++i)
         casillas.append(new casilla(i));
-    }
 
     generarCasillasEspeciales();
     cargarCoordenadas();
 }
+
+
 
 
 tablero::~tablero() {
@@ -78,50 +77,7 @@ QPoint tablero::getCoordenadaCasilla(int casilla, int jugadorID) {
     }
 }
 void tablero::cargarCoordenadas() {
-   /* this->posicionesJugadores.resize(1);
-
-    this->posicionesJugadores[0].resize(m_numCasillas);
-
-    // Generamos coordenadas "dummy" solo para que funcione
-    // Esto creará una simple línea recta
-
-    for (int i = 0; i < m_numCasillas; ++i) {
-        this->posicionesJugadores[0][i] = QPoint(10 + (i * 10), 300);
-    }
-*/
-    /*this->posicionesJugadores[0] = {
-                                    QPoint(120, 620), QPoint(250, 620), QPoint(320, 620),
-                                    QPoint(390, 620), QPoint(450, 620), QPoint(520, 620),
-                                    QPoint(600, 620), QPoint(670, 620), QPoint(720, 620),
-                                    QPoint(800, 620), QPoint(850, 550), QPoint(880, 500),
-                                    QPoint(910, 450), QPoint(930, 390), QPoint(950, 300),
-                                    QPoint(940, 240), QPoint(930, 170), QPoint(890, 120),
-                                    QPoint(800, 50),  QPoint(720, 20),  QPoint(640, 10),
-                                    QPoint(580, 10),  QPoint(510, 10),  QPoint(450, 10),
-                                    QPoint(380, 10),  QPoint(320, 10),  QPoint(250, 10),
-                                    QPoint(180, 30),  QPoint(120, 70),  QPoint(80, 120),
-                                    QPoint(40, 180),  QPoint(30, 250),  QPoint(40, 320),
-                                    QPoint(40, 400),  QPoint(70, 470),  QPoint(160, 480),
-                                    QPoint(210, 510), QPoint(270, 520), QPoint(320, 520),
-                                    QPoint(390, 520), QPoint(450, 520), QPoint(520, 520),
-                                    QPoint(600, 520), QPoint(670, 520), QPoint(720, 510),
-                                    QPoint(780, 460), QPoint(810, 410), QPoint(820, 360),
-                                    QPoint(820, 310), QPoint(850, 230), QPoint(780, 150),
-                                    QPoint(720, 120), QPoint(620, 110), QPoint(530, 110),
-                                    QPoint(450, 110), QPoint(380, 110), QPoint(310, 110),
-                                    QPoint(240, 110), QPoint(190, 170), QPoint(140, 280),
-                                    QPoint(200, 350), QPoint(230, 400), QPoint(270, 420),
-                                    QPoint(490, 310)
-    */
-  //  };
 }
-
-/*
-QPoint tablero::getCoordenadaCasilla(int casilla, int jugadorID) {
-    return posicionesJugadores[jugadorID][casilla];
-}*/
-
-
 
 casilla* tablero::getCasilla(int numero){
     if(numero>=0 && numero < casillas.size()){

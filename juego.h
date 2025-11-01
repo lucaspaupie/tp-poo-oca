@@ -11,12 +11,13 @@
 class Juego
 {
 private:
+    tablero* t;  // 🔥 usamos solo el puntero, no la versión duplicada
     QVector<jugador> jugadores;
     dado dado1;
     dado dado2;
 
     int turnoActual;
-    tablero miTablero;
+
 public:
     Juego();
 
@@ -29,9 +30,8 @@ public:
     bool cargarPartidaBinario(const QString& nombreArchivo);
 
     void agregarJugador(const QString& nombre);
-    void iniciar();
-
-    //int tirarDadoYAvanzar();
+    void iniciar();                 // iniciar normal
+    void iniciar(int numJugadores); // iniciar con cantidad
     QString jugarTurno();
 
     void aplicarCasilla();
@@ -42,8 +42,11 @@ public:
     jugador& getJugador(int i);
     int getCantidadJugadores() const { return jugadores.size(); }
     int getTurno() const { return turnoActual; }
-    tablero* getTablero() { return &miTablero; }
+
+    tablero* getTablero() { return t; }  //  devolvemos el puntero
     void limpiarJugadores();
+    void setTablero(tablero* t);  //  para asignar el puntero
+
 };
 
 #endif // JUEGO_H

@@ -148,6 +148,12 @@ void MainWindow::BTdado(bool)
     int resultado2 = miDado2->tirar();
 
     qDebug() << "Dado 1:" << resultado1 << " Dado 2:" << resultado2;
+    // Verificar tablero
+    tablero* tb = juegoActual.getTablero();
+    if (!tb) {
+        QMessageBox::warning(this, "Error", "No hay tablero inicializado. Primero presioná 'Comenzar' o 'Cargar juego'.");
+        return;
+    }
 
     // Cargar imágenes
     QString ruta1 = QString(":/new/prefix1/imagenes/dado%1.png").arg(resultado1);
@@ -238,8 +244,8 @@ void MainWindow::mostrarSeleccionPersonajes()
     ui->stackedWidget->setCurrentWidget(ui->seleccionpjs);
 }
 
-void MainWindow::on_numpj_activated(int index){
-
+void MainWindow::on_numpj_activated(int index)
+{
     Q_UNUSED(index);
 
     int numJugadoresSeleccionados = ui->numpj->currentText().toInt();
@@ -253,111 +259,62 @@ void MainWindow::on_numpj_activated(int index){
     for (int i = 0; i < numJugadoresSeleccionados; ++i) {
         juegoActual.agregarJugador(nombresBase.at(i));
     }
-/*
-    QList<QLabel*> fichas = {ui->Jugador_1, ui->Jugador_2, ui->Jugador_3, ui->Jugador_4};
 
-    for (int i = 0; i < fichas.size(); ++i) {
-        if (fichas.at(i)) {
-            if (i < numJugadoresSeleccionados) {
-                fichas.at(i)->setVisible(true);
-            } else {
-                fichas.at(i)->setVisible(false);
-            }
-        }
-    }
-*/
-    for (int i = 0; i < m_fichasJugadores.size(); ++i){
+    for (int i = 0; i < m_fichasJugadores.size(); ++i) {
         QLabel* ficha = m_fichasJugadores[i];
         if (ficha) {
-            // Mostrar la ficha si su índice es menor que la cantidad de jugadores
             ficha->setVisible(i < numJugadoresSeleccionados);
         }
     }
 
-    actualizarTablero();
     actualizarUI();
 }
+
 void MainWindow::pj()
 {
     ui->stackedWidget->setCurrentWidget(ui->tablero);
 }
-/*
-void MainWindow::actualizarTablero() {
-   /* for (int i = 0; i < juegoActual.getCantidadJugadores(); ++i) {
-        int posicion = juegoActual.getJugador(i).getPosicion();
-        QPoint baseCoord = juegoActual.getTablero()->getCoordenadaCasilla(posicion, i);
 
-        QLabel* ficha = nullptr;
-        switch (i) {
-        case 0: ficha = ui->Jugador_1; break;
-        case 1: ficha = ui->Jugador_2; break;
-        case 2: ficha = ui->Jugador_3; break;
-        case 3: ficha = ui->Jugador_4; break;
-        }
-
-        if (ficha) ficha->move(baseCoord);
-    }
-
-   //funcion modificada lucho 29/10
-   for (int i = 0; i < juegoActual.getCantidadJugadores(); ++i) {
-
-       // 1. Obtenemos la posición LÓGICA (ej: casilla 25)
-       int posicion = juegoActual.getJugador(i).getPosicion();
-
-
-       // 2. Pedimos a la clase Tablero las coordenadas (x, y) de esa casilla
-       //    (Tu función ya incluye el offset para que no se pisen)
-       QPoint baseCoord = juegoActual.getTablero()->getCoordenadaCasilla(posicion, i);
-
-       // 3. Obtenemos el QLabel de la ficha usando nuestro MAPA
-       QLabel* ficha = m_fichasJugadores[i];
-
-       // 4. Movemos el QLabel a esas coordenadas
-       if (ficha) {
-           ficha->move(baseCoord);
-           ficha->raise(); // (Opcional) Pone la ficha "encima" de todo
-       }
-   }
-}
-*/
 
 void MainWindow::actualizarTablero()
 {
-    int numCasillas = juegoActual.getTablero()->getNumCasillas();
+    tablero* tb = juegoActual.getTablero();
+    if (!tb) {
+        qDebug() << "actualizarTablero: tablero no inicializado";
+        return;
+    }
 
-    // Mostrar solo las casillas que existen
-    for (int i = 0; i <= 90; ++i) {  // <= en lugar de < 90
+    int numCasillas = tb->getNumCasillas(); // por ejemplo 70
+
+    // Si tus labels están nombrados casilla1..casilla90:
+    for (int i = 1; i <= 90; ++i) {
         QString nombreCasilla = QString("casilla%1").arg(i);
         QLabel* label = findChild<QLabel*>(nombreCasilla);
         if (label) {
-            label->setVisible(i < numCasillas); // ocultará las que sobran
+            // mostrar 1..numCasillas, ocultar numCasillas+1..90
+            label->setVisible(i <= numCasillas);
         }
     }
 
-
-    // Ahora actualizamos las fichas de los jugadores
+    // Actualizamos fichas como antes (usando posiciones válidas)
     for (int i = 0; i < juegoActual.getCantidadJugadores(); ++i) {
         int posicion = juegoActual.getJugador(i).getPosicion();
-
-        if (posicion >= numCasillas) posicion = numCasillas - 1;
+        if (posicion < 1) posicion = 1; // si tu lógica usa 1-based
+        if (posicion > numCasillas) posicion = numCasillas;
 
         QString nombreCasilla = QString("casilla%1").arg(posicion);
         QLabel* labelCasilla = findChild<QLabel*>(nombreCasilla);
-
         if (!labelCasilla) continue;
 
         QLabel* ficha = m_fichasJugadores[i];
         if (!ficha) continue;
 
         QPoint destino = labelCasilla->pos();
-
-        // pequeño offset visual
         switch (i) {
         case 1: destino += QPoint(10, 0); break;
         case 2: destino += QPoint(0, 10); break;
         case 3: destino += QPoint(10, 10); break;
         }
-
         ficha->move(destino);
         ficha->raise();
     }
@@ -372,7 +329,24 @@ void MainWindow::on_botoncomenzar_clicked() {
 }
 
 void MainWindow::on_siguiente_clicked() {
-    // Código para pasar al siguiente turno (parece no tener funcionalidad directa en este botón)
+
+        // Tomamos cantidad de jugadores del combo
+        int numJugadores = ui->numpj->currentText().toInt();
+
+        // Tomamos cantidad de casillas del spinbox (el nuevo control)
+        int numCasillas = ui->CANTcasillas->value();
+
+        // Creamos el tablero con la cantidad elegida
+        tablero* t = new tablero(numCasillas);
+        juegoActual.setTablero(t);
+
+        // Iniciamos el juego
+        juegoActual.iniciar(numJugadores);
+
+        // Actualizamos interfaz y tablero
+        actualizarTablero();
+        actualizarUI();
+
 }
 
 void MainWindow::cantjug(){}

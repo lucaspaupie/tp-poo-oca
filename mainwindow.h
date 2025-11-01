@@ -23,6 +23,7 @@ public:
 private slots:
     void iniciarjuego();
     void BTdado(bool);
+    void on_c4_clicked();
 
     void on_botoncomenzar_clicked();
 

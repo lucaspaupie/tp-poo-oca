@@ -13,12 +13,12 @@ class tablero
 private:
     QVector<casilla*> casillas;
 
-     QVector<QVector<QPoint>> posicionesJugadores;
+    QVector<QVector<QPoint>> posicionesJugadores;
 
     int     m_numCasillas;
-     void generarCasillasEspeciales(); // <-- NUEVA: Función privada
+    void generarCasillasEspeciales(); // <-- NUEVA: Función privada
 public:
-     // MODIFICADO: Acepta el número máximo de la casilla (ej: 63 o 90)
+    // MODIFICADO: Acepta el número máximo de la casilla (ej: 63 o 90)
     tablero(int numCasillasMaximas=63);
     ~tablero();
 

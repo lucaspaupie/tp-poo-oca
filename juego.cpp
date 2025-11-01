@@ -6,8 +6,8 @@
 #include <QJsonDocument>
 #include <QDataStream> // Añadido para binario
 
-Juego::Juego() : turnoActual(0), miTablero(63){
-   // miTablero.cargarCoordenadas();
+Juego::Juego() : turnoActual(0), t(nullptr){
+   // t-> = a tableros.
 }
 
 // --- PERSISTENCIA BINARIA (Guardado de Partida) ---
@@ -164,6 +164,24 @@ void Juego::iniciar(){
         jugadores[i].penalizar(-jugadores[i].getTurnosPenalizados());
     }
 }
+void Juego::iniciar(int numJugadores) {
+    turnoActual = 0;
+
+    // Validar tablero
+    if (!t) {
+        qWarning() << "Intentando iniciar sin tablero asignado.";
+        return;
+    }
+
+    // Reiniciar jugadores
+    for (int i = 0; i < numJugadores && i < jugadores.size(); ++i) {
+        jugadores[i].setPosicion(0);
+        jugadores[i].penalizar(-jugadores[i].getTurnosPenalizados());
+    }
+    qDebug() << "Juego iniciado con" << numJugadores << "jugadores y"
+             << t->getNumCasillas() << "casillas.";
+}
+
 /*
 int Juego::tirarDadoYAvanzar() {
     int valor = dado.tirar();
@@ -174,7 +192,8 @@ int Juego::tirarDadoYAvanzar() {
 QString Juego::jugarTurno() {
     jugador& j = getJugadorActual();
     int posActual = j.getPosicion();
-    int meta = miTablero.getNumCasillas() - 1; // La casilla final (ej: 63)
+    if (!t) return "Error: tablero no inicializado.";
+    int meta = t->getNumCasillas() - 1; // La casilla final (ej: 63)
 
     int v1 = 0;
     int v2 = 0;
@@ -210,12 +229,14 @@ QString Juego::jugarTurno() {
             // Movimiento normal si saca 9 (ej: 2+7 si tuviéramos dados raros, o 4+5 en un tablero sin esa regla)
             // Por ahora, solo movemos si no es uno de esos saltos
             log += "Avanza " + QString::number(totalPasos) + ". ";
-            miTablero.moverJugador(j, totalPasos);
+            if (!t) return "Error: tablero no inicializado.";
+            t->moverJugador(j, totalPasos);
         }
     } else {
         // Movimiento normal
         log += "Avanza " + QString::number(totalPasos) + ". ";
-        miTablero.moverJugador(j, totalPasos);
+        if (!t) return "Error: tablero no inicializado.";
+        t->moverJugador(j, totalPasos);
     }
 
     // El propio moverJugador ya aplica la acción de la casilla
@@ -226,7 +247,8 @@ QString Juego::jugarTurno() {
 }
 
 bool Juego::esFinDelJuego() const {
-    int meta = miTablero.getNumCasillas() - 1; // Ej: 63
+    if (!t) return "Error: tablero no inicializado.";
+    int meta = t->getNumCasillas() - 1; // Ej: 63
     // La regla es "llegue exactamente"
     return jugadores[turnoActual].getPosicion() == meta;
 }
@@ -281,4 +303,8 @@ void Juego::limpiarJugadores() {
 
 void Juego::aplicarCasilla() {
     // Implementación pendiente
+}
+
+void Juego::setTablero(tablero* t) {
+    this->t = t;
 }
