@@ -44,6 +44,7 @@ public:
     int getTurno() const { return turnoActual; }
     tablero* getTablero() { return &miTablero; }
     void limpiarJugadores();
+    void reiniciarTablero(int numCasillas);
 };
 
 #endif // JUEGO_H

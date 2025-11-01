@@ -28,6 +28,19 @@ MainWindow::MainWindow(QWidget *parent)
     miDado = new dado();
     miDado2 = new dado();
 
+    if (ui->comboCasillas) {
+        ui->comboCasillas->clear();
+        for (int n = 63; n <= 90; ++n) {
+            ui->comboCasillas->addItem(QString::number(n));
+        }
+        // seleccionar por defecto 63 (o el índice que quieras)
+        ui->comboCasillas->setCurrentIndex(0);
+
+        // conectar señal
+        connect(ui->comboCasillas, QOverload<int>::of(&QComboBox::activated),
+                this, &MainWindow::on_comboCasillas_activated);
+    }
+
     //aca vamos a poner todos los connect de botones
     connect(ui->botoncomenzar, &QPushButton::clicked, this, &MainWindow::mostrarSeleccionPersonajes);
     connect(ui->siguiente, &QPushButton::clicked, this, &MainWindow::pj);
@@ -365,6 +378,9 @@ void MainWindow::actualizarTablero()
 
 void MainWindow::on_botoncomenzar_clicked() {
     qDebug() << "on_botoncomenzar_clicked: Iniciando el juego.";
+
+    juegoActual.reiniciarTablero(casillasElegidas);
+
     juegoActual.iniciar();
     ui->stackedWidget->setCurrentWidget(ui->tablero);
     actualizarTablero();
@@ -376,3 +392,10 @@ void MainWindow::on_siguiente_clicked() {
 }
 
 void MainWindow::cantjug(){}
+
+void MainWindow::on_comboCasillas_activated(int index) {
+    Q_UNUSED(index);
+    if (!ui->comboCasillas) return;
+    casillasElegidas = ui->comboCasillas->currentText().toInt();
+    qDebug() << "Casillas elegidas:" << casillasElegidas;
+}
