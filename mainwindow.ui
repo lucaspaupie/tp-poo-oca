@@ -30,7 +30,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="comienzo">
      <property name="minimumSize">
@@ -89,8 +89,47 @@ background-repeat: no-repeat;
        <string/>
       </property>
      </widget>
+     <widget class="QPushButton" name="CargarPartida">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>271</width>
+        <height>81</height>
+       </rect>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: transparent;
+border: none;</string>
+      </property>
+      <property name="text">
+       <string extracomment="CARGAR"/>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
+      <property name="checked">
+       <bool>false</bool>
+      </property>
+      <property name="autoRepeat">
+       <bool>false</bool>
+      </property>
+      <property name="autoDefault">
+       <bool>false</bool>
+      </property>
+      <property name="default">
+       <bool>false</bool>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
+      </property>
+     </widget>
      <zorder>botoncerrar</zorder>
      <zorder>botoncomenzar</zorder>
+     <zorder>CargarPartida</zorder>
     </widget>
     <widget class="QWidget" name="seleccionpjs">
      <property name="styleSheet">
@@ -1797,6 +1836,29 @@ background-color: transparent;
        <bool>true</bool>
       </property>
      </widget>
+     <widget class="QPushButton" name="GuardarPartida">
+      <property name="geometry">
+       <rect>
+        <x>910</x>
+        <y>60</y>
+        <width>61</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#botoncerrar{
+background-image: url(:/new/prefix1/imagenes/Salir.png);
+background-color: transparent;
+background-repeat: no-repeat;
+}</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
      <zorder>labelDado</zorder>
      <zorder>mensaje</zorder>
      <zorder>casilla11</zorder>
@@ -1896,6 +1958,7 @@ background-color: transparent;
      <zorder>Jugador_3</zorder>
      <zorder>labelDado2_2</zorder>
      <zorder>BTdado</zorder>
+     <zorder>GuardarPartida</zorder>
     </widget>
    </widget>
   </widget>

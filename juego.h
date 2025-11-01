@@ -11,7 +11,7 @@
 class Juego
 {
 private:
-    tablero* t;  // 🔥 usamos solo el puntero, no la versión duplicada
+    tablero* t;  // usamos solo el puntero, no la versión duplicada
     QVector<jugador> jugadores;
     dado dado1;
     dado dado2;

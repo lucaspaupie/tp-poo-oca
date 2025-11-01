@@ -23,22 +23,11 @@ public:
 private slots:
     void iniciarjuego();
     void BTdado(bool);
-    void on_c4_clicked();
-
     void on_botoncomenzar_clicked();
-
     void on_numpj_activated(int index);
-
     void on_siguiente_clicked();
-
-    // SLOTS PARA PERSISTENCIA JSON (Texto)
-    void on_actionGuardar_triggered(); // Asume que este es el JSON
-    void on_actionCargar_triggered();  // Asume que este es el JSON
-
-    // NUEVOS SLOTS PARA PERSISTENCIA BINARIA
-    void on_actionGuardarBinario_triggered();
-    void on_actionCargarBinario_triggered();
-
+    void on_CargarPartida_clicked();
+    void onGuardarPartidaClicked();
 private:
     Ui::MainWindow *ui;
     Juego juegoActual;

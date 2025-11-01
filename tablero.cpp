@@ -137,3 +137,23 @@ void tablero::generarCasillasEspeciales() {
     for (int i = 0; i < numCarceles; ++i) { plantarEspecial("carcel"); }
     for (int i = 0; i < numCalaveras; ++i) { plantarEspecial("calavera"); }
 }
+void tablero::setNumCasillas(int n)
+{
+    if (n < 1)
+        n = 1;
+
+    m_numCasillas = n;
+
+    // Si ya había casillas, las eliminamos y regeneramos
+    if (!casillas.isEmpty()) {
+        qDeleteAll(casillas);
+        casillas.clear();
+    }
+
+    // Crear las nuevas casillas básicas
+    for (int i = 0; i < m_numCasillas; ++i) {
+        casillas.append(new casilla(i));
+    }
+
+    qDebug() << "Tablero reconfigurado con" << m_numCasillas << "casillas.";
+}

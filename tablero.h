@@ -28,6 +28,8 @@ public:
     void cargarCoordenadas();
     casilla* getCasilla(int numero); //obtener casilla por su numero
     int getNumCasillas() const { return m_numCasillas; }
+    void setNumCasillas(int n);
 };
 
 #endif // TABLERO_H
+

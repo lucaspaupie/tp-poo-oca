@@ -12,75 +12,66 @@ Juego::Juego() : turnoActual(0), t(nullptr){
 
 // --- PERSISTENCIA BINARIA (Guardado de Partida) ---
 
-bool Juego::guardarPartidaBinario(const QString& nombreArchivo) {
-    QFile saveFile(nombreArchivo);
-    // Abrir en modo escritura, binario
-    if (!saveFile.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
-        qWarning("No se pudo abrir el archivo binario para escribir.");
+bool Juego::guardarPartidaBinario(const QString &nombreArchivo)
+{
+    QFile archivo(nombreArchivo);
+    if (!archivo.open(QIODevice::WriteOnly))
         return false;
-    }
 
-    QDataStream out(&saveFile);
-    // Establecer una versión para el stream, vital para la compatibilidad futura
+    QDataStream out(&archivo);
     out.setVersion(QDataStream::Qt_6_0);
 
-    // 1. Guardar turno actual
-    out << turnoActual;
-
-    // 2. Guardar cantidad de jugadores y luego cada jugador
+    // --- Guardar datos generales ---
     out << jugadores.size();
-    for (const jugador& j : jugadores) {
-        out << j; // Usa el operador<< implementado en jugador.cpp
-    }
+    out << turnoActual;
+    out << t->getNumCasillas(); // guarda tamaño del tablero
 
-    saveFile.close();
-    qDebug() << "Partida guardada binariamente en:" << nombreArchivo;
+    // --- Guardar jugadores ---
+    for (const jugador &j : jugadores)
+        out << j;
+
+    archivo.close();
     return true;
 }
 
-bool Juego::cargarPartidaBinario(const QString& nombreArchivo) {
-    QFile loadFile(nombreArchivo);
-    // Abrir en modo lectura, binario
-    if (!loadFile.open(QIODevice::ReadOnly)) {
-        qWarning("No se pudo abrir el archivo binario para leer.");
-        return false;
-    }
 
-    QDataStream in(&loadFile);
-    // Establecer la misma versión
+bool Juego::cargarPartidaBinario(const QString &nombreArchivo)
+{
+    QFile archivo(nombreArchivo);
+    if (!archivo.open(QIODevice::ReadOnly))
+        return false;
+
+    QDataStream in(&archivo);
     in.setVersion(QDataStream::Qt_6_0);
 
-    // Variables de carga
-    int loadedTurnoActual = 0;
-    int numJugadores = 0;
-    QVector<jugador> loadedJugadores;
+    int cantidadJugadores, numCasillas;
+    in >> cantidadJugadores;
+    in >> turnoActual;
+    in >> numCasillas;
 
-    // 1. Cargar turno actual
-    in >> loadedTurnoActual;
+    // --- Restaurar tablero ---
+    if (t) delete t;
+    t = new tablero(numCasillas);
 
-    // 2. Cargar cantidad de jugadores
-    in >> numJugadores;
-
-    // 3. Cargar cada jugador
-    for (int i = 0; i < numJugadores; ++i) {
-        jugador j("Temp"); // Se inicializa con un nombre temporal
-        in >> j; // Usa el operador>> implementado en jugador.cpp
-        loadedJugadores.append(j);
+    // --- Restaurar jugadores ---
+    jugadores.clear();
+    for (int i = 0; i < cantidadJugadores; ++i) {
+        jugador j("");
+        in >> j;
+        jugadores.append(j);
     }
+    //if (loadedTurnoActual >= 0 && loadedTurnoActual < loadedJugadores.size()) {
+    //  turnoActual = loadedTurnoActual;
+    //} else {
+    //   turnoActual = 0;
+    //    qWarning() << "turnoActual fuera de rango, se reinicia a 0";
+    //}
 
-    // 4. Aplicar el estado cargado SÓLO si la carga fue exitosa
-    if (in.status() == QDataStream::Ok) {
-        jugadores = loadedJugadores;
-        turnoActual = loadedTurnoActual;
-        loadFile.close();
-        qDebug() << "Partida cargada binariamente exitosamente desde:" << nombreArchivo;
-        return true;
-    } else {
-        qWarning("Error durante la lectura del archivo binario.");
-        loadFile.close();
-        return false;
-    }
+
+    archivo.close();
+    return true;
 }
+
 
 // --- PERSISTENCIA JSON (Guardado de Configuración - Texto) ---
 
@@ -193,7 +184,7 @@ QString Juego::jugarTurno() {
     jugador& j = getJugadorActual();
     int posActual = j.getPosicion();
     if (!t) return "Error: tablero no inicializado.";
-    int meta = t->getNumCasillas() - 1; // La casilla final (ej: 63)
+    int meta = t->getNumCasillas()  ; // La casilla final (ej: 63)
 
     int v1 = 0;
     int v2 = 0;
@@ -248,7 +239,7 @@ QString Juego::jugarTurno() {
 
 bool Juego::esFinDelJuego() const {
     if (!t) return "Error: tablero no inicializado.";
-    int meta = t->getNumCasillas() - 1; // Ej: 63
+    int meta = t->getNumCasillas(); // Ej: 63
     // La regla es "llegue exactamente"
     return jugadores[turnoActual].getPosicion() == meta;
 }

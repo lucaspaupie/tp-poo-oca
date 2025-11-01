@@ -12,6 +12,9 @@
 #include <QTimer>
 #include <QFileDialog>
 #include <QAction>
+#include <QInputDialog>
+#include <QDir>
+#include "Juego.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -29,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
     miDado2 = new dado();
 
     //aca vamos a poner todos los connect de botones
+    connect(ui->GuardarPartida, &QPushButton::clicked, this, &MainWindow::onGuardarPartidaClicked);
     connect(ui->botoncomenzar, &QPushButton::clicked, this, &MainWindow::mostrarSeleccionPersonajes);
     connect(ui->siguiente, &QPushButton::clicked, this, &MainWindow::pj);
     connect(ui->BTdado, &QPushButton::clicked, this, &MainWindow::BTdado);
@@ -56,7 +60,7 @@ MainWindow::~MainWindow()
 
 // --- SLOTS DE PERSISTENCIA JSON (Texto - Configuración) ---
 
-void MainWindow::on_actionGuardar_triggered() {
+/*void MainWindow::on_actionGuardar_triggered() {
     QString fileName = QFileDialog::getSaveFileName(this,
                                                     "Guardar Configuración de Juego",
                                                     QDir::homePath(),
@@ -87,11 +91,11 @@ void MainWindow::on_actionCargar_triggered() {
             QMessageBox::critical(this, "Error", "Fallo al cargar la configuración (JSON).");
         }
     }
-}
+}*/
 
 // --- SLOTS DE PERSISTENCIA BINARIA (Avance de Partida) ---
 
-void MainWindow::on_actionGuardarBinario_triggered() {
+/*void MainWindow::on_actionGuardarBinario_triggered() {
     QString fileName = QFileDialog::getSaveFileName(this,
                                                     "Guardar Partida (Binario)",
                                                     QDir::homePath(),
@@ -123,7 +127,7 @@ void MainWindow::on_actionCargarBinario_triggered() {
         }
     }
 }
-
+*/
 // --- MÉTODOS EXISTENTES Y CORREGIDOS ---
 
 void MainWindow::actualizarUI()
@@ -350,3 +354,67 @@ void MainWindow::on_siguiente_clicked() {
 }
 
 void MainWindow::cantjug(){}
+void MainWindow::onGuardarPartidaClicked()
+{
+    QString nombre = QInputDialog::getText(
+        this,
+        tr("Guardar partida"),
+        tr("Ingrese un nombre para la partida:")
+        );
+
+    if (nombre.trimmed().isEmpty()) {
+        QMessageBox::warning(this, tr("Aviso"), tr("Debe ingresar un nombre válido."));
+        return;
+    }
+
+    QDir dir;
+    if (!dir.exists("partidas")) {
+        dir.mkdir("partidas");
+    }
+
+    QString ruta = QString("partidas/%1.bin").arg(nombre.trimmed());
+
+    if (juegoActual.guardarPartidaBinario(ruta)) {
+        QMessageBox::information(this, tr("Guardado exitoso"),
+                                 tr("La partida se guardó correctamente como:\n%1").arg(ruta));
+    } else {
+        QMessageBox::critical(this, tr("Error"),
+                              tr("No se pudo guardar la partida."));
+    }
+}
+
+void MainWindow::on_CargarPartida_clicked()
+{
+    // Abre el diálogo para seleccionar la partida
+    QString nombreArchivo = QFileDialog::getOpenFileName(
+        this,
+        tr("Cargar partida"),
+        "partidas/",                  // Carpeta por defecto
+        tr("Partidas guardadas (*.bin)") // Filtro
+        );
+
+    // Si no se seleccionó ningún archivo, cancelar
+    if (nombreArchivo.isEmpty()) {
+        QMessageBox::information(this, tr("Carga cancelada"), tr("No se seleccionó ninguna partida."));
+        return;
+    }
+
+
+    // Intentar cargar la partida
+    if (juegoActual.cargarPartidaBinario(nombreArchivo)) {
+        QMessageBox::information(this, tr("Éxito"), tr("Partida cargada correctamente."));
+
+        // Mostrar la pantalla del tablero
+        ui->stackedWidget->setCurrentWidget(ui->tablero);
+
+        // Actualizar las fichas y datos
+        actualizarTablero();
+        actualizarUI();
+
+        // Mostrar quién tiene el turno
+        ui->mensaje->setText("Turno de: " + juegoActual.getJugadorActual().getNombre());
+    } else {
+        QMessageBox::warning(this, tr("Error"), tr("No se pudo cargar la partida seleccionada."));
+    }
+}
+

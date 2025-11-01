@@ -14,6 +14,7 @@ private:
     bool atrapado = false;
     bool repetirTurno = false;
 public:
+    jugador() = default;
     jugador(const QString& nombre);
 
     // Métodos de serialización JSON (texto)
