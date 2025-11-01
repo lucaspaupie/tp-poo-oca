@@ -282,6 +282,3 @@ void Juego::limpiarJugadores() {
 void Juego::aplicarCasilla() {
     // Implementación pendiente
 }
-void Juego::reiniciarTablero(int numCasillas){
-     miTablero = tablero(numCasillas);
-}

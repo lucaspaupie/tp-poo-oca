@@ -37,7 +37,6 @@ private slots:
     // NUEVOS SLOTS PARA PERSISTENCIA BINARIA
     void on_actionGuardarBinario_triggered();
     void on_actionCargarBinario_triggered();
-    void on_comboCasillas_activated(int index);
 
 private:
     Ui::MainWindow *ui;
@@ -58,8 +57,6 @@ private:
     QVector<QVector<QPoint>> posicionesJugadores;
 
     std::map<int, QLabel*> m_fichasJugadores;
-
-    int casillasElegidas = 63;
 
 };
 
