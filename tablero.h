@@ -4,6 +4,7 @@
 #include <QVector>
 #include <QPoint>
 #include "casilla.h"
+#include <QJsonObject>
 // #include "casillaespecial.h"  quitado por el momento
 // ver esto de arriba por que lo agregue y no ocupo ninguna funcion, me tira warning
 class jugador;
@@ -29,6 +30,8 @@ public:
     casilla* getCasilla(int numero); //obtener casilla por su numero
     int getNumCasillas() const { return m_numCasillas; }
     void setNumCasillas(int n);
+    QJsonObject toJson() const; //
+    static tablero* fromJson(const QJsonObject& json);
 };
 
 #endif // TABLERO_H

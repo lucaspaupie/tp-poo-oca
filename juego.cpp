@@ -5,6 +5,7 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QDataStream> // Añadido para binario
+#include <QTextStream>
 
 Juego::Juego() : turnoActual(0), t(nullptr){
    // t-> = a tableros.
@@ -103,6 +104,7 @@ bool Juego::guardarJuego(const QString& nombreArchivo) {
 }
 
 bool Juego::cargarJuego(const QString& nombreArchivo) {
+    // ... (código existente para abrir y leer el archivo JSON)
     QFile loadFile(nombreArchivo);
 
     if (!loadFile.open(QIODevice::ReadOnly)) {
@@ -119,7 +121,7 @@ bool Juego::cargarJuego(const QString& nombreArchivo) {
     }
 
     QJsonObject juegoJson = loadDoc.object();
-
+    // ... (código existente para cargar turnoActual y jugadores)
     if (juegoJson.contains("turnoActual") && juegoJson["turnoActual"].isDouble()) {
         turnoActual = juegoJson["turnoActual"].toInt();
     } else {
@@ -137,6 +139,23 @@ bool Juego::cargarJuego(const QString& nombreArchivo) {
         qWarning("Datos de jugadores faltantes o inválidos.");
         return false;
     }
+
+    // 4. Cargar configuración del tablero <--- ¡AÑADE ESTO!
+    if (juegoJson.contains("tablero") && juegoJson["tablero"].isObject()) {
+        QJsonObject tableroJson = juegoJson["tablero"].toObject();
+        tablero* nuevoTablero = tablero::fromJson(tableroJson);
+        if (nuevoTablero) {
+            if (t) delete t; // Liberar el tablero anterior si existe
+            t = nuevoTablero;
+        } else {
+            qWarning("Error al cargar la configuración del tablero.");
+            return false;
+        }
+    } else {
+        qWarning("Datos de tablero faltantes o inválidos.");
+        return false;
+    }
+
 
     qDebug() << "Configuración cargada exitosamente desde:" << nombreArchivo;
     return true;
@@ -299,3 +318,4 @@ void Juego::aplicarCasilla() {
 void Juego::setTablero(tablero* t) {
     this->t = t;
 }
+

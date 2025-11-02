@@ -157,3 +157,19 @@ void tablero::setNumCasillas(int n)
 
     qDebug() << "Tablero reconfigurado con" << m_numCasillas << "casillas.";
 }
+
+QJsonObject tablero::toJson() const { // <--- ¡AÑADE ESTO!
+    QJsonObject json;
+    json["numCasillas"] = m_numCasillas;
+    return json;
+}
+
+tablero* tablero::fromJson(const QJsonObject& json) { // <--- ¡AÑADE ESTO!
+    if (json.contains("numCasillas") && json["numCasillas"].isDouble()) {
+        int num = json["numCasillas"].toInt();
+        // Creamos un nuevo tablero con el número de casillas guardado
+        return new tablero(num);
+    }
+    qWarning() << "Error al cargar el número de casillas desde JSON.";
+    return nullptr;
+}
