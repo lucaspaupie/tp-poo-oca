@@ -3,34 +3,30 @@
 #include "casillaespecial.h"
 #include <QMap>
 #include "mainwindow.h"
-
-
 #include <random>   // <-- NUEVO
 #include <QSet>     // <-- NUEVO (para evitar casillas duplicadas)
 #include <QDebug>   // <-- NUEVO (opcional, para depurar)
 
-tablero::tablero(int numCasillasMaximas) : m_numCasillas(numCasillasMaximas + 1)
+
+
+tablero::tablero(int numCasillasElegidas)
 {
+    if (numCasillasElegidas < 63)
+        numCasillasElegidas = 63;
+    else if (numCasillasElegidas > 90)
+        numCasillasElegidas = 90;
 
-   /* QMap<int, QString> especiales = {
-        {6, "puente"},
-        {9, "oca"}, {18, "oca"}, {27, "oca"}, {36, "oca"}, {45, "oca"}, {54, "oca"},
-        {19, "posada"},
-        {31, "pozo"},
-        {42, "laberinto"},
-        {56, "carcel"},
-        {58, "calavera"}
-    };
-        */
+    m_numCasillas = numCasillasElegidas;
 
-    for (int i = 0; i < m_numCasillas; ++i) {
+    for (int i = 0; i < m_numCasillas; ++i)
         casillas.append(new casilla(i));
-    }
+
     generarCasillasEspeciales();
     cargarCoordenadas();
-
-
 }
+
+
+
 
 tablero::~tablero() {
     qDeleteAll(casillas);
@@ -81,50 +77,7 @@ QPoint tablero::getCoordenadaCasilla(int casilla, int jugadorID) {
     }
 }
 void tablero::cargarCoordenadas() {
-   /* this->posicionesJugadores.resize(1);
-
-    this->posicionesJugadores[0].resize(m_numCasillas);
-
-    // Generamos coordenadas "dummy" solo para que funcione
-    // Esto creará una simple línea recta
-
-    for (int i = 0; i < m_numCasillas; ++i) {
-        this->posicionesJugadores[0][i] = QPoint(10 + (i * 10), 300);
-    }
-*/
-    /*this->posicionesJugadores[0] = {
-                                    QPoint(120, 620), QPoint(250, 620), QPoint(320, 620),
-                                    QPoint(390, 620), QPoint(450, 620), QPoint(520, 620),
-                                    QPoint(600, 620), QPoint(670, 620), QPoint(720, 620),
-                                    QPoint(800, 620), QPoint(850, 550), QPoint(880, 500),
-                                    QPoint(910, 450), QPoint(930, 390), QPoint(950, 300),
-                                    QPoint(940, 240), QPoint(930, 170), QPoint(890, 120),
-                                    QPoint(800, 50),  QPoint(720, 20),  QPoint(640, 10),
-                                    QPoint(580, 10),  QPoint(510, 10),  QPoint(450, 10),
-                                    QPoint(380, 10),  QPoint(320, 10),  QPoint(250, 10),
-                                    QPoint(180, 30),  QPoint(120, 70),  QPoint(80, 120),
-                                    QPoint(40, 180),  QPoint(30, 250),  QPoint(40, 320),
-                                    QPoint(40, 400),  QPoint(70, 470),  QPoint(160, 480),
-                                    QPoint(210, 510), QPoint(270, 520), QPoint(320, 520),
-                                    QPoint(390, 520), QPoint(450, 520), QPoint(520, 520),
-                                    QPoint(600, 520), QPoint(670, 520), QPoint(720, 510),
-                                    QPoint(780, 460), QPoint(810, 410), QPoint(820, 360),
-                                    QPoint(820, 310), QPoint(850, 230), QPoint(780, 150),
-                                    QPoint(720, 120), QPoint(620, 110), QPoint(530, 110),
-                                    QPoint(450, 110), QPoint(380, 110), QPoint(310, 110),
-                                    QPoint(240, 110), QPoint(190, 170), QPoint(140, 280),
-                                    QPoint(200, 350), QPoint(230, 400), QPoint(270, 420),
-                                    QPoint(490, 310)
-    */
-  //  };
 }
-
-/*
-QPoint tablero::getCoordenadaCasilla(int casilla, int jugadorID) {
-    return posicionesJugadores[jugadorID][casilla];
-}*/
-
-
 
 casilla* tablero::getCasilla(int numero){
     if(numero>=0 && numero < casillas.size()){
@@ -183,4 +136,40 @@ void tablero::generarCasillasEspeciales() {
     for (int i = 0; i < numLaberintos; ++i) { plantarEspecial("laberinto"); }
     for (int i = 0; i < numCarceles; ++i) { plantarEspecial("carcel"); }
     for (int i = 0; i < numCalaveras; ++i) { plantarEspecial("calavera"); }
+}
+void tablero::setNumCasillas(int n)
+{
+    if (n < 1)
+        n = 1;
+
+    m_numCasillas = n;
+
+    // Si ya había casillas, las eliminamos y regeneramos
+    if (!casillas.isEmpty()) {
+        qDeleteAll(casillas);
+        casillas.clear();
+    }
+
+    // Crear las nuevas casillas básicas
+    for (int i = 0; i < m_numCasillas; ++i) {
+        casillas.append(new casilla(i));
+    }
+
+    qDebug() << "Tablero reconfigurado con" << m_numCasillas << "casillas.";
+}
+
+QJsonObject tablero::toJson() const { // <--- ¡AÑADE ESTO!
+    QJsonObject json;
+    json["numCasillas"] = m_numCasillas;
+    return json;
+}
+
+tablero* tablero::fromJson(const QJsonObject& json) { // <--- ¡AÑADE ESTO!
+    if (json.contains("numCasillas") && json["numCasillas"].isDouble()) {
+        int num = json["numCasillas"].toInt();
+        // Creamos un nuevo tablero con el número de casillas guardado
+        return new tablero(num);
+    }
+    qWarning() << "Error al cargar el número de casillas desde JSON.";
+    return nullptr;
 }

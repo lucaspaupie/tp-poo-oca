@@ -12,6 +12,9 @@
 #include <QTimer>
 #include <QFileDialog>
 #include <QAction>
+#include <QInputDialog>
+#include <QDir>
+#include "Juego.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -26,8 +29,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     //cosas del dado
     miDado = new dado();
+    miDado2 = new dado();
 
     //aca vamos a poner todos los connect de botones
+    connect(ui->GuardarPartida, &QPushButton::clicked, this, &MainWindow::onGuardarPartidaClicked);
     connect(ui->botoncomenzar, &QPushButton::clicked, this, &MainWindow::mostrarSeleccionPersonajes);
     connect(ui->siguiente, &QPushButton::clicked, this, &MainWindow::pj);
     connect(ui->BTdado, &QPushButton::clicked, this, &MainWindow::BTdado);
@@ -50,11 +55,12 @@ MainWindow::~MainWindow()
 {
     delete ui;
     delete miDado;
+    delete miDado2;
 }
 
 // --- SLOTS DE PERSISTENCIA JSON (Texto - Configuración) ---
 
-void MainWindow::on_actionGuardar_triggered() {
+/*void MainWindow::on_actionGuardar_triggered() {
     QString fileName = QFileDialog::getSaveFileName(this,
                                                     "Guardar Configuración de Juego",
                                                     QDir::homePath(),
@@ -85,11 +91,11 @@ void MainWindow::on_actionCargar_triggered() {
             QMessageBox::critical(this, "Error", "Fallo al cargar la configuración (JSON).");
         }
     }
-}
+}*/
 
 // --- SLOTS DE PERSISTENCIA BINARIA (Avance de Partida) ---
 
-void MainWindow::on_actionGuardarBinario_triggered() {
+/*void MainWindow::on_actionGuardarBinario_triggered() {
     QString fileName = QFileDialog::getSaveFileName(this,
                                                     "Guardar Partida (Binario)",
                                                     QDir::homePath(),
@@ -121,7 +127,7 @@ void MainWindow::on_actionCargarBinario_triggered() {
         }
     }
 }
-
+*/
 // --- MÉTODOS EXISTENTES Y CORREGIDOS ---
 
 void MainWindow::actualizarUI()
@@ -141,15 +147,35 @@ void MainWindow::actualizarUI()
 
 void MainWindow::BTdado(bool)
 {
+    // Tirar ambos dados
     int resultado1 = miDado->tirar();
-    qDebug() << "Dado 1:" << resultado1;
+    int resultado2 = miDado2->tirar();
 
-    QString rutaImagen1 = QString(":/new/prefix1/imagenes/dado%1.png").arg(resultado1);
-    QPixmap skin1(rutaImagen1);
+    qDebug() << "Dado 1:" << resultado1 << " Dado 2:" << resultado2;
+    // Verificar tablero
+    tablero* tb = juegoActual.getTablero();
+    if (!tb) {
+        QMessageBox::warning(this, "Error", "No hay tablero inicializado. Primero presioná 'Comenzar' o 'Cargar juego'.");
+        return;
+    }
+
+    // Cargar imágenes
+    QString ruta1 = QString(":/new/prefix1/imagenes/dado%1.png").arg(resultado1);
+    QString ruta2 = QString(":/new/prefix1/imagenes/dado%1.png").arg(resultado2);
+
+    QPixmap skin1(ruta1);
+    QPixmap skin2(ruta2);
 
     if (!skin1.isNull()) {
         ui->labelDado->setPixmap(skin1.scaled(ui->labelDado->size(), Qt::KeepAspectRatio));
     }
+
+    if (ui->labelDado2_2 && !skin2.isNull()) {
+        ui->labelDado2_2->setPixmap(skin2.scaled(ui->labelDado2_2->size(), Qt::KeepAspectRatio));
+    }
+
+    // Sumar los resultados de ambos dados
+    int avance = resultado1 + resultado2;
 
     jugador& actual = juegoActual.getJugadorActual();
 
@@ -172,20 +198,14 @@ void MainWindow::BTdado(bool)
         return;
     }
 
-
-    // Verificar si cayó en casilla especial y obtener mensaje
-
-    // int currentPos = actual.getPosicion();
-
-    // Actualizar posición visual
-
-    ////nuevo lucho 29/10
-    QString mensajeEspecial = juegoActual.getTablero()->moverJugador(actual, resultado1);
-    ///
+    // Mover al jugador la suma de los dos dados
+    QString mensajeEspecial = juegoActual.getTablero()->moverJugador(actual, avance);
 
     actualizarTablero();
-
-    ui->mensaje->setText(mensajeEspecial);
+    ui->mensaje->setText("Sacaste " + QString::number(resultado1) + " y " +
+                         QString::number(resultado2) +
+                         " → avanzás " + QString::number(avance) + " casillas.\n" +
+                         mensajeEspecial);
 
     if (!mensajeEspecial.isEmpty()) {
         QTimer::singleShot(3000, this, [this]() {
@@ -206,10 +226,10 @@ void MainWindow::BTdado(bool)
         return;
     }
 
-
     juegoActual.pasarTurno();
     actualizarUI();
 }
+
 
 
 void MainWindow::iniciarjuego()
@@ -228,8 +248,8 @@ void MainWindow::mostrarSeleccionPersonajes()
     ui->stackedWidget->setCurrentWidget(ui->seleccionpjs);
 }
 
-void MainWindow::on_numpj_activated(int index){
-
+void MainWindow::on_numpj_activated(int index)
+{
     Q_UNUSED(index);
 
     int numJugadoresSeleccionados = ui->numpj->currentText().toInt();
@@ -243,102 +263,64 @@ void MainWindow::on_numpj_activated(int index){
     for (int i = 0; i < numJugadoresSeleccionados; ++i) {
         juegoActual.agregarJugador(nombresBase.at(i));
     }
-/*
-    QList<QLabel*> fichas = {ui->Jugador_1, ui->Jugador_2, ui->Jugador_3, ui->Jugador_4};
 
-    for (int i = 0; i < fichas.size(); ++i) {
-        if (fichas.at(i)) {
-            if (i < numJugadoresSeleccionados) {
-                fichas.at(i)->setVisible(true);
-            } else {
-                fichas.at(i)->setVisible(false);
-            }
-        }
-    }
-*/
-    for (int i = 0; i < m_fichasJugadores.size(); ++i){
+    for (int i = 0; i < m_fichasJugadores.size(); ++i) {
         QLabel* ficha = m_fichasJugadores[i];
         if (ficha) {
-            // Mostrar la ficha si su índice es menor que la cantidad de jugadores
             ficha->setVisible(i < numJugadoresSeleccionados);
         }
     }
 
-    actualizarTablero();
     actualizarUI();
 }
+
 void MainWindow::pj()
 {
     ui->stackedWidget->setCurrentWidget(ui->tablero);
 }
-/*
-void MainWindow::actualizarTablero() {
-   /* for (int i = 0; i < juegoActual.getCantidadJugadores(); ++i) {
-        int posicion = juegoActual.getJugador(i).getPosicion();
-        QPoint baseCoord = juegoActual.getTablero()->getCoordenadaCasilla(posicion, i);
 
-        QLabel* ficha = nullptr;
-        switch (i) {
-        case 0: ficha = ui->Jugador_1; break;
-        case 1: ficha = ui->Jugador_2; break;
-        case 2: ficha = ui->Jugador_3; break;
-        case 3: ficha = ui->Jugador_4; break;
-        }
 
-        if (ficha) ficha->move(baseCoord);
+void MainWindow::actualizarTablero()
+{
+    tablero* tb = juegoActual.getTablero();
+    if (!tb) {
+        qDebug() << "actualizarTablero: tablero no inicializado";
+        return;
     }
 
-   //funcion modificada lucho 29/10
-   for (int i = 0; i < juegoActual.getCantidadJugadores(); ++i) {
+    int numCasillas = tb->getNumCasillas(); // por ejemplo 70
 
-       // 1. Obtenemos la posición LÓGICA (ej: casilla 25)
-       int posicion = juegoActual.getJugador(i).getPosicion();
+    // Si tus labels están nombrados casilla1..casilla90:
+    for (int i = 1; i <= 90; ++i) {
+        QString nombreCasilla = QString("casilla%1").arg(i);
+        QLabel* label = findChild<QLabel*>(nombreCasilla);
+        if (label) {
+            // mostrar 1..numCasillas, ocultar numCasillas+1..90
+            label->setVisible(i <= numCasillas);
+        }
+    }
 
-
-       // 2. Pedimos a la clase Tablero las coordenadas (x, y) de esa casilla
-       //    (Tu función ya incluye el offset para que no se pisen)
-       QPoint baseCoord = juegoActual.getTablero()->getCoordenadaCasilla(posicion, i);
-
-       // 3. Obtenemos el QLabel de la ficha usando nuestro MAPA
-       QLabel* ficha = m_fichasJugadores[i];
-
-       // 4. Movemos el QLabel a esas coordenadas
-       if (ficha) {
-           ficha->move(baseCoord);
-           ficha->raise(); // (Opcional) Pone la ficha "encima" de todo
-       }
-   }
-}
-*/
-
-void MainWindow::actualizarTablero() {
+    // Actualizamos fichas como antes (usando posiciones válidas)
     for (int i = 0; i < juegoActual.getCantidadJugadores(); ++i) {
         int posicion = juegoActual.getJugador(i).getPosicion();
+        if (posicion < 1) posicion = 1; // si tu lógica usa 1-based
+        if (posicion > numCasillas) posicion = numCasillas;
 
-        // Obtenemos el QLabel correspondiente a la casilla
         QString nombreCasilla = QString("casilla%1").arg(posicion);
         QLabel* labelCasilla = findChild<QLabel*>(nombreCasilla);
-
-        if (!labelCasilla) {
-            qDebug() << "No se encontró la" << nombreCasilla;
-            continue;
-        }
+        if (!labelCasilla) continue;
 
         QLabel* ficha = m_fichasJugadores[i];
         if (!ficha) continue;
 
-        // Movemos la ficha sobre el QLabel de la casilla
         QPoint destino = labelCasilla->pos();
-
-        // Pequeño offset visual según jugador (para que no se superpongan)
         switch (i) {
         case 1: destino += QPoint(10, 0); break;
         case 2: destino += QPoint(0, 10); break;
         case 3: destino += QPoint(10, 10); break;
         }
-
         ficha->move(destino);
-        ficha->raise(); // traer ficha al frente
+        ficha->raise();
     }
 }
 
@@ -351,7 +333,88 @@ void MainWindow::on_botoncomenzar_clicked() {
 }
 
 void MainWindow::on_siguiente_clicked() {
-    // Código para pasar al siguiente turno (parece no tener funcionalidad directa en este botón)
+
+        // Tomamos cantidad de jugadores del combo
+        int numJugadores = ui->numpj->currentText().toInt();
+
+        // Tomamos cantidad de casillas del spinbox (el nuevo control)
+        int numCasillas = ui->CANTcasillas->value();
+
+        // Creamos el tablero con la cantidad elegida
+        tablero* t = new tablero(numCasillas);
+        juegoActual.setTablero(t);
+
+        // Iniciamos el juego
+        juegoActual.iniciar(numJugadores);
+
+        // Actualizamos interfaz y tablero
+        actualizarTablero();
+        actualizarUI();
+
 }
 
 void MainWindow::cantjug(){}
+void MainWindow::onGuardarPartidaClicked()
+{
+    QString nombre = QInputDialog::getText(
+        this,
+        tr("Guardar partida"),
+        tr("Ingrese un nombre para la partida:")
+        );
+
+    if (nombre.trimmed().isEmpty()) {
+        QMessageBox::warning(this, tr("Aviso"), tr("Debe ingresar un nombre válido."));
+        return;
+    }
+
+    QDir dir;
+    if (!dir.exists("partidas")) {
+        dir.mkdir("partidas");
+    }
+
+    QString ruta = QString("partidas/%1.bin").arg(nombre.trimmed());
+
+    if (juegoActual.guardarPartidaBinario(ruta)) {
+        QMessageBox::information(this, tr("Guardado exitoso"),
+                                 tr("La partida se guardó correctamente como:\n%1").arg(ruta));
+    } else {
+        QMessageBox::critical(this, tr("Error"),
+                              tr("No se pudo guardar la partida."));
+    }
+}
+
+void MainWindow::on_CargarPartida_clicked()
+{
+    // Abre el diálogo para seleccionar la partida
+    QString nombreArchivo = QFileDialog::getOpenFileName(
+        this,
+        tr("Cargar partida"),
+        "partidas/",                  // Carpeta por defecto
+        tr("Partidas guardadas (*.bin)") // Filtro
+        );
+
+    // Si no se seleccionó ningún archivo, cancelar
+    if (nombreArchivo.isEmpty()) {
+        QMessageBox::information(this, tr("Carga cancelada"), tr("No se seleccionó ninguna partida."));
+        return;
+    }
+
+
+    // Intentar cargar la partida
+    if (juegoActual.cargarPartidaBinario(nombreArchivo)) {
+        QMessageBox::information(this, tr("Éxito"), tr("Partida cargada correctamente."));
+
+        // Mostrar la pantalla del tablero
+        ui->stackedWidget->setCurrentWidget(ui->tablero);
+
+        // Actualizar las fichas y datos
+        actualizarTablero();
+        actualizarUI();
+
+        // Mostrar quién tiene el turno
+        ui->mensaje->setText("Turno de: " + juegoActual.getJugadorActual().getNombre());
+    } else {
+        QMessageBox::warning(this, tr("Error"), tr("No se pudo cargar la partida seleccionada."));
+    }
+}
+
