@@ -23,4 +23,14 @@
         <file>imagenes/tt_wins.png</file>
         <file>imagenes/ctwins.png</file>
     </qresource>
+    <qresource prefix="/">
+        <file>imagenes/calavera.png</file>
+        <file>imagenes/carcel.png</file>
+        <file>imagenes/laberinto.png</file>
+        <file>imagenes/oca.png</file>
+        <file>imagenes/posada.png</file>
+        <file>imagenes/pozo.png</file>
+        <file>imagenes/puente.png</file>
+        <file>imagenes/normal.png</file>
+    </qresource>
 </RCC>
