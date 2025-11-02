@@ -347,6 +347,8 @@ void MainWindow::on_siguiente_clicked() {
         // Iniciamos el juego
         juegoActual.iniciar(numJugadores);
 
+        dibujarCasillasEspeciales();
+
         // Actualizamos interfaz y tablero
         actualizarTablero();
         actualizarUI();
@@ -406,6 +408,7 @@ void MainWindow::on_CargarPartida_clicked()
 
         // Mostrar la pantalla del tablero
         ui->stackedWidget->setCurrentWidget(ui->tablero);
+        dibujarCasillasEspeciales();
 
         // Actualizar las fichas y datos
         actualizarTablero();
@@ -418,3 +421,52 @@ void MainWindow::on_CargarPartida_clicked()
     }
 }
 
+void MainWindow::dibujarCasillasEspeciales()
+{
+    tablero* tb = juegoActual.getTablero();
+    if (!tb) return;
+
+    // Cargar la imagen base para las casillas normales una sola vez
+    QPixmap pixmapNormal(":/imagenes/normal.png"); // <--- ¡Nueva Ruta!
+
+    // Recorrer todas las casillas del tablero (usamos 1-based index hasta getNumCasillas())
+    for (int i = 1; i <= tb->getNumCasillas(); ++i) {
+        casilla* c = tb->getCasilla(i);
+        if (!c) continue;
+
+        QString nombreCasilla = QString("casilla%1").arg(i);
+        QLabel* labelCasilla = findChild<QLabel*>(nombreCasilla);
+        if (!labelCasilla) continue;
+
+        // Intentar hacer un downcast a casillaespecial
+        casillaespecial* especial = dynamic_cast<casillaespecial*>(c);
+
+        if (especial) {
+            // --- CASILLA ESPECIAL ---
+            QString tipo = especial->getTipo();
+            QString rutaImagen = QString(":/imagenes/%1.png").arg(tipo);
+            QPixmap pixmapEspecial(rutaImagen);
+
+            if (!pixmapEspecial.isNull()) {
+                // Colocamos la imagen especial
+                labelCasilla->setPixmap(pixmapEspecial.scaled(labelCasilla->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+            } else {
+                // Fallback si la imagen especial no se encuentra
+                labelCasilla->clear();
+                labelCasilla->setStyleSheet("background-color: darkblue; border: 2px solid yellow;");
+            }
+        } else {
+            // --- CASILLA NORMAL ---
+            if (!pixmapNormal.isNull()) {
+                // Colocamos la imagen base
+                labelCasilla->setPixmap(pixmapNormal.scaled(labelCasilla->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+            } else {
+                // Fallback si la imagen base no se encuentra
+                labelCasilla->clear();
+                labelCasilla->setStyleSheet("background-color: lightgray; border: 1px solid black;");
+            }
+        }
+        // Asegurarse de que el QLabel de la ficha esté visible, no el fondo de la casilla
+        labelCasilla->lower();
+    }
+}

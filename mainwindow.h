@@ -47,6 +47,7 @@ private:
     QVector<QVector<QPoint>> posicionesJugadores;
 
     std::map<int, QLabel*> m_fichasJugadores;
+    void dibujarCasillasEspeciales();
 
 };
 
