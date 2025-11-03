@@ -11,155 +11,7 @@ Juego::Juego() : turnoActual(0), t(nullptr){
    // t-> = a tableros.
 }
 
-// --- PERSISTENCIA BINARIA (Guardado de Partida) ---
-
-bool Juego::guardarPartidaBinario(const QString &nombreArchivo)
-{
-    QFile archivo(nombreArchivo);
-    if (!archivo.open(QIODevice::WriteOnly))
-        return false;
-
-    QDataStream out(&archivo);
-    out.setVersion(QDataStream::Qt_6_0);
-
-    // --- Guardar datos generales ---
-    out << jugadores.size();
-    out << turnoActual;
-    out << t->getNumCasillas(); // guarda tamaño del tablero
-
-    // --- Guardar jugadores ---
-    for (const jugador &j : jugadores)
-        out << j;
-
-    archivo.close();
-    return true;
-}
-
-
-bool Juego::cargarPartidaBinario(const QString &nombreArchivo)
-{
-    QFile archivo(nombreArchivo);
-    if (!archivo.open(QIODevice::ReadOnly))
-        return false;
-
-    QDataStream in(&archivo);
-    in.setVersion(QDataStream::Qt_6_0);
-
-    int cantidadJugadores, numCasillas;
-    in >> cantidadJugadores;
-    in >> turnoActual;
-    in >> numCasillas;
-
-    // --- Restaurar tablero ---
-    if (t) delete t;
-    t = new tablero(numCasillas);
-
-    // --- Restaurar jugadores ---
-    jugadores.clear();
-    for (int i = 0; i < cantidadJugadores; ++i) {
-        jugador j("");
-        in >> j;
-        jugadores.append(j);
-    }
-    //if (loadedTurnoActual >= 0 && loadedTurnoActual < loadedJugadores.size()) {
-    //  turnoActual = loadedTurnoActual;
-    //} else {
-    //   turnoActual = 0;
-    //    qWarning() << "turnoActual fuera de rango, se reinicia a 0";
-    //}
-
-
-    archivo.close();
-    return true;
-}
-
-
 // --- PERSISTENCIA JSON (Guardado de Configuración - Texto) ---
-
-bool Juego::guardarJuego(const QString& nombreArchivo) {
-    QJsonObject juegoJson;
-
-    // 1. Guardar turno actual
-    juegoJson["turnoActual"] = turnoActual;
-
-    // 2. Guardar jugadores
-    QJsonArray jugadoresArray;
-    for (const jugador& j : jugadores) {
-        jugadoresArray.append(j.toJson());
-    }
-    juegoJson["jugadores"] = jugadoresArray;
-
-    // 3. Escribir al archivo
-    QFile saveFile(nombreArchivo);
-    if (!saveFile.open(QIODevice::WriteOnly)) {
-        qWarning("No se pudo abrir el archivo para escribir.");
-        return false;
-    }
-
-    QJsonDocument saveDoc(juegoJson);
-    saveFile.write(saveDoc.toJson(QJsonDocument::Indented));
-    saveFile.close();
-    qDebug() << "Configuración guardada en:" << nombreArchivo;
-    return true;
-}
-
-bool Juego::cargarJuego(const QString& nombreArchivo) {
-    // ... (código existente para abrir y leer el archivo JSON)
-    QFile loadFile(nombreArchivo);
-
-    if (!loadFile.open(QIODevice::ReadOnly)) {
-        qWarning("No se pudo abrir el archivo para leer.");
-        return false;
-    }
-
-    QByteArray saveData = loadFile.readAll();
-    QJsonDocument loadDoc(QJsonDocument::fromJson(saveData));
-
-    if (loadDoc.isNull()) {
-        qWarning("El archivo no es un JSON válido.");
-        return false;
-    }
-
-    QJsonObject juegoJson = loadDoc.object();
-    // ... (código existente para cargar turnoActual y jugadores)
-    if (juegoJson.contains("turnoActual") && juegoJson["turnoActual"].isDouble()) {
-        turnoActual = juegoJson["turnoActual"].toInt();
-    } else {
-        qWarning("Datos de turnoActual faltantes o inválidos.");
-        return false;
-    }
-
-    if (juegoJson.contains("jugadores") && juegoJson["jugadores"].isArray()) {
-        jugadores.clear();
-        QJsonArray jugadoresArray = juegoJson["jugadores"].toArray();
-        for (const QJsonValue& value : jugadoresArray) {
-            jugadores.append(jugador::fromJson(value.toObject()));
-        }
-    } else {
-        qWarning("Datos de jugadores faltantes o inválidos.");
-        return false;
-    }
-
-    // 4. Cargar configuración del tablero <--- ¡AÑADE ESTO!
-    if (juegoJson.contains("tablero") && juegoJson["tablero"].isObject()) {
-        QJsonObject tableroJson = juegoJson["tablero"].toObject();
-        tablero* nuevoTablero = tablero::fromJson(tableroJson);
-        if (nuevoTablero) {
-            if (t) delete t; // Liberar el tablero anterior si existe
-            t = nuevoTablero;
-        } else {
-            qWarning("Error al cargar la configuración del tablero.");
-            return false;
-        }
-    } else {
-        qWarning("Datos de tablero faltantes o inválidos.");
-        return false;
-    }
-
-
-    qDebug() << "Configuración cargada exitosamente desde:" << nombreArchivo;
-    return true;
-}
 
 // --- MÉTODOS EXISTENTES ---
 
@@ -192,13 +44,6 @@ void Juego::iniciar(int numJugadores) {
              << t->getNumCasillas() << "casillas.";
 }
 
-/*
-int Juego::tirarDadoYAvanzar() {
-    int valor = dado.tirar();
-    miTablero.moverJugador(jugadores[turnoActual], valor);
-    return valor;
-}
-*/
 QString Juego::jugarTurno() {
     jugador& j = getJugadorActual();
     int posActual = j.getPosicion();
@@ -318,4 +163,80 @@ void Juego::aplicarCasilla() {
 void Juego::setTablero(tablero* t) {
     this->t = t;
 }
+// --- MÉTODOS DE PERSISTENCIA (BINARIO - avance de partida) ---
 
+bool Juego::guardarPartidaBinario(const QString &nombreArchivo) {
+    QFile file(nombreArchivo);
+    if (!file.open(QIODevice::WriteOnly)) {
+        qWarning() << "No se pudo abrir el archivo para guardar:" << file.errorString();
+        return false;
+    }
+
+    QDataStream out(&file);
+
+    // 1. Guardar el estado del juego:
+    out << turnoActual;
+    out << (quint32)jugadores.size(); // Cantidad de jugadores
+
+    // 2. Guardar el estado de cada jugador:
+    for (const jugador &j : jugadores) {
+        out << j;
+    }
+
+    // 3. Guardar el estado del tablero:
+    if (t) {
+        out << true; // Indicador de que hay tablero
+        out << *t;
+    } else {
+        out << false; // Indicador de que no hay tablero
+    }
+
+    qDebug() << "Partida guardada exitosamente en:" << nombreArchivo;
+    return true;
+}
+
+bool Juego::cargarPartidaBinario(const QString &nombreArchivo) {
+    QFile file(nombreArchivo);
+    if (!file.open(QIODevice::ReadOnly)) {
+        qWarning() << "No se pudo abrir el archivo para cargar:" << file.errorString();
+        return false;
+    }
+
+    QDataStream in(&file);
+
+    // 1. Cargar el estado del juego:
+    quint32 numJugadores;
+    in >> turnoActual;
+    in >> numJugadores;
+
+    // 2. Cargar el estado de cada jugador:
+    jugadores.clear();
+    for (quint32 i = 0; i < numJugadores; ++i) {
+        jugador j;
+        in >> j;
+        jugadores.append(j);
+    }
+
+    // 3. Cargar el estado del tablero:
+    bool tableroPresente;
+    in >> tableroPresente;
+
+    if (tableroPresente) {
+        // Primero eliminamos el tablero anterior si existe
+        if (t) {
+            delete t;
+            t = nullptr;
+        }
+        // Creamos un nuevo tablero y cargamos sus datos
+        t = new tablero();
+        in >> *t;
+    } else {
+        if (t) {
+            delete t;
+            t = nullptr;
+        }
+    }
+
+    qDebug() << "Partida cargada exitosamente desde:" << nombreArchivo;
+    return true;
+}

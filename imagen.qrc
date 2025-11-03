@@ -32,5 +32,7 @@
         <file>imagenes/pozo.png</file>
         <file>imagenes/puente.png</file>
         <file>imagenes/normal.png</file>
+        <file>imagenes/load.png</file>
+        <file>imagenes/save.png</file>
     </qresource>
 </RCC>

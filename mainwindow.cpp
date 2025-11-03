@@ -288,10 +288,11 @@ void MainWindow::actualizarTablero()
         return;
     }
 
-    int numCasillas = tb->getNumCasillas(); // por ejemplo 70
+    int numCasillas = tb->getNumCasillas();
 
-    // Si tus labels están nombrados casilla1..casilla90:
-    for (int i = 1; i <= 90; ++i) {
+    // Ocultar/Mostrar casillas según la cantidad cargada
+    // Esto soluciona el problema de ver 81 casillas o 63 casillas
+    for (int i = 1; i <= 90; ++i) { // Asumimos 90 es el máximo en el UI
         QString nombreCasilla = QString("casilla%1").arg(i);
         QLabel* label = findChild<QLabel*>(nombreCasilla);
         if (label) {
@@ -300,25 +301,33 @@ void MainWindow::actualizarTablero()
         }
     }
 
-    // Actualizamos fichas como antes (usando posiciones válidas)
+    // Actualizamos fichas (moviéndolas a la posición cargada)
     for (int i = 0; i < juegoActual.getCantidadJugadores(); ++i) {
+        // Obtenemos la posición guardada del jugador.
         int posicion = juegoActual.getJugador(i).getPosicion();
-        if (posicion < 1) posicion = 1; // si tu lógica usa 1-based
+
+        // Aseguramos que la posición sea visible (1 a numCasillas).
+        if (posicion < 1) posicion = 1;
         if (posicion > numCasillas) posicion = numCasillas;
 
+        // Buscamos la etiqueta de la casilla de destino.
         QString nombreCasilla = QString("casilla%1").arg(posicion);
         QLabel* labelCasilla = findChild<QLabel*>(nombreCasilla);
         if (!labelCasilla) continue;
 
+        // Buscamos la ficha del jugador (usando el índice del mapa m_fichasJugadores)
         QLabel* ficha = m_fichasJugadores[i];
         if (!ficha) continue;
 
+        // Movemos la ficha a la posición de la casilla de destino.
         QPoint destino = labelCasilla->pos();
+        // Aplicamos el pequeño desplazamiento para que no se superpongan (ya estaba en tu código)
         switch (i) {
         case 1: destino += QPoint(10, 0); break;
         case 2: destino += QPoint(0, 10); break;
         case 3: destino += QPoint(10, 10); break;
         }
+
         ficha->move(destino);
         ficha->raise();
     }
@@ -356,70 +365,6 @@ void MainWindow::on_siguiente_clicked() {
 }
 
 void MainWindow::cantjug(){}
-void MainWindow::onGuardarPartidaClicked()
-{
-    QString nombre = QInputDialog::getText(
-        this,
-        tr("Guardar partida"),
-        tr("Ingrese un nombre para la partida:")
-        );
-
-    if (nombre.trimmed().isEmpty()) {
-        QMessageBox::warning(this, tr("Aviso"), tr("Debe ingresar un nombre válido."));
-        return;
-    }
-
-    QDir dir;
-    if (!dir.exists("partidas")) {
-        dir.mkdir("partidas");
-    }
-
-    QString ruta = QString("partidas/%1.bin").arg(nombre.trimmed());
-
-    if (juegoActual.guardarPartidaBinario(ruta)) {
-        QMessageBox::information(this, tr("Guardado exitoso"),
-                                 tr("La partida se guardó correctamente como:\n%1").arg(ruta));
-    } else {
-        QMessageBox::critical(this, tr("Error"),
-                              tr("No se pudo guardar la partida."));
-    }
-}
-
-void MainWindow::on_CargarPartida_clicked()
-{
-    // Abre el diálogo para seleccionar la partida
-    QString nombreArchivo = QFileDialog::getOpenFileName(
-        this,
-        tr("Cargar partida"),
-        "partidas/",                  // Carpeta por defecto
-        tr("Partidas guardadas (*.bin)") // Filtro
-        );
-
-    // Si no se seleccionó ningún archivo, cancelar
-    if (nombreArchivo.isEmpty()) {
-        QMessageBox::information(this, tr("Carga cancelada"), tr("No se seleccionó ninguna partida."));
-        return;
-    }
-
-
-    // Intentar cargar la partida
-    if (juegoActual.cargarPartidaBinario(nombreArchivo)) {
-        QMessageBox::information(this, tr("Éxito"), tr("Partida cargada correctamente."));
-
-        // Mostrar la pantalla del tablero
-        ui->stackedWidget->setCurrentWidget(ui->tablero);
-        dibujarCasillasEspeciales();
-
-        // Actualizar las fichas y datos
-        actualizarTablero();
-        actualizarUI();
-
-        // Mostrar quién tiene el turno
-        ui->mensaje->setText("Turno de: " + juegoActual.getJugadorActual().getNombre());
-    } else {
-        QMessageBox::warning(this, tr("Error"), tr("No se pudo cargar la partida seleccionada."));
-    }
-}
 
 void MainWindow::dibujarCasillasEspeciales()
 {
@@ -468,5 +413,56 @@ void MainWindow::dibujarCasillasEspeciales()
         }
         // Asegurarse de que el QLabel de la ficha esté visible, no el fondo de la casilla
         labelCasilla->lower();
+    }
+}
+#include <QFileDialog> // Necesario para el cuadro de diálogo
+
+// --- SLOTS PARA GUARDAR Y CARGAR ---
+
+void MainWindow::onGuardarPartidaClicked() {
+    // Abrir diálogo para seleccionar la ruta de guardado
+    QString ruta = QFileDialog::getSaveFileName(this,
+                                                "Guardar Partida",
+                                                QDir::homePath(),
+                                                "Archivos de Partida de Oca (*.oca)");
+
+    if (!ruta.isEmpty()) {
+        if (juegoActual.guardarPartidaBinario(ruta)) {
+            QMessageBox::information(this, "Guardado Exitoso", "La partida se ha guardado correctamente.");
+        } else {
+            QMessageBox::critical(this, "Error de Guardado", "No se pudo guardar la partida.");
+        }
+    }
+}
+
+void MainWindow::on_CargarPartida_clicked() {
+    // Abrir diálogo para seleccionar la ruta de carga
+    QString ruta = QFileDialog::getOpenFileName(this,
+                                                "Cargar Partida",
+                                                QDir::homePath(),
+                                                "Archivos de Partida de Oca (*.oca)");
+
+    if (!ruta.isEmpty()) {
+        if (juegoActual.cargarPartidaBinario(ruta)) {
+
+            // --- PASO CLAVE: DIBUJAR LAS IMÁGENES DEL TABLERO CARGADO ---
+            // Esto toma el tablero recién cargado y aplica las imágenes de casilla.
+            dibujarCasillasEspeciales();
+
+            // --- PASO CLAVE: RE-INICIALIZAR EL TABLERO ---
+            // Se asume que el tablero cargado tiene la cantidad correcta de casillas (ej: 81).
+            // La función actualizarTablero() debe llamarse para:
+            // 1. Mostrar las casillas hasta la nueva meta (ej: hasta 81).
+            // 2. Mover las fichas a las posiciones guardadas.
+            actualizarTablero();
+            actualizarUI();
+
+            // Mover a la vista del tablero
+            ui->stackedWidget->setCurrentWidget(ui->tablero);
+
+            QMessageBox::information(this, "Carga Exitoso", "La partida se ha cargado correctamente.");
+        } else {
+            QMessageBox::critical(this, "Error de Carga", "No se pudo cargar la partida. Archivo dañado o incompatible.");
+        }
     }
 }

@@ -14,6 +14,11 @@ public:
     virtual QString accion(jugador& j) override;
     QString getTipo() const;
     static int siguienteOca(int posActual);
+    casillaespecial() = default;
+    // Métodos de serialización BINARIA
+    // Solo necesitamos el amigo, la sobrecarga es la misma firma
+    friend QDataStream &operator<<(QDataStream &out, const casillaespecial &c);
+    friend QDataStream &operator>>(QDataStream &in, casillaespecial &c);
 };
 
 #endif // CASILLAESPECIAL_H

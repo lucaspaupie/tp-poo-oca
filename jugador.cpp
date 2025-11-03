@@ -5,12 +5,6 @@
 
 // --- Serialización Binaria (QDataStream) ---
 
-/**
- * @brief Escribe el estado de un objeto jugador en un QDataStream.
- * @param out El flujo de datos binario de salida.
- * @param j El objeto jugador a serializar.
- * @return Referencia al QDataStream de salida.
- */
 QDataStream &operator<<(QDataStream &out, const jugador &j) {
     out << j.nombre
         << j.posicion
@@ -20,12 +14,7 @@ QDataStream &operator<<(QDataStream &out, const jugador &j) {
     return out;
 }
 
-/**
- * @brief Lee el estado de un objeto jugador desde un QDataStream.
- * @param in El flujo de datos binario de entrada.
- * @param j El objeto jugador donde se almacenarán los datos leídos.
- * @return Referencia al QDataStream de entrada.
- */
+
 QDataStream &operator>>(QDataStream &in, jugador &j) {
     in >> j.nombre
         >> j.posicion
@@ -111,10 +100,6 @@ bool jugador::puedeJugar() {
     return !atrapado && turnosPenalizado <= 0;
 }
 
-// esto lo saque para hacer la casilla posada
-// bool jugador::puedeJugar() const {
-//     return !atrapado && turnosPenalizado == 0;
-// }
 
 void jugador::atrapar() {
     atrapado = true;
