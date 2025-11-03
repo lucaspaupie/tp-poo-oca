@@ -356,70 +356,6 @@ void MainWindow::on_siguiente_clicked() {
 }
 
 void MainWindow::cantjug(){}
-void MainWindow::onGuardarPartidaClicked()
-{
-    QString nombre = QInputDialog::getText(
-        this,
-        tr("Guardar partida"),
-        tr("Ingrese un nombre para la partida:")
-        );
-
-    if (nombre.trimmed().isEmpty()) {
-        QMessageBox::warning(this, tr("Aviso"), tr("Debe ingresar un nombre válido."));
-        return;
-    }
-
-    QDir dir;
-    if (!dir.exists("partidas")) {
-        dir.mkdir("partidas");
-    }
-
-    QString ruta = QString("partidas/%1.bin").arg(nombre.trimmed());
-
-    if (juegoActual.guardarPartidaBinario(ruta)) {
-        QMessageBox::information(this, tr("Guardado exitoso"),
-                                 tr("La partida se guardó correctamente como:\n%1").arg(ruta));
-    } else {
-        QMessageBox::critical(this, tr("Error"),
-                              tr("No se pudo guardar la partida."));
-    }
-}
-
-void MainWindow::on_CargarPartida_clicked()
-{
-    // Abre el diálogo para seleccionar la partida
-    QString nombreArchivo = QFileDialog::getOpenFileName(
-        this,
-        tr("Cargar partida"),
-        "partidas/",                  // Carpeta por defecto
-        tr("Partidas guardadas (*.bin)") // Filtro
-        );
-
-    // Si no se seleccionó ningún archivo, cancelar
-    if (nombreArchivo.isEmpty()) {
-        QMessageBox::information(this, tr("Carga cancelada"), tr("No se seleccionó ninguna partida."));
-        return;
-    }
-
-
-    // Intentar cargar la partida
-    if (juegoActual.cargarPartidaBinario(nombreArchivo)) {
-        QMessageBox::information(this, tr("Éxito"), tr("Partida cargada correctamente."));
-
-        // Mostrar la pantalla del tablero
-        ui->stackedWidget->setCurrentWidget(ui->tablero);
-        dibujarCasillasEspeciales();
-
-        // Actualizar las fichas y datos
-        actualizarTablero();
-        actualizarUI();
-
-        // Mostrar quién tiene el turno
-        ui->mensaje->setText("Turno de: " + juegoActual.getJugadorActual().getNombre());
-    } else {
-        QMessageBox::warning(this, tr("Error"), tr("No se pudo cargar la partida seleccionada."));
-    }
-}
 
 void MainWindow::dibujarCasillasEspeciales()
 {
@@ -468,5 +404,47 @@ void MainWindow::dibujarCasillasEspeciales()
         }
         // Asegurarse de que el QLabel de la ficha esté visible, no el fondo de la casilla
         labelCasilla->lower();
+    }
+}
+#include <QFileDialog> // Necesario para el cuadro de diálogo
+
+// --- SLOTS PARA GUARDAR Y CARGAR ---
+
+void MainWindow::onGuardarPartidaClicked() {
+    // Abrir diálogo para seleccionar la ruta de guardado
+    QString ruta = QFileDialog::getSaveFileName(this,
+                                                "Guardar Partida",
+                                                QDir::homePath(),
+                                                "Archivos de Partida de Oca (*.oca)");
+
+    if (!ruta.isEmpty()) {
+        if (juegoActual.guardarPartidaBinario(ruta)) {
+            QMessageBox::information(this, "Guardado Exitoso", "La partida se ha guardado correctamente.");
+        } else {
+            QMessageBox::critical(this, "Error de Guardado", "No se pudo guardar la partida.");
+        }
+    }
+}
+
+void MainWindow::on_CargarPartida_clicked() {
+    // Abrir diálogo para seleccionar la ruta de carga
+    QString ruta = QFileDialog::getOpenFileName(this,
+                                                "Cargar Partida",
+                                                QDir::homePath(),
+                                                "Archivos de Partida de Oca (*.oca)");
+
+    if (!ruta.isEmpty()) {
+        if (juegoActual.cargarPartidaBinario(ruta)) {
+            // Después de cargar, actualizamos la interfaz para reflejar el estado cargado
+            actualizarTablero();
+            actualizarUI();
+
+            // Mover a la vista del tablero
+            ui->stackedWidget->setCurrentWidget(ui->tablero);
+
+            QMessageBox::information(this, "Carga Exitosa", "La partida se ha cargado correctamente.");
+        } else {
+            QMessageBox::critical(this, "Error de Carga", "No se pudo cargar la partida. Archivo dañado o incompatible.");
+        }
     }
 }

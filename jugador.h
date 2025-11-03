@@ -37,7 +37,7 @@ public:
     void restarTurnosPenalizado();
 
     int getTurnosPenalizados();
-  //  bool puedeJugar() const;
+    //  bool puedeJugar() const;
 
     void atrapar(); //pozo
     void liberar(); //para calavera

@@ -173,3 +173,56 @@ tablero* tablero::fromJson(const QJsonObject& json) { // <--- ¡AÑADE ESTO!
     qWarning() << "Error al cargar el número de casillas desde JSON.";
     return nullptr;
 }
+#include "casillaespecial.h" // Necesario para dynamic_cast
+
+QDataStream &operator<<(QDataStream &out, const tablero &t) {
+    // 1. Guarda el número total de casillas
+    out << t.numCasillas;
+
+    // 2. Itera y guarda cada casilla (incluído el tipo para el polimorfismo)
+    for (casilla* c : t.casillas) {
+        if (casillaespecial* ce = dynamic_cast<casillaespecial*>(c)) {
+            // Si es especial, guarda un identificador (1) y luego la casilla especial
+            out << (quint8)1; // ID para casilla especial
+            out << *ce;
+        } else {
+            // Si es normal, guarda un identificador (0) y luego la casilla base
+            out << (quint8)0; // ID para casilla normal
+            out << *c;
+        }
+    }
+    return out;
+}
+
+QDataStream &operator>>(QDataStream &in, tablero &t) {
+    // 1. Limpiar tablero actual (liberar memoria)
+    for (casilla* c : t.casillas) {
+        delete c;
+    }
+    t.casillas.clear();
+
+    // 2. Cargar el número total de casillas
+    in >> t.numCasillas;
+
+    // 3. Itera y carga cada casilla
+    for (int i = 0; i < t.numCasillas; ++i) {
+        quint8 tipoID;
+        in >> tipoID;
+
+        casilla* c = nullptr;
+        if (tipoID == 1) { // Casilla Especial
+            casillaespecial ce;
+            in >> ce;
+            // IMPORTANTE: Crear una copia dinámica del objeto cargado
+            c = new casillaespecial(ce);
+        } else { // Casilla Normal (0)
+            casilla cb;
+            in >> cb;
+            // IMPORTANTE: Crear una copia dinámica del objeto cargado
+            c = new casilla(cb.getNumero()); // Asumo constructor por número
+            c->setTipo(cb.getTipo());
+        }
+        t.casillas.append(c);
+    }
+    return in;
+}

@@ -32,6 +32,12 @@ public:
     void setNumCasillas(int n);
     QJsonObject toJson() const; //
     static tablero* fromJson(const QJsonObject& json);
+    // Asumimos que tienes un vector de punteros a casillas
+    int numCasillas;
+
+    // Métodos de serialización BINARIA
+    friend QDataStream &operator<<(QDataStream &out, const tablero &t);
+    friend QDataStream &operator>>(QDataStream &in, tablero &t);
 };
 
 #endif // TABLERO_H

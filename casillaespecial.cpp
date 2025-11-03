@@ -61,3 +61,18 @@ int casillaespecial::siguienteOca(int posActual) {
     }
     return -1; // no hay siguiente oca
 }
+QDataStream &operator<<(QDataStream &out, const casillaespecial &c) {
+    // 1. Llama al operador << de la clase base (casilla)
+    out << (const casilla&)c;
+    // 2. Guarda el tipo específico (aunque ya está en el base, lo mantenemos por claridad)
+    out << c.tipo;
+    return out;
+}
+
+QDataStream &operator>>(QDataStream &in, casillaespecial &c) {
+    // 1. Llama al operador >> de la clase base (casilla)
+    in >> (casilla&)c;
+    // 2. Carga el tipo específico
+    in >> c.tipo;
+    return in;
+}

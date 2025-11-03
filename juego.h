@@ -26,8 +26,8 @@ public:
     bool cargarJuego(const QString& nombreArchivo);
 
     // MÉTODOS DE PERSISTENCIA (BINARIO - avance de partida)
-    bool guardarPartidaBinario(const QString& nombreArchivo);
-    bool cargarPartidaBinario(const QString& nombreArchivo);
+    bool guardarPartidaBinario(const QString &nombreArchivo);
+    bool cargarPartidaBinario(const QString &nombreArchivo);
 
     void agregarJugador(const QString& nombre);
     void iniciar();                 // iniciar normal
