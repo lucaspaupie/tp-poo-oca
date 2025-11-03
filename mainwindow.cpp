@@ -288,10 +288,11 @@ void MainWindow::actualizarTablero()
         return;
     }
 
-    int numCasillas = tb->getNumCasillas(); // por ejemplo 70
+    int numCasillas = tb->getNumCasillas();
 
-    // Si tus labels están nombrados casilla1..casilla90:
-    for (int i = 1; i <= 90; ++i) {
+    // Ocultar/Mostrar casillas según la cantidad cargada
+    // Esto soluciona el problema de ver 81 casillas o 63 casillas
+    for (int i = 1; i <= 90; ++i) { // Asumimos 90 es el máximo en el UI
         QString nombreCasilla = QString("casilla%1").arg(i);
         QLabel* label = findChild<QLabel*>(nombreCasilla);
         if (label) {
@@ -300,25 +301,33 @@ void MainWindow::actualizarTablero()
         }
     }
 
-    // Actualizamos fichas como antes (usando posiciones válidas)
+    // Actualizamos fichas (moviéndolas a la posición cargada)
     for (int i = 0; i < juegoActual.getCantidadJugadores(); ++i) {
+        // Obtenemos la posición guardada del jugador.
         int posicion = juegoActual.getJugador(i).getPosicion();
-        if (posicion < 1) posicion = 1; // si tu lógica usa 1-based
+
+        // Aseguramos que la posición sea visible (1 a numCasillas).
+        if (posicion < 1) posicion = 1;
         if (posicion > numCasillas) posicion = numCasillas;
 
+        // Buscamos la etiqueta de la casilla de destino.
         QString nombreCasilla = QString("casilla%1").arg(posicion);
         QLabel* labelCasilla = findChild<QLabel*>(nombreCasilla);
         if (!labelCasilla) continue;
 
+        // Buscamos la ficha del jugador (usando el índice del mapa m_fichasJugadores)
         QLabel* ficha = m_fichasJugadores[i];
         if (!ficha) continue;
 
+        // Movemos la ficha a la posición de la casilla de destino.
         QPoint destino = labelCasilla->pos();
+        // Aplicamos el pequeño desplazamiento para que no se superpongan (ya estaba en tu código)
         switch (i) {
         case 1: destino += QPoint(10, 0); break;
         case 2: destino += QPoint(0, 10); break;
         case 3: destino += QPoint(10, 10); break;
         }
+
         ficha->move(destino);
         ficha->raise();
     }
@@ -435,14 +444,23 @@ void MainWindow::on_CargarPartida_clicked() {
 
     if (!ruta.isEmpty()) {
         if (juegoActual.cargarPartidaBinario(ruta)) {
-            // Después de cargar, actualizamos la interfaz para reflejar el estado cargado
+
+            // --- PASO CLAVE: DIBUJAR LAS IMÁGENES DEL TABLERO CARGADO ---
+            // Esto toma el tablero recién cargado y aplica las imágenes de casilla.
+            dibujarCasillasEspeciales();
+
+            // --- PASO CLAVE: RE-INICIALIZAR EL TABLERO ---
+            // Se asume que el tablero cargado tiene la cantidad correcta de casillas (ej: 81).
+            // La función actualizarTablero() debe llamarse para:
+            // 1. Mostrar las casillas hasta la nueva meta (ej: hasta 81).
+            // 2. Mover las fichas a las posiciones guardadas.
             actualizarTablero();
             actualizarUI();
 
             // Mover a la vista del tablero
             ui->stackedWidget->setCurrentWidget(ui->tablero);
 
-            QMessageBox::information(this, "Carga Exitosa", "La partida se ha cargado correctamente.");
+            QMessageBox::information(this, "Carga Exitoso", "La partida se ha cargado correctamente.");
         } else {
             QMessageBox::critical(this, "Error de Carga", "No se pudo cargar la partida. Archivo dañado o incompatible.");
         }

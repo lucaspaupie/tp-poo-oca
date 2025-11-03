@@ -176,18 +176,20 @@ tablero* tablero::fromJson(const QJsonObject& json) { // <--- ¡AÑADE ESTO!
 #include "casillaespecial.h" // Necesario para dynamic_cast
 
 QDataStream &operator<<(QDataStream &out, const tablero &t) {
-    // 1. Guarda el número total de casillas
-    out << t.numCasillas;
+    // 1. Guarda el número total de casillas (usamos m_numCasillas)
+    // Es 'friend', así que PUEDE acceder a t.m_numCasillas
+    out << t.m_numCasillas;
 
-    // 2. Itera y guarda cada casilla (incluído el tipo para el polimorfismo)
+    // 2. Itera y guarda cada casilla (usamos casillas)
+    // Es 'friend', así que PUEDE acceder a t.casillas
     for (casilla* c : t.casillas) {
         if (casillaespecial* ce = dynamic_cast<casillaespecial*>(c)) {
             // Si es especial, guarda un identificador (1) y luego la casilla especial
-            out << (quint8)1; // ID para casilla especial
+            out << (quint8)1;
             out << *ce;
         } else {
             // Si es normal, guarda un identificador (0) y luego la casilla base
-            out << (quint8)0; // ID para casilla normal
+            out << (quint8)0;
             out << *c;
         }
     }
@@ -196,33 +198,36 @@ QDataStream &operator<<(QDataStream &out, const tablero &t) {
 
 QDataStream &operator>>(QDataStream &in, tablero &t) {
     // 1. Limpiar tablero actual (liberar memoria)
-    for (casilla* c : t.casillas) {
+    for (casilla* c : t.casillas) { // Es 'friend', PUEDE acceder
         delete c;
     }
     t.casillas.clear();
 
-    // 2. Cargar el número total de casillas
-    in >> t.numCasillas;
+    // 2. Cargar el número total de casillas (usamos m_numCasillas)
+    in >> t.m_numCasillas; // Es 'friend', PUEDE acceder
 
     // 3. Itera y carga cada casilla
-    for (int i = 0; i < t.numCasillas; ++i) {
+    for (int i = 0; i < t.m_numCasillas; ++i) { // <-- Usa el miembro correcto
         quint8 tipoID;
         in >> tipoID;
 
         casilla* c = nullptr;
         if (tipoID == 1) { // Casilla Especial
-            casillaespecial ce;
+            casillaespecial ce; // Usa el constructor default que agregamos
             in >> ce;
-            // IMPORTANTE: Crear una copia dinámica del objeto cargado
-            c = new casillaespecial(ce);
+            c = new casillaespecial(ce); // Usa el constructor de copia
         } else { // Casilla Normal (0)
-            casilla cb;
+            casilla cb; // Usa el constructor default
             in >> cb;
-            // IMPORTANTE: Crear una copia dinámica del objeto cargado
-            c = new casilla(cb.getNumero()); // Asumo constructor por número
+            // Reconstruye la casilla normal usando su número y tipo
+            c = new casilla(cb.getNumero());
             c->setTipo(cb.getTipo());
         }
         t.casillas.append(c);
     }
+
+    // Si la lógica de coordenadas (posicionesJugadores) también debe guardarse,
+    // debería ir aquí, pero por ahora esto reconstruye el tablero.
+
     return in;
 }
